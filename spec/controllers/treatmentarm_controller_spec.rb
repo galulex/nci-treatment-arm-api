@@ -1,0 +1,70 @@
+require 'rails_helper'
+require 'factory_girl_rails'
+
+describe TreatmentarmController do
+
+  describe "POST #newTreatmentArm" do
+    context "with valid data" do
+      it "should save data to the database" do
+        expect { post :armUpload, FactoryGirl.attributes_for(:treatmentarm, :valid)
+        }.to raise_error(ArgumentError)
+      end
+      it "should respond with a success json message"
+    end
+    context "with invalid data" do
+      it "should throw a 500 status" do
+        expect { post :armUpload, FactoryGirl.attributes_for(:treatmentarm, :invalid)
+        }.to raise_error(ArgumentError)
+      end
+      it "should respond with a failure json message" do
+        # p FactoryGirl.attributes_for(:amoiVariant)
+      end
+    end
+
+  end
+
+  describe "POST #approveTreatmentArm" do
+
+    context "with valid data" do
+      it "should appove a treatmentArm"
+    end
+
+    context "with invalid data" do
+      it "should return status 500"
+    end
+  end
+
+  describe "POST #ecogTreatmentArmList" do
+
+    context "with valid data" do
+      it "should accept a list of TA from ECOG"
+    end
+
+    context "with invalid data" do
+      it "should return a status of 500"
+    end
+  end
+
+  describe "GET #treatmentArms" do
+
+    it "should return all treatment arms if params are empty" do
+      route_to('treatmentArms')
+      expect(response).to have_http_status(200)
+    end
+
+    it "should return a treatmentArm if id is given" do
+      ta = create(:treatmentArmVersions)
+      route_to('treatmentArms', :id => ta._id)
+      expect(response).to have_http_status(200)
+    end
+
+  end
+
+  describe "GET #basicTreatmentArms" do
+    it "should return the basic data for all treatment arms" do
+      route_to('basicTreatmentArms')
+      expect(response).to have_http_status(200)
+    end
+  end
+
+end
