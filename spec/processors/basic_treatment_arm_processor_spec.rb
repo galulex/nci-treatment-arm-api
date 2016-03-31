@@ -1,14 +1,11 @@
-require "#{File.dirname(__FILE__)}/spec_helper"
-require "#{File.dirname(__FILE__)}/../../treatment_arm_api/app/processor/basic_treatment_arm_processor"
-
+require 'spec_helper'
 require 'rspec'
 require 'rails_helper'
 
 describe BasicTreatmentArm do
 
-  before {
+  before(:each) {
     @basic_treatment_arm = BasicTreatmentArmProcessor.new.create_treatment_arm_hash
-    p @basic_treatment_arm.class
     @basic_treatment_arm_json =  {
         :"_id" => "EAY131-A",
         :"_class" => "gov.match.model.TreatmentArm",
