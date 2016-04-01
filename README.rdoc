@@ -1,9 +1,5 @@
+nci-treatment-arm-api
+=======================
+[![Code Climate](https://codeclimate.com/github/CBIIT/nci-treatment-arm-api/badges/gpa.svg)](https://codeclimate.com/github/CBIIT/nci-treatment-arm-api)
 
-
-{<img src="https://codeclimate.com/github/CBIIT/nci-treatment-arm-api/badges/gpa.svg" />}[https://codeclimate.com/github/CBIIT/nci-treatment-arm-api]
-
-{<img src="https://codeclimate.com/github/CBIIT/nci-treatment-arm-api/badges/coverage.svg" />}[https://codeclimate.com/github/CBIIT/nci-treatment-arm-api/coverage]
-
-{<img src="https://codeclimate.com/github/CBIIT/nci-treatment-arm-api/badges/issue_count.svg" />}[https://codeclimate.com/github/CBIIT/nci-treatment-arm-api]
-
-== README
+This repository contains RESTful services for the treatment arm ecosystem.
