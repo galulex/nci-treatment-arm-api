@@ -36,15 +36,15 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'mongoid-rspec', '~> 3.0.0'
-  gem 'factory_girl_rails', "~> 4.0"
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'faker'
-  gem "database_cleaner"
+  gem 'database_cleaner'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
   # Codeclimate
-  gem "codeclimate-test-reporter", require: nil
+  gem 'codeclimate-test-reporter', require: nil
   gem 'simplecov', :require => false
   gem 'simplecov-rcov'
 
