@@ -10,6 +10,28 @@ FactoryGirl.define do
     version Time.now
   end
 
+  factory :basic_treatment_arm, :class => TreatmentArm do
+    #   @basic_treatment_arm_json =  {
+    #       :"_id" => "EAY131-A",
+    #       :"_class" => "gov.match.model.TreatmentArm",
+    #       :"name" => "Afatinib in EGFR activating",
+    #       :"version" => "2016-02-20",
+    #       :"description" => "Afatinib in EGFR activating mutation",
+    #       :"targetId" => "750691",
+    #       :"targetName" => "Afatinib",
+    #       :"gene" => "EGFR",
+    #       :"exclusionCriterias" => [],
+    #       :"ptenResults" => [],
+    #       :"numPatientsAssigned" => 2,
+    #       :"maxPatientsAllowed" => 35,
+    #       :"treatmentArmStatus" => "OPEN",
+    #       :"dateCreated" => "2016-03-03T19:38:37.890Z"
+    #   }
+    # }
+
+
+  end
+
   factory :amoiVariant, :class => VariantReport do
     singleNucleotideVariants {FactoryGirl.build(:single_nubleotide_variant_amoi)}
     indels {FactoryGirl.build(:indel_amoi)}
