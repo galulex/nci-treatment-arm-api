@@ -53,7 +53,7 @@ describe TreatmentarmController do
     end
 
     it "should return a treatmentArm if id is given" do
-      ta = create(:treatmentArmVersions)
+      ta = build_stubbed(:treatmentArmVersions)
       route_to('treatmentArms', :id => ta._id)
       expect(response).to have_http_status(200)
     end
