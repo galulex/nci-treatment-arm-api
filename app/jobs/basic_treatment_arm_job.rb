@@ -3,7 +3,7 @@ require 'basic_treatment_arm'
 
 class BasicTreatmentArmJob
 
-  @queue = :basic_treatment_arm
+  @queue = :treatment_arm
 
   def self.perform(treatment_arm)
     begin
