@@ -8,11 +8,13 @@ require 'mongoid'
     field :_id, type: String
     field :name
     field :version
+    field :currentVersion, type: String
     field :description
     field :targetId
     field :targetName
     field :gene
     field :treatmentArmStatus
+    field :previousVersions, type: Array
 
     embeds_many :treatmentArmDrugs, class_name: "Drug", inverse_of: :treatmentarm
     embeds_many :exclusionDiseases, class_name: "Disease", inverse_of: :treatmentarm
@@ -29,6 +31,8 @@ require 'mongoid'
     field :statusLog, type: Hash
 
     field :dateCreated, type: DateTime, default: Time.now
+
+    # embedded_in :treatmentarmhistory, :inverse_of => :treatmentArm
 
     def validate_eligible_for_approval(id)
       treatment_arm = TreatmentArm.where(:_id => id, :treatmentArmStatus.ne => "PENDING").first
