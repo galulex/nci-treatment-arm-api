@@ -21,6 +21,12 @@ describe TreatmentarmController do
       end
     end
 
+    context "with a new version of treatment arm, archive the old treatment arm"
+      it "should archive old treatment arm to the database" do
+        route_to('newTreatmentArm')
+        expect(response).to have_http_status(200)
+      end
+
   end
 
   describe "POST #approveTreatmentArm" do
