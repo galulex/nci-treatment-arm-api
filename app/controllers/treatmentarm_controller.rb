@@ -1,6 +1,4 @@
 
-require 'treatment_arm'
-
 class TreatmentarmController < ApplicationController
 
   # before_action :authenticate
@@ -9,13 +7,26 @@ class TreatmentarmController < ApplicationController
     begin
       @treatmentArm = JSON.parse(request.raw_post)
       treatmentArmModel = TreatmentArm.new @treatmentArm
-      treatmentArmModel.save
+
+      if TreatmentArm.where(_id: treatmentArmModel._id, :version.ne => treatmentArmModel.version).exists?
+        old_treatment_arm = TreatmentArm.where(:_id => treatmentArmModel._id).first
+        treatment_arm_history = TreatmentArmHistory.new
+        treatment_arm_history.treatmentArm = old_treatment_arm
+        treatment_arm_history.save!
+        treatmentArmModel.upsert
+
+      elsif TreatmentArm.where(_id: treatmentArmModel.id, version: treatmentArmModel.version).exists?
+
+      else
+        treatmentArmModel.upsert
+      end
+
       render nothing: true
     rescue => error
       standard_error_message(error)
     end
-
   end
+
 
   #done needs rspec test
   def approve_treatment_arm
