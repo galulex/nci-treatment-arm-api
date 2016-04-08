@@ -27,6 +27,14 @@ describe TreatmentarmController do
         expect(response).to have_http_status(200)
       end
 
+      it "should check the version date" do
+        mock_treatment_arm = build_stubbed(:treatmentArm)
+        mock_treatment_arm_history = build_stubbed(:treatmentArmHistory)
+        expect(mock_treatment_arm_history.dateArchived).to eq(Date.parse "Fri, 08 Apr 2016")
+      end
+
+      it "should load the treatment arm if it is a newer version"
+
   end
 
   describe "POST #approveTreatmentArm" do
