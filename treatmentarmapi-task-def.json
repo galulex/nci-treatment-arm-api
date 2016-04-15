@@ -1,0 +1,38 @@
+{
+    "family": "TA-task",
+    "volumes": [],
+    "containerDefinitions": [
+        {
+            "name": "TA-container",
+            "image": "matchbox/tarm",
+            "cpu": "10",
+            "memory": "500",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": "10235",
+                    "containerPort": "10235",
+                    "protocol": "tcp"
+                }
+            ],
+            "links": [],
+            "command": [],
+            "entryPoint": [
+                "rails",
+                "server",
+                "--binding",
+                "0.0.0.0"
+            ],
+            "environment": null,
+            "mountPoints": null,
+            "volumesFrom": null,
+            "workingDirectory": "/home/rails/myapp",
+            "extraHosts": null,
+            "logConfiguration": {
+                "logDriver": "syslog"
+            },
+            "ulimits": null,
+            "dockerLabels": null
+        }
+    ]
+}
