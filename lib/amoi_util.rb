@@ -6,9 +6,9 @@ module AmoiUtil
       return false if treatment_arm_variant[:gene].blank? && treatment_arm_variant[:exon].blank? &&
                       treatment_arm_variant[:function].blank? && treatment_arm_variant[:oncominevariantclass].blank?
 
-      proteinMatch = treatment_arm_variant[:proteinMatch].blank?
+      proteinMatch = treatment_arm_variant[:protein_match].blank?
       if (!proteinMatch)
-        proteinMatch = match(patient_variant[:protein], treatment_arm_variant[:proteinMatch])
+        proteinMatch = match(patient_variant[:protein], treatment_arm_variant[:protein_match])
       end
 
 
@@ -36,13 +36,13 @@ module AmoiUtil
       patient_amoi_count = 0
 
       treatment_arm_variants.each do | treatment_arm_variant |
-        next if treatment_arm_variant[:variantReport].blank?
-        treatment_arm_variant[:variantReport].each_key do | key |
-          next if treatment_arm_variant[:variantReport][key].blank?
-          next if patient_variants[:variantReport][key].blank?
-          treatment_arm_variant[:variantReport][key].each do | treatment_variant |
+        next if treatment_arm_variant[:variant_report].blank?
+        treatment_arm_variant[:variant_report].each_key do | key |
+          next if treatment_arm_variant[:variant_report][key].blank?
+          next if patient_variants[:variant_report][key].blank?
+          treatment_arm_variant[:variant_report][key].each do | treatment_variant |
             next if treatment_variant[:inclusion].blank? || treatment_variant[:inclusion] == false
-            patient_variants[:variantReport][key].each do | patient_variant |
+            patient_variants[:variant_report][key].each do | patient_variant |
               patient_amoi_count += 1 if is_amoi?(patient_variant, treatment_variant)
             end
           end

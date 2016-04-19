@@ -8,34 +8,34 @@ require 'mongoid'
     field :_id, type: String
     field :name
     field :version
-    field :currentVersion, type: String
+    field :current_version, type: String
     field :description
-    field :targetId
-    field :targetName
+    field :target_id
+    field :target_name
     field :gene
-    field :treatmentArmStatus
-    field :previousVersions, type: Array
+    field :treatment_arm_status
+    field :previous_versions, type: Array
 
-    embeds_many :treatmentArmDrugs, class_name: "Drug", inverse_of: :treatmentarm
-    embeds_many :exclusionDiseases, class_name: "Disease", inverse_of: :treatmentarm
-    embeds_many :exclusionDrugs, class_name: "Drug", inverse_of: :treatmentarm
-    embeds_many :exclusionCriterias, class_name: "ExclusionCriteria", inverse_of: :treatmentarm
-    embeds_many :ptenResults, class_name: "PtenResult", inverse_of: :treatmentarm
+    embeds_many :treatment_arm_drugs, class_name: "Drug", inverse_of: :treatmentarm
+    embeds_many :exclusion_diseases, class_name: "Disease", inverse_of: :treatmentarm
+    embeds_many :exclusion_drugs, class_name: "Drug", inverse_of: :treatmentarm
+    embeds_many :exclusion_criterias, class_name: "ExclusionCriteria", inverse_of: :treatmentarm
+    embeds_many :pten_results, class_name: "PtenResult", inverse_of: :treatmentarm
 
-    field :numPatientsAssigned, type: Integer, default: 0
-    field :maxPatientsAllowed, type: Integer
+    field :num_patients_assigned, type: Integer, default: 0
+    field :max_patients_allowed, type: Integer
 
 
-    embeds_one :variantReport, class_name: "VariantReport", inverse_of: :treatmentarm
+    embeds_one :variant_report, class_name: "VariantReport", inverse_of: :treatmentarm
 
     field :statusLog, type: Hash
 
-    field :dateCreated, type: DateTime, default: Time.now
+    field :date_created, type: DateTime, default: Time.now
 
     # embedded_in :treatmentarmhistory, :inverse_of => :treatmentArm
 
     def validate_eligible_for_approval(id)
-      treatment_arm = TreatmentArm.where(:_id => id, :treatmentArmStatus.ne => "PENDING").first
+      treatment_arm = TreatmentArm.where(:_id => id, :treatment_arm_status.ne => "PENDING").first
       is_valid = treatment_arm.variantReport.has_a_inclusion
       if treatment_arm.ptenResults.empty? && is_valid
         return true
@@ -47,7 +47,7 @@ require 'mongoid'
     end
 
     def get_number_screened_patients_with_amoi(patientData)
-      TreatmentArm.where(:variantReport.ne => "", :variantReport.exists => true).each do | treatmentArm |
+      TreatmentArm.where(:variant_report.ne => "", :variant_report.exists => true).each do | treatmentArm |
 
       end
 

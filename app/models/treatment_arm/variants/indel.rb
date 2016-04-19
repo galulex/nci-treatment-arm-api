@@ -5,6 +5,6 @@ require 'confirmable_variant'
     class Indel  < ConfirmableVariant
       include Mongoid::Document
 
-      embedded_in :variantReport, inverse_of: :indels
+      embedded_in :variant_report, inverse_of: :indels
 
     end

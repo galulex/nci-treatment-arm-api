@@ -34,7 +34,7 @@ class TreatmentarmController < ApplicationController
       if !params[:id].nil?
         if TreatmentArm.new.validate_eligible_for_approval(params[:id])
           treatment_arm = TreatmentArm.where(:_id => params[:id]).first
-          treatment_arm.set(treatmentArmStatus: "READY")
+          treatment_arm.set(treatment_arm_status: "READY")
           treatment_arm.statusLog.store(Time.now.to_i, "READY")
           treatment_arm.save!
         end

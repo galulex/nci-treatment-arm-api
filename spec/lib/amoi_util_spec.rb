@@ -89,41 +89,41 @@ describe AmoiUtil do
     context "with valid data" do
 
       it "should return 1" do
-        treatmentArms = [{:id => "EAY131_A", :variantReport => {:singleNucleotideVariants =>
+        treatmentArms = [{:id => "EAY131_A", :variant_report => {:single_nucleotide_variants =>
                                                                     [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class", :inclusion => true}],
-                                                                :copyNumberVariants => []}}]
-        patientVariants = {:psn => "211re", :variantReport => {:singleNucleotideVariants =>
+                                                                 :copy_number_variants => []}}]
+        patientVariants = {:psn => "211re", :variant_report => {:single_nucleotide_variants =>
                                                                     [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class"}]}}
         expect(AmoiUtil::Amoi.get_number_screened_patients_with_amoi(patientVariants, treatmentArms)).to equal(1)
       end
 
       it "should return 0 and not fail out" do
-        treatmentArms = [{:id => "", :variantReport => {:singleNucleotideVariants => [],
-                                                        :copyNumberVariants => [],
-                                                        :indels => [],
-                                                        :nonHotSpotRules => []}}]
-        patientVariants = {:psn => "211re", :variantReport => {:singleNucleotideVariants =>
+        treatmentArms = [{:id => "", :variant_report => {:single_nucleotide_variants => [],
+                                                         :copy_number_variants => [],
+                                                         :indels => [],
+                                                         :nonHotSpotRules => []}}]
+        patientVariants = {:psn => "211re", :variant_report => {:single_nucleotide_variants =>
                                                                    [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class"}],
-                                                               :copyNumberVariants => []}}
+                                                                :copy_number_variants => []}}
         expect(AmoiUtil::Amoi.get_number_screened_patients_with_amoi(patientVariants, treatmentArms)).to equal(0)
       end
 
       it "should return 0 because treatment_arm's inclusion is false" do
-        treatmentArms = [{:id => "EAY131_A", :variantReport => {:singleNucleotideVariants =>
+        treatmentArms = [{:id => "EAY131_A", :variant_report => {:single_nucleotide_variants =>
                                                                     [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class", :inclusion => false}],
-                                                                :copyNumberVariants => []}}]
-        patientVariants = {:psn => "211re", :variantReport => {:singleNucleotideVariants =>
+                                                                 :copy_number_variants => []}}]
+        patientVariants = {:psn => "211re", :variant_report => {:single_nucleotide_variants =>
                                                                    [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class"}]}}
         expect(AmoiUtil::Amoi.get_number_screened_patients_with_amoi(patientVariants, treatmentArms)).to equal(0)
       end
 
       it "should return 2 or more" do
-        treatmentArms = [{:id => "EAY131_A", :variantReport => {:singleNucleotideVariants =>
+        treatmentArms = [{:id => "EAY131_A", :variant_report => {:single_nucleotide_variants =>
                                                                     [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class", :inclusion => true}],
-                                                                :copyNumberVariants => [{:gene => "AK123", :exon => "42", :function => "p.dfsaj31", :oncominevariantclass => "oni", :inclusion => true}]}}]
-        patientVariants = {:psn => "211re", :variantReport => {:singleNucleotideVariants =>
+                                                                 :copy_number_variants => [{:gene => "AK123", :exon => "42", :function => "p.dfsaj31", :oncominevariantclass => "oni", :inclusion => true}]}}]
+        patientVariants = {:psn => "211re", :variant_report => {:single_nucleotide_variants =>
                                                                    [{:gene => "gene", :exon => "12", :function => "function", :oncominevariantclass => "class"}],
-                                                               :copyNumberVariants => [{:gene => "AK123", :exon => "42", :function => "p.dfsaj31", :oncominevariantclass => "oni"}]}}
+                                                                :copy_number_variants => [{:gene => "AK123", :exon => "42", :function => "p.dfsaj31", :oncominevariantclass => "oni"}]}}
         expect(AmoiUtil::Amoi.get_number_screened_patients_with_amoi(patientVariants, treatmentArms)).to equal(2)
       end
 
