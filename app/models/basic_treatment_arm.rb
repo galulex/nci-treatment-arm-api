@@ -12,10 +12,10 @@ class BasicTreatmentArm
   field :not_enrolled_patients, type: Integer
   field :pending_patients, type: Integer
   field :treatment_arm_status
-  field :date_created, type: DateTime, default: Time.now
-  field :date_opened, type: DateTime
-  field :date_closed, type: DateTime
-  field :date_suspended, type: DateTime
+  field :date_created
+  field :date_opened
+  field :date_closed
+  field :date_suspended
 
 end
 
