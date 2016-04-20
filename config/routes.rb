@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     get 'treatmentArms' => :treatment_arms
     get 'treatmentArmVersions' => :treatment_arm_versions
     get 'basicTreatmentArms' => :basic_treatment_arms
+    get 'basicTreatmentArm' => :basic_treatment_arm
+    get 'variantReport' => :variant_report
   end
 
   controller :version do
