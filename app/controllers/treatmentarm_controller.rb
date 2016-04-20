@@ -85,7 +85,26 @@ class TreatmentarmController < ApplicationController
 
   def basic_treatment_arms
     begin
-      render json: BasicTreatmentArmProcessor.new.create_treatment_arm_hash
+      render json: BasicTreatmentArm.all
+    rescue => error
+      standard_error_message(error)
+    end
+  end
+
+  def basic_treatment_arm
+    begin
+      if !params[:id].nil?
+        basic_treatment_arm_json = BasicTreatmentArm.where(_id: params[:id])
+      end
+      render json: basic_treatment_arm_json
+    rescue => error
+      standard_error_message(error)
+    end
+  end
+
+  def variant_report
+    begin
+      render nothing: true
     rescue => error
       standard_error_message(error)
     end

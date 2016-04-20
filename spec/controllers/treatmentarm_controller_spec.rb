@@ -71,12 +71,18 @@ describe TreatmentarmController do
       route_to('treatmentArms', :id => ta._id)
       expect(response).to have_http_status(200)
     end
-
   end
 
   describe "GET #basicTreatmentArms" do
     it "should return the basic data for all treatment arms" do
       route_to('basicTreatmentArms')
+      expect(response).to have_http_status(200)
+    end
+  end
+
+  describe "GET #basicTreatmentArm" do
+    it "should return the basic data for a specific treatment arms" do
+      route_to('basicTreatmentArm')
       expect(response).to have_http_status(200)
     end
   end
