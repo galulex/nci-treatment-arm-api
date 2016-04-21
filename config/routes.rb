@@ -1,4 +1,3 @@
-require 'resque/server'
 
 Rails.application.routes.draw do
 
@@ -24,7 +23,5 @@ Rails.application.routes.draw do
   controller :patient do
 
   end
-
-  mount Resque::Server.new, at: "/resque"
 
 end
