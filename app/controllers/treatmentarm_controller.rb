@@ -85,16 +85,10 @@ class TreatmentarmController < ApplicationController
 
   def basic_treatment_arms
     begin
-      render json: BasicTreatmentArm.all
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
-  def basic_treatment_arm
-    begin
       if !params[:id].nil?
         basic_treatment_arm_json = BasicTreatmentArm.where(_id: params[:id])
+      elsif
+        basic_treatment_arm_json = BasicTreatmentArm.all
       end
       render json: basic_treatment_arm_json
     rescue => error
