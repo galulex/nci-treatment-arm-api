@@ -5,7 +5,7 @@ class Publisher
   attr_accessor :connection, :channel
 
   def self.publish(queue_name, message = {})
-    message_queue = self.channel.queue(queue_name, :durable => true)
+    message_queue = channel.queue(queue_name, :durable => true)
     message_queue.publish(message.to_json, :routing_key => message_queue.name, :persistent => true)
   end
 
