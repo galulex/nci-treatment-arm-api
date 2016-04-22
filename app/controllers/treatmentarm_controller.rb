@@ -5,24 +5,11 @@ class TreatmentarmController < ApplicationController
 
   def new_treatment_arm
     begin
-      @treatment_arm = JSON.parse(request.raw_post)
+      @treatment_arm = request.request_parameters
+      @treatment_arm.store("treatment_arm_id", @treatment_arm["id"])
+      @treatment_arm.except!("id")
       Publisher.publish("treatment_arm", @treatment_arm)
       render nothing: true
-    #   treatmentArmModel = TreatmentArm.new @treatmentArm
-    #
-    #   if TreatmentArm.where(_id: treatmentArmModel._id, :version.ne => treatmentArmModel.version).exists?
-    #     old_treatment_arm = TreatmentArm.where(:_id => treatmentArmModel._id).first
-    #     treatment_arm_history = TreatmentArmHistory.new
-    #     treatment_arm_history.treatmentArm = old_treatment_arm
-    #     treatment_arm_history.save!
-    #     treatmentArmModel.upsert
-    #
-    #   elsif TreatmentArm.where(_id: treatmentArmModel.id, version: treatmentArmModel.version).exists?
-    #
-    #   else
-    #     treatmentArmModel.upsert
-    #   end
-    #   render nothing: true
     rescue => error
       standard_error_message(error)
     end
