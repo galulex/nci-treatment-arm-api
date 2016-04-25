@@ -5,9 +5,10 @@ class TreatmentarmController < ApplicationController
 
   def new_treatment_arm
     begin
-      @treatment_arm = request.request_parameters
-      @treatment_arm.store("treatment_arm_id", @treatment_arm["id"])
-      @treatment_arm.except!("id")
+      @treatment_arm = JSON.parse(request.raw_post)
+      @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
+      @treatment_arm[:treatment_arm_id] = @treatment_arm[:_id]
+      @treatment_arm.except!(:_id)
       Publisher.publish("treatment_arm", @treatment_arm)
       render nothing: true
     rescue => error
