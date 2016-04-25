@@ -53,11 +53,11 @@ class TreatmentarmController < ApplicationController
   def treatment_arm
     begin
       if !params[:id].nil? && params[:version].nil?
-        treatmentArmJson = TreatmentArm.where(_id: params[:id])
+        treatment_arm_json = TreatmentArm.where(_id: params[:id])
       elsif !params[:id].nil? && !params[:version].nil?
-        treatmentArmJson = TreatmentArm.where(_id: params[:id]).in(version: params[:version])
+        treatment_arm_json = TreatmentArm.where(_id: params[:id]).in(version: params[:version])
       end
-      render json: treatmentArmJson
+      render json: treatment_arm_json
     rescue => error
       standard_error_message(error)
     end
@@ -76,7 +76,7 @@ class TreatmentarmController < ApplicationController
     begin
       if !params[:id].nil?
         basic_treatment_arm_json = BasicTreatmentArm.where(_id: params[:id])
-      elsif
+      else
         basic_treatment_arm_json = BasicTreatmentArm.all
       end
       render json: basic_treatment_arm_json

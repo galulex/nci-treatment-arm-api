@@ -24,4 +24,11 @@ Rails.application.routes.draw do
 
   end
 
+  controller :graph_data do
+    get 'patientStatusGraph' => :patient_status_count
+    get 'patientStatusGraph/:id' => :patient_status_count
+    get 'patientDiseaseGraph' => :patient_disease_data
+    get 'patientDiseaseGraph/:id' => :patient_disease_data
+  end
+
 end
