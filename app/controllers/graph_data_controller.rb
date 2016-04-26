@@ -32,8 +32,7 @@ class GraphDataController < ApplicationController
   private
 
   def standard_error_message(error)
-    logger.error error.message
-    status 500
+    logger.error(error.message)
   end
 
 end
