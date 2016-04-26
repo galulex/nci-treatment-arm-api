@@ -53,9 +53,9 @@ class TreatmentarmController < ApplicationController
   def treatment_arm
     begin
       if !params[:id].nil? && params[:version].nil?
-        treatment_arm_json = TreatmentArm.where(_id: params[:id])
+        treatment_arm_json = TreatmentArm.where(:treatment_arm_id => params[:id])
       elsif !params[:id].nil? && !params[:version].nil?
-        treatment_arm_json = TreatmentArm.where(_id: params[:id]).in(version: params[:version])
+        treatment_arm_json = TreatmentArm.where(:treatment_arm_id => params[:id], :version => params[:version])
       end
       render json: treatment_arm_json
     rescue => error

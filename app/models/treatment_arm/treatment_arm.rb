@@ -3,12 +3,8 @@ require 'mongoid'
   class TreatmentArm
     include Mongoid::Document
 
-    store_in collection: "treatmentArm"
-
-    field :_id, type: String
     field :name
     field :version
-    field :current_version, type: String
     field :description
     field :target_id
     field :target_name
@@ -32,7 +28,6 @@ require 'mongoid'
 
     field :date_created, type: DateTime, default: Time.now
 
-    # embedded_in :treatmentarmhistory, :inverse_of => :treatmentArm
 
     def validate_eligible_for_approval(id)
       treatment_arm = TreatmentArm.where(:_id => id, :treatment_arm_status.ne => "PENDING").first
