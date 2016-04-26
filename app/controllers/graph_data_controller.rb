@@ -4,7 +4,7 @@ class GraphDataController < ApplicationController
 
   def patient_status_count
     begin
-      if !params[:id].nil?
+      if does_params_define_id(params)
         pie_data = StatusPieData.where(:_id => params[:id])
       else
         pie_data = StatusPieData.all
@@ -17,7 +17,7 @@ class GraphDataController < ApplicationController
 
   def patient_disease_data
     begin
-      if !params[:id].nil?
+      if does_params_define_id(params)
         disease_data = DiseasePieData.where(:_id => params[:id])
       else
         disease_data = DiseasePieData.all
@@ -30,6 +30,10 @@ class GraphDataController < ApplicationController
 
 
   private
+
+  def does_params_define_id(params)
+    !params[:id].nil?
+  end
 
   def standard_error_message(error)
     logger.error(error.message)
