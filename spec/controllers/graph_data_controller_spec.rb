@@ -1,4 +1,7 @@
 
+require 'rails_helper'
+require 'factory_girl_rails'
+
 describe GraphDataController, :type => :controller do
   describe "get #patientStatusGraph" do
     context "with valid data" do
