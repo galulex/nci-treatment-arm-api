@@ -25,7 +25,7 @@ describe GraphDataController, :type => :controller do
       expect(response.body).to eq(data.to_json)
       expect(response).to have_http_status(200)
     end
-    
+
   end
 
 
