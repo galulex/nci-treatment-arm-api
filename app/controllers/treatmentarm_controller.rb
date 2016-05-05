@@ -16,32 +16,6 @@ class TreatmentarmController < ApplicationController
     end
   end
 
-
-  #done needs rspec test
-  def approve_treatment_arm
-    begin
-      if !params[:id].nil?
-        if TreatmentArm.new.validate_eligible_for_approval(params[:id])
-          treatment_arm = TreatmentArm.where(:_id => params[:id]).first
-          treatment_arm.set(treatment_arm_status: "READY")
-          treatment_arm.statusLog.store(Time.now.to_i, "READY")
-          treatment_arm.save!
-        end
-      end
-      render nothing: true
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
-  def ecog_treatment_arm_list
-    begin
-      render nothing: true
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
   def treatment_arms
     begin
       render json: TreatmentArm.all

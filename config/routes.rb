@@ -3,8 +3,8 @@ Rails.application.routes.draw do
 
   controller :treatmentarm do
     post 'newTreatmentArm' => :new_treatment_arm
-    post 'approveTreatmentArm' => :approve_treatment_arm
-    post 'ecogTreatmentArmList' => :ecog_treatment_arm_list
+    # post 'approveTreatmentArm' => :approve_treatment_arm
+    # post 'ecogTreatmentArmList' => :ecog_treatment_arm_list
 
 
     get 'treatmentArms/:id' => :treatment_arm
