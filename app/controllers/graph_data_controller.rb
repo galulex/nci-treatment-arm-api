@@ -17,12 +17,7 @@ class GraphDataController < ApplicationController
 
   def patient_disease_data
     begin
-      if does_params_define_id(params)
-        disease_data = DiseasePieData.where(:_id => params[:id])
-      else
-        disease_data = DiseasePieData.all
-      end
-      render json: disease_data
+      render json: does_params_define_id(params) ? DiseasePieData.where(:_id => params[:id]) : DiseasePieData.all
     rescue => error
       standard_error_message(error)
     end
