@@ -37,7 +37,7 @@ class GraphDataController < ApplicationController
 
   def standard_error_message(error)
     logger.error(error.message)
-    status 500
+    render :json => error.to_json, :status => 500
   end
 
 end

@@ -19,6 +19,13 @@ describe GraphDataController, :type => :controller do
         expect(response.body).to eq(data.to_json)
         expect(response).to have_http_status(200)
       end
+
+      it "should handle errors correctly" do
+        data = build_stubbed(:patient_status_graph)
+        allow(StatusPieData).to receive(:all).and_raise("this error")
+        get :patient_status_count
+        expect(response).to have_http_status(500)
+      end
     end
 
     it "should accept an id and get the correct patientStatusGraph data" do
