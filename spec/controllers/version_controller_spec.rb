@@ -4,8 +4,13 @@ describe VersionController do
 
   describe "GET #version" do
     it "Should return the API version" do
-      route_to('version')
-      expect(response).to have_http_status(200)
+     get :version
+     expect(response.body).to eq(TreatmentArmRestfulApi::Application.VERSION)
+     expect(response).to have_http_status(200)
+    end
+
+    it "should route to the correct controller" do
+      expect(:get => "/version" ).to route_to(:controller => "version", :action => "version")
     end
 
   end
