@@ -16,18 +16,17 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'factory_girl_rails'
+require 'mongoid-rspec'
+require 'rails_helper'
+require 'rspec/active_model/mocks'
 require 'simplecov'
 require 'simplecov-rcov'
 require "codeclimate-test-reporter"
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start 'rails'
 CodeClimate::TestReporter.start
-
-require 'factory_girl_rails'
-require 'mongoid-rspec'
-require 'rails_helper'
-require 'rspec/active_model/mocks'
-
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
