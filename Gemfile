@@ -16,6 +16,10 @@ gem 'mongoid-enum'
 gem 'bson_ext'
 gem 'rack-cors'
 
+gem 'aws-sdk', '~>2'
+gem 'aws-sdk-rails'
+gem 'dynamoid', '~> 1'
+
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -36,6 +40,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-activemodel-mocks'
   gem 'mongoid-rspec', '~> 3.0.0'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'faker'
