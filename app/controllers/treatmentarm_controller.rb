@@ -9,8 +9,8 @@ class TreatmentarmController < ApplicationController
       @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       @treatment_arm[:treatment_arm_id] = @treatment_arm[:_id]
       @treatment_arm.except!(:_id)
-      Publisher.publish("treatment_arm", @treatment_arm)
-      render nothing: true
+      # Publisher.publish("treatment_arm", @treatment_arm)
+      render json: {:status => "Success"}, :status => 200
     rescue => error
       standard_error_message(error)
     end
@@ -59,19 +59,11 @@ class TreatmentarmController < ApplicationController
     end
   end
 
-  def variant_report
-    begin
-      render nothing: true
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
   private
 
   def standard_error_message(error)
     logger.error error.message
-    render :json => error.to_json, :status => 500
+    render :json => {:status => "Failure" ,:error => error.message}, :status => 500
   end
 
 end
