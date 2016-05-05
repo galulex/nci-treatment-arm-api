@@ -1,10 +1,9 @@
 class User
-  include Mongoid::Document
-  include Mongoid::Attributes::Dynamic
+  include Dynamoid::Document
   include ActiveModel::SecurePassword
 
-  # field :user_id
-  # field :password_digest
+  field :user_id
+  field :password_digest
   #
   # has_secure_password
 
