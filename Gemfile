@@ -16,7 +16,8 @@ gem 'mongoid-enum'
 gem 'bson_ext'
 gem 'rack-cors'
 
-gem 'aws-sdk', '~>2'
+
+gem 'shoryuken'
 gem 'aws-sdk-rails'
 gem 'dynamoid', '~> 1'
 

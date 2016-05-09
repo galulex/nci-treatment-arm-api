@@ -9,7 +9,7 @@ class TreatmentarmController < ApplicationController
       @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       @treatment_arm[:treatment_arm_id] = @treatment_arm[:_id]
       @treatment_arm.except!(:_id)
-      # Publisher.publish("treatment_arm", @treatment_arm)
+      Publisher.publish("treatment_arm_dev", @treatment_arm)
       render json: {:status => "Success"}, :status => 200
     rescue => error
       standard_error_message(error)

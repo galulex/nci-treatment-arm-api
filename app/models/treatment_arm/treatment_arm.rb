@@ -2,7 +2,7 @@
 class TreatmentArm
     include Dynamoid::Document
 
-    table :name => :treatment_arm, :key => :name, :read_capacity => 5, :write_capacity => 5
+    table :name => :treatment_arm_dev, :key => :name, :read_capacity => 5, :write_capacity => 5
 
     field :version
     field :description
