@@ -1,8 +1,8 @@
 class StatusPieData
-  include Mongoid::Document
+  include Dynamoid::Document
 
   field :_id
-  field :status_array, type: Array
+  field :status_array, :serialized
 
 
 end

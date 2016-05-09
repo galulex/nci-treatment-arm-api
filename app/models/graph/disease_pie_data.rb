@@ -1,8 +1,8 @@
 class DiseasePieData
-  include Mongoid::Document
+  include Dynamoid::Document
 
   field :_id
-  field :disease_array, type: Array
+  field :disease_array, :serialized
 
 
 end
