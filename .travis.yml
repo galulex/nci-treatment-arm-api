@@ -7,12 +7,10 @@ rvm:
 #before_script:
 #after_script:
 after_success:
-  - ls -alth
-  - docker images
   - docker build -t matchbox/nci-treatment-arm-api .
   - docker images
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker tag matchbox/nci-treatment-arm-processor-api matchbox/nci-treatment-arm-processor-api:latest
+  - docker tag matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
   - docker push matchbox/nci-treatment-arm-api
 notifications:
