@@ -18,6 +18,7 @@ gem 'rack-cors'
 
 gem 'aws-sdk-rails'
 gem 'dynamoid', '~> 1'
+gem 'aws-record'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
