@@ -6,6 +6,7 @@ rvm:
   - 2.2.3
 #before_script:
 after_success:
+  - ls -alth
   - docker build -t matchbox/nci-treatment-arm-api .
   - docker images
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
