@@ -5,14 +5,14 @@ language: ruby
 rvm:
   - 2.2.3
 #before_script:
-#after_script:
 after_success:
   - docker build -t matchbox/nci-treatment-arm-api .
   - docker images
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker tag matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
+  - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
   - docker push matchbox/nci-treatment-arm-api
+#after_script:
 notifications:
   slack:
     secure: pGAQ+vsZJx/hnumGsPZf67J8nTFi3l4ERMV1KPmpaalNglezn5RGNQMUFTOjJVygW29j+EVxMAgYo+PUwgpCPj48nwDGlqDv1NMTR5/9Ek5Vt1o9ZDT1WcczNV6Fp3F1p0Rodwru0aF4mGUyyNIas7CYMb3b6GxcAQAp4WhzANJ8092oRVXWwnTjp/Lvk+aO2eM8z+5i8oc2QPw/dDtrh1TdqeWSzJeLTK9NXKGFMp5TxcENKSQ9PVhVYwsA44y/yYToEpNoGGiKKJ3Oi3ZwqAXUPQTUuXzcRvOp95SizYXsjkIj/MJ4q6v0lPxmQtVYHc4jFBPe4nyQEcfy/yA2X+juPYQJtvsFBIWxjHpfNltjfA7nvAMXx36uvwhIzB4c7hF3UYzTQIvVDB7iXSR+J9JsOqzImPYg5BCwu3w6hChIwI4IJbGFW57CtLOKpMFME2HfsAKJ0jlpQ2sDdDfpxLtNY7aKX/GkHWYyaiBu//L4Ss9m4BG9s22Bd0MqRLUgu/oU0+0AaiM3RfhaI9zcxt/KwuLs0zkJaf6yIrhAaWUP01pzFxFAcQeie8FxgJrCoYzgN3D4f7EiR+w1lM7nP52KjHzVyNSW3rqMdkQuLPNBNU62tt3LyisqE7zjP6ft+YhKoKGTkYDSvmN5nT78dB4+nf1ZV7A4xLWu1BCJ50c=
