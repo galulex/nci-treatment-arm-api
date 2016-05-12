@@ -23,6 +23,8 @@ require 'factory_girl_rails'
 require 'mongoid-rspec'
 require 'rails_helper'
 require 'rspec/active_model/mocks'
+require 'aws-record'
+require 'active_model'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

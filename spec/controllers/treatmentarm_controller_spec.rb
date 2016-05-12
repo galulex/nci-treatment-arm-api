@@ -119,14 +119,14 @@ describe TreatmentarmController do
     end
 
     it "should handle errors correctly" do
-      allow(BasicTreatmentArm).to receive(:all).and_raise("this error")
+      allow(BasicTreatmentArm).to receive(:scan).and_raise("this error")
       get :basic_treatment_arms
       expect(response.body).to include("this error")
       expect(response).to have_http_status(500)
     end
 
     it "should send the correct json back" do
-      allow(BasicTreatmentArm).to receive(:all).and_return(basic_treatment_arm)
+      allow(BasicTreatmentArm).to receive(:scan).and_return(basic_treatment_arm)
       get :basic_treatment_arms
       expect(response.body).to eq(basic_treatment_arm.to_json)
       expect(response).to have_http_status(200)

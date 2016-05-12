@@ -49,9 +49,9 @@ class TreatmentarmController < ApplicationController
   def basic_treatment_arms
     begin
       if !params[:id].nil?
-        basic_treatment_arm_json = BasicTreatmentArm.where(_id: params[:id])
+        basic_treatment_arm_json = BasicTreatmentArm.find(treatment_arm_id: params[:id])
       else
-        basic_treatment_arm_json = BasicTreatmentArm.all
+        basic_treatment_arm_json = BasicTreatmentArm.scan({})
       end
       render json: basic_treatment_arm_json
     rescue => error
