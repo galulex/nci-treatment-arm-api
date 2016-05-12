@@ -26,7 +26,7 @@ describe BasicTreatmentArm do
       ba.current_patients = 0
       ba.former_patients = 3
       ba.not_enrolled_patients = 2
-      ba.pending_patients = 1
+      ba.pending_patients = "1"
       ba
     end
 
@@ -41,6 +41,19 @@ describe BasicTreatmentArm do
       expect(basic_treatment_arm.former_patients).to eq(3)
       expect(basic_treatment_arm.not_enrolled_patients).to eq(2)
       expect(basic_treatment_arm.pending_patients).to eq(1)
+    end
+
+    it "should the correct class type for the variables" do
+      basic_treatment_arm.configure_client(client: stub_client)
+      expect(basic_treatment_arm.description).to be_kind_of(String)
+      expect(basic_treatment_arm.treatment_arm_status).to be_kind_of(String)
+      expect(basic_treatment_arm.date_created).to be_kind_of(String)
+      expect(basic_treatment_arm.date_opened).to be_kind_of(String)
+
+      expect(basic_treatment_arm.current_patients).to be_kind_of(Integer)
+      expect(basic_treatment_arm.former_patients).to be_kind_of(Integer)
+      expect(basic_treatment_arm.not_enrolled_patients).to be_kind_of(Integer)
+      expect(basic_treatment_arm.pending_patients).to be_kind_of(Integer)
     end
 
   end
