@@ -43,13 +43,13 @@ describe TreatmentarmController do
 
     context "with valid data" do
       it "should save data to the database" do
-        allow(Publisher).to receive(:publish).and_return("")
+        allow(Aws::Publisher).to receive(:publish).and_return("")
         post "new_treatment_arm", {:_id => "EAY131-A"}.to_json
         expect(response).to have_http_status(200)
       end
 
       it "should respond with a success json message" do
-        allow(Publisher).to receive(:publish).and_return("")
+        allow(Aws::Publisher).to receive(:publish).and_return("")
         post "new_treatment_arm", {:_id => "EAY131-A"}.to_json
         expect(response.body).to include("Success")
         expect(response).to have_http_status(200)
