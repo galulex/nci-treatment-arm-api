@@ -14,7 +14,7 @@ class Publisher
 
 
   def self.client
-    @client ||= Aws::SQS::Client.new(endpoint: "https://sqs.us-west-2.amazonaws.com",
+    @client ||= Aws::SQS::Client.new(endpoint: "https://sqs.#{Aws.config[:region]}.amazonaws.com",
                                      credentials: Aws::Credentials.new(Aws.config[:access_key_id], Aws.config[:secret_access_key]))
   end
 

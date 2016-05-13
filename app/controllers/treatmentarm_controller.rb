@@ -6,9 +6,7 @@ class TreatmentarmController < ApplicationController
   def new_treatment_arm
     begin
       @treatment_arm = JSON.parse(request.raw_post)
-      @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
-      @treatment_arm[:treatment_arm_id] = @treatment_arm[:_id]
-      @treatment_arm.except!(:_id)
+      @treatment_arm.deep_transform_keys!(&:underscore)
       Publisher.publish("treatment_arm_dev", @treatment_arm)
       render json: {:status => "Success"}, :status => 200
     rescue => error
