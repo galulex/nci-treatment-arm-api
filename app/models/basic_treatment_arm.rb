@@ -5,6 +5,7 @@ class BasicTreatmentArm
 
   set_table_name "ta_basic_treatment_arm_dev"
 
+
   string_attr :treatment_arm_id, hash_key: true
   string_attr :description
   string_attr :treatment_arm_status

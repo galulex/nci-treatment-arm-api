@@ -7,7 +7,7 @@ class TreatmentarmController < ApplicationController
     begin
       @treatment_arm = JSON.parse(request.raw_post)
       @treatment_arm.deep_transform_keys!(&:underscore)
-      Publisher.publish("treatment_arm_dev", @treatment_arm)
+      Publisher.publish(ENV['queue_name'], @treatment_arm)
       render json: {:status => "Success"}, :status => 200
     rescue => error
       standard_error_message(error)
