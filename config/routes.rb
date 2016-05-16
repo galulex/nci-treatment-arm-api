@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   end
 
   controller :patient do
+    get 'patientsOnTreatmentArm/:id' => :patient_on_treatment_arm
 
   end
 
