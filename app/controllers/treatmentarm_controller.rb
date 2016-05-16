@@ -16,7 +16,7 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arms
     begin
-      render json: TreatmentArm.all
+      render json: TreatmentArm.scan({})
     rescue => error
       standard_error_message(error)
     end
@@ -25,9 +25,14 @@ class TreatmentarmController < ApplicationController
   def treatment_arm
     begin
       if !params[:id].nil? && params[:version].nil?
-        treatment_arm_json = TreatmentArm.where(:name => params[:id]).first
+        treatment_arm_json = TreatmentArm.scan(:scan_filter => {
+            "name" => {
+                :comparison_operator => "EQ",
+                :attribute_value_list => [params[:id]]
+            }
+        })
       elsif !params[:id].nil? && !params[:version].nil?
-        treatment_arm_json = TreatmentArm.where(:name => params[:id], :version => params[:version]).first
+        treatment_arm_json = TreatmentArm.find(:name => params[:id], :version => params[:version])
       end
       render json: treatment_arm_json
     rescue => error
