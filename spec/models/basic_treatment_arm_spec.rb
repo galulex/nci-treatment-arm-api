@@ -30,7 +30,17 @@ describe BasicTreatmentArm do
       ba
     end
 
+    it "should try to create a table if it doesnt exists" do
+      basic_treatment_arm.configure_client(client: stub_client)
+      allow(BasicTreatmentArm.new).to receive(:table_exists?).and_return(false)
+      BasicTreatmentArm.new
+
+    end
+
     it "model data is filled correctly" do
+      stub_client.stub_responses(:describe_table, {
+          table: {table_status: "ACTIVE"}
+      })
       basic_treatment_arm.configure_client(client: stub_client)
       expect(basic_treatment_arm.treatment_arm_id).to eq("EAY131-A")
       expect(basic_treatment_arm.description).to eq("TestDescription")
@@ -44,6 +54,9 @@ describe BasicTreatmentArm do
     end
 
     it "should the correct class type for the variables" do
+      stub_client.stub_responses(:describe_table, {
+          table: {table_status: "ACTIVE"}
+      })
       basic_treatment_arm.configure_client(client: stub_client)
       expect(basic_treatment_arm.description).to be_kind_of(String)
       expect(basic_treatment_arm.treatment_arm_status).to be_kind_of(String)
