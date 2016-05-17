@@ -1,15 +1,15 @@
 development:
-  aws_dynamo_endpoint: "https://dynamodb.us-west-2.amazonaws.com"
-  aws_region: "us-west-2"
+  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  aws_region: "us-east-1"
   queue_name: "treatment_arm_dev"
 
 test:
-  aws_dynamo_endpoint: "https://dynamodb.us-west-2.amazonaws.com"
-  aws_region: "us-west-2"
+  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  aws_region: "us-east-1"
   queue_name: "treatment_arm_test"
 
 
 production:
-  aws_dynamo_endpoint: "https://dynamodb.us-west-2.amazonaws.com"
-  aws_region: "us-west-2"
+  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  aws_region: "us-east-1"
   queue_name: "treatment_arm_production"
