@@ -2,14 +2,17 @@ development:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_dev"
+  table_prefix: "ta"
 
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_test"
+  table_prefix: "ta"
 
 
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_production"
+  table_prefix: "ta"
