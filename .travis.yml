@@ -4,6 +4,9 @@ services:
 language: ruby
 rvm:
   - 2.2.3
+before_install:
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
 #before_script:
 after_success:
   - ls -alth
@@ -13,6 +16,7 @@ after_success:
   - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
   - docker push matchbox/nci-treatment-arm-api
+  - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
 #after_script:
 notifications:
   slack:
