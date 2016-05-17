@@ -97,14 +97,14 @@ describe TreatmentarmController do
     it "should return a treatmentArm if id is given" do
       allow(TreatmentArm).to receive(:find).and_return(treatment_arm)
       get :treatment_arm, :id => "EAY131-A", :version => "2016-20-02"
-      expect(response.body).to eq(treatment_arm.to_json)
+      expect(response.body).to eq((treatment_arm.to_h).to_json)
       expect(response).to have_http_status(200)
     end
 
     it "should return all treatmentArms if nothing is given" do
-      allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :treatment_arms
-      expect(response.body).to eq(treatment_arm.to_json)
+      expect(response.body).to eq(([treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
     end
     
@@ -126,9 +126,9 @@ describe TreatmentarmController do
     end
 
     it "should send the correct json back" do
-      allow(BasicTreatmentArm).to receive(:scan).and_return(basic_treatment_arm)
+      allow(BasicTreatmentArm).to receive(:scan).and_return([basic_treatment_arm])
       get :basic_treatment_arms
-      expect(response.body).to eq(basic_treatment_arm.to_json)
+      expect(response.body).to eq(([basic_treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
     end
 

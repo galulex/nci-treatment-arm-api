@@ -16,7 +16,7 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arms
     begin
-      render json: TreatmentArm.scan({})
+      render json: TreatmentArm.scan({}).collect { |data| data.to_h }
     rescue => error
       standard_error_message(error)
     end
@@ -30,9 +30,9 @@ class TreatmentarmController < ApplicationController
                 :comparison_operator => "EQ",
                 :attribute_value_list => [params[:id]]
             }
-        })
+        }).collect { |data| data.to_h }
       elsif !params[:id].nil? && !params[:version].nil?
-        treatment_arm_json = TreatmentArm.find(:name => params[:id], :version => params[:version])
+        treatment_arm_json = TreatmentArm.find(:name => params[:id], :version => params[:version]).to_h
       end
       render json: treatment_arm_json
     rescue => error
@@ -52,9 +52,9 @@ class TreatmentarmController < ApplicationController
   def basic_treatment_arms
     begin
       if !params[:id].nil?
-        basic_treatment_arm_json = BasicTreatmentArm.find(treatment_arm_id: params[:id])
+        basic_treatment_arm_json = BasicTreatmentArm.find(treatment_arm_id: params[:id]).to_h
       else
-        basic_treatment_arm_json = BasicTreatmentArm.scan({})
+        basic_treatment_arm_json = BasicTreatmentArm.scan({}).collect { |data| data.to_h }
       end
       render json: basic_treatment_arm_json
     rescue => error
