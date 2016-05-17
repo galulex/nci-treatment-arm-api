@@ -16,7 +16,8 @@ after_success:
   - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
   - docker push matchbox/nci-treatment-arm-api
-  - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
+#  - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
+  - docker run -it --rm openwhere/ecs-deploy deploy.py --cluster uMatch-Test --region us-east-1 --service uMatch-nci-treatment-arm-api-TEST
 #after_script:
 notifications:
   slack:
