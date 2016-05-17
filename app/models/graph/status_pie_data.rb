@@ -1,8 +1,10 @@
 class StatusPieData
-  include Dynamoid::Document
+  include Aws::Record
 
-  field :_id
-  field :status_array, :serialized
+  set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
+
+  string_attr :id, hash_key: true
+  list_attr :status_array
 
 
 end

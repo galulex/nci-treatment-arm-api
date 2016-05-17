@@ -59,7 +59,7 @@ describe GraphDataController, :type => :controller do
       it "accept an id and get the correct patientDiseaseGraph data" do
         ta = build_stubbed(:patient_disease_graph)
         allow(DiseasePieData).to receive(:where).and_return(ta)
-        get :patient_disease_data, :id => ta._id
+        get :patient_disease_data, :id => ta.id
         expect(response).to have_http_status(200)
         expect(response.body).to eq(ta.to_json)
       end
