@@ -25,7 +25,7 @@ FactoryGirl.define do
   end
 
   factory :patient_disease_graph, :class => DiseasePieData do
-    _id "EAY131-A"
+    id "EAY131-A"
     disease_array [{
                        :label => "Prostate Cancer",
                        :data => 2,
@@ -34,7 +34,7 @@ FactoryGirl.define do
   end
 
   factory :patient_status_graph, :class => StatusPieData do
-    _id "EAY131-B"
+    id "EAY131-B"
     status_array [{
                       :label => "Cancer",
                       :data => 5,

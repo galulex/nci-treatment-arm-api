@@ -15,10 +15,10 @@ class TreatmentArm
     string_attr :gene
     string_attr :treatment_arm_status
     string_attr :study_id
+
     integer_attr :max_patients_allowed
     integer_attr :num_patients_assigned
     string_attr :date_created
-
     list_attr :treatment_arm_drugs
     map_attr :variant_report
     list_attr :exclusion_criterias
