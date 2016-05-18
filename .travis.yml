@@ -5,13 +5,13 @@ language: ruby
 rvm:
   - 2.2.3
 before_install:
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
+  # - pip install --user awscli
+  # - export PATH=$PATH:$HOME/.local/bin
 #before_script:
 after_success:
-  - ls -alth
+  # - ls -alth
   - docker build -t matchbox/nci-treatment-arm-api .
-  - docker images
+  # - docker images
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
