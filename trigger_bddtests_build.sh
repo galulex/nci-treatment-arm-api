@@ -1,2 +1,8 @@
 #!/bin/bash
-curl -s -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Travis-API-Version: 3" -H "Authorization: token $TRAVIS_TOKEN" -d "{ 'request': { 'branch' : 'master' } }" https://api.travis-ci.org/repositories/CBIIT/nci-uMatch-bddtests
+
+body='{
+"request": {
+  "branch":"master"
+}}'
+
+curl -s -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Travis-API-Version: 3" -H "Authorization: token $TRAVIS_TOKEN" -d "$body" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
