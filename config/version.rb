@@ -3,7 +3,7 @@ module TreatmentArmRestfulApi
     attr_reader :VERSION
 
     def VERSION
-      @VERSION ||= "0.0.6"
+      @VERSION ||= "0.0.7"
     end
   end
 end
