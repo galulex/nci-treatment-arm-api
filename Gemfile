@@ -39,7 +39,6 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'rspec-activemodel-mocks'
-  gem 'mongoid-rspec', '~> 3.0.0'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'faker'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring

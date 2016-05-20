@@ -20,7 +20,6 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
 require 'factory_girl_rails'
-require 'mongoid-rspec'
 require 'rails_helper'
 require 'rspec/active_model/mocks'
 require 'aws-record'
