@@ -4,12 +4,18 @@ class TreatmentArm
     include Aws::Record::RecordClassMethods
     include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
+    include ActiveModel::Serializers::JSON
+    include ActiveModel::Validations
+
     set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
+
+    validates_presence_of :name, :version, :study_id, :random_variable
 
     boolean_attr :active, database_attribute_name: "is_active_flag"
     string_attr :name, hash_key: true
     string_attr :version, range_key: true
     string_attr :description
+    string_attr :random_variable
     string_attr :target_id
     string_attr :target_name
     string_attr :gene
@@ -27,5 +33,16 @@ class TreatmentArm
     list_attr :pten_results
     map_attr :status_log
 
-  end
+
+    def attributes=(hash)
+        hash.each do |key, value|
+            send("#{key}=", value)
+        end
+    end
+
+    def attributes
+        instance_values
+    end
+
+end
 
