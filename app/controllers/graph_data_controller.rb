@@ -5,9 +5,9 @@ class GraphDataController < ApplicationController
   def patient_status_count
     begin
       if does_params_define_id(params)
-        pie_data = StatusPieData.where(:_id => params[:id])
+        pie_data = StatusPieData.find(:id => params[:id]).to_h
       else
-        pie_data = StatusPieData.all
+        pie_data = StatusPieData.scan({}).collect { |data| data.to_h }
       end
       render json: pie_data
     rescue => error
