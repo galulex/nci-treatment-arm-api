@@ -10,9 +10,9 @@ class TreatmentarmController < ApplicationController
       treatment_arm_model = TreatmentArm.new.from_json(TreatmentArm.new.convert_models(@treatment_arm).to_json)
       if treatment_arm_model.valid?
         Aws::Publisher.publish(@treatment_arm)
-        render json: {:status => "Success"}, :status => 200
+        render json: {:status => "SUCCESS"}, :status => 200
       else
-        render json: {:status => "Failure", :message => "Validation failed.  Please check all required fields are present"}, :status => 400
+        render json: {:status => "FAILURE", :message => "Validation failed.  Please check all required fields are present"}, :status => 400
       end
     rescue => error
       standard_error_message(error)
