@@ -6,9 +6,14 @@ class TreatmentarmController < ApplicationController
   def new_treatment_arm
     begin
       @treatment_arm = JSON.parse(request.raw_post)
-      @treatment_arm.deep_transform_keys!(&:underscore)
-      Aws::Publisher.publish(@treatment_arm)
-      render json: {:status => "Success"}, :status => 200
+      @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
+      treatment_arm_model = TreatmentArm.new.from_json(TreatmentArm.new.convert_models(@treatment_arm).to_json)
+      if treatment_arm_model.valid?
+        Aws::Publisher.publish(@treatment_arm)
+        render json: {:status => "Success"}, :status => 200
+      else
+        render json: {:status => "Failure", :message => "Validation failed.  Please check all required fields are present"}, :status => 400
+      end
     rescue => error
       standard_error_message(error)
     end
