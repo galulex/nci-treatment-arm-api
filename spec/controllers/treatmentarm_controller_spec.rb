@@ -3,6 +3,10 @@ require 'factory_girl_rails'
 
 describe TreatmentarmController do
 
+  before(:each) do
+    setup_knock()
+  end
+
   let(:basic_treatment_arm) do
     stub_model BasicTreatmentArm,
                :treatment_arm_id => "EAY131-A",
@@ -58,7 +62,7 @@ describe TreatmentarmController do
       it "should respond with a failure json message" do
         allow(Aws::Publisher).to receive(:publish).and_return("")
         post "new_treatment_arm", {:id => "EAY131-A", :version => "TestVersion"}.to_json
-        expect(response.body).to include("Failure")
+        expect(response.body).to include("FAILURE")
         expect(response).to have_http_status(400)
       end
     end

@@ -1,6 +1,6 @@
 class GraphDataController < ApplicationController
 
-  # before_action :authenticate:
+  before_action :authenticate
 
   def patient_status_count
     begin

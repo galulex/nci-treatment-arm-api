@@ -3,6 +3,10 @@ require 'factory_girl_rails'
 
 describe PatientController do
 
+  before(:each) do
+    setup_knock()
+  end
+
   let(:patient_treatment_arm) do
     stub_model TreatmentArmPatient,
                :treatment_arm_name_version => "",
