@@ -9,7 +9,7 @@ class TreatmentArm
 
     set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
 
-    validates_presence_of :name, :version, :study_id
+    validates_presence_of :name, :version, :study_id, :treatment_arm_drugs
 
     boolean_attr :active, database_attribute_name: "is_active_flag"
     string_attr :name, hash_key: true
