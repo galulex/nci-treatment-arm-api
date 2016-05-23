@@ -24,7 +24,9 @@ after_success:
   - docker push matchbox/nci-treatment-arm-api
 #  - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
   - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster uMatch-Test --service-name uMatch-nci-treatment-arm-api-TEST -i matchbox/nci-treatment-arm-api:latest
-  - ./trigger_bddtests_build.sh
+  # - ./trigger_bddtests_build.sh
+  - 'curl -s -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Travis-API-Version: 3" -H "Authorization: token -VQugRNHytsEEHIXbjy1Rw" -d '{"request": {"branch":"master"}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests'
+
 #after_script:
 notifications:
   slack:
