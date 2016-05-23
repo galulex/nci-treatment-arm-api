@@ -55,7 +55,7 @@ describe TreatmentarmController do
       it "should respond with a success json message" do
         allow(Aws::Publisher).to receive(:publish).and_return("")
         post "new_treatment_arm", {:id => "EAY131-A", :study_id => "EAY131", :version => "TestVersion", :treatment_arm_drugs => [{:drug_id => "1234565"}]}.to_json
-        expect(response.body).to include("Success")
+        expect(response.body).to include("SUCCESS")
         expect(response).to have_http_status(200)
       end
 
@@ -75,7 +75,7 @@ describe TreatmentarmController do
 
       it "should respond with a failure json message" do
         post "new_treatment_arm", {}
-        expect(response.body).to include("Failure")
+        expect(response.body).to include("FAILURE")
         expect(response).to have_http_status(500)
       end
     end

@@ -22,12 +22,10 @@ class TreatmentArm
     string_attr :treatment_arm_status
     string_attr :study_id
 
-    integer_attr :max_patients_allowed
     integer_attr :num_patients_assigned
     string_attr :date_created
     list_attr :treatment_arm_drugs
     map_attr :variant_report
-    list_attr :exclusion_criterias
     list_attr :exclusion_diseases
     list_attr :exclusion_drugs
     list_attr :pten_results
@@ -45,10 +43,8 @@ class TreatmentArm
           gene: treatment_arm[:gene],
           treatment_arm_status: treatment_arm[:treatment_arm_status],
           date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc().to_s : treatment_arm[:date_created],
-          max_patients_allowed: treatment_arm[:max_patients_allowed],
           num_patients_assigned: treatment_arm[:num_patients_assigned],
           treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
-          exclusion_criterias: treatment_arm[:exclusion_criterias],
           exclusion_diseases: treatment_arm[:exclusion_diseases],
           exclusion_drugs: treatment_arm[:exclusion_drugs],
           pten_results: treatment_arm[:pten_results],
