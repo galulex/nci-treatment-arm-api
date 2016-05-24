@@ -1,7 +1,7 @@
 
 class PatientController < ApplicationController
 
-  # before_action :authenticate
+  before_action :authenticate
 
   def patient_on_treatment_arm
     begin

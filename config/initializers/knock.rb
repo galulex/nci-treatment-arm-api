@@ -5,11 +5,11 @@ Knock.setup do |config|
 
   def getUsers(user_id)
     auth0 = Auth0Client.new(
-        :client_id => ENV['auth0_client_id'],
-        :client_secret => ENV['auth0_client_secret'],
-        :domain => ENV['auth0_domain']
+        :client_id => Rails.application.secrets.auth0_client_id,
+        :client_secret => Rails.application.secrets.auth0_client_secret,
+        :domain => Rails.application.secrets.auth0_domain
     )
-    auth0.get_users.each { | user | user.key(user_id) }
+    auth0.get_users.each {| user | user.key(user_id) }
   end
 
   ## Used to fill data base with user keys from Auth0
@@ -68,7 +68,6 @@ Knock.setup do |config|
   ## Default:
   # config.token_lifetime = 1.day
 
-
   ## Audience claim
   ## --------------
   ##
@@ -79,7 +78,7 @@ Knock.setup do |config|
   # config.token_audience = nil
 
   ## If using Auth0, uncomment the line below
-  config.token_audience = -> { ENV['auth0_client_id'] }
+  config.token_audience = -> { Rails.application.secrets.auth0_client_id }
 
   ## Signature algorithm
   ## -------------------
@@ -100,7 +99,7 @@ Knock.setup do |config|
   ## If using Auth0, uncomment the line below
   # config.token_secret_signature_key = -> { JWT.base64url_decode Rails.application.secrets.auth0_client_secret }
   config.token_secret_signature_key = -> {
-    secret = ENV['auth0_client_secret']
+    secret = Rails.application.secrets.auth0_client_secret
     secret += '=' * (4 - secret.length.modulo(4))
     Base64.decode64(secret.tr('-_', '+/'))
   }
