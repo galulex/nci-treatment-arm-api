@@ -8,7 +8,7 @@ services:
 language: ruby
 rvm:
   - 2.2.3
-before_install:
+# before_install:
   # - pip install --user awscli
   # - export PATH=$PATH:$HOME/.local/bin
 #before_script:
@@ -21,12 +21,12 @@ after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
-  - docker push matchbox/nci-treatment-arm-api
+  - docker push matchbox/nci-treatment-arm-api:latest
 #  - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
   - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster uMatch-Test --service-name uMatch-nci-treatment-arm-api-TEST -i matchbox/nci-treatment-arm-api:latest
   # - ./trigger_bddtests_build.sh
-  # - "curl -s -X POST -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Travis-API-Version: 3\" -H \"Authorization: token $TRAVIS_TOKEN\" -d '{\"request\": {\"branch\":\"master\", \"config\": {\"env\": {\"matrix\": [\"TRIGGER_REPO=matchbox/nci-treatment-arm-api\"]}}}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests"
-  - "curl -s -X POST -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Travis-API-Version: 3\" -H \"Authorization: token $TRAVIS_TOKEN\" -d '{\"request\": {\"branch\":\"master\", \"config\": {\"env\": {\"matrix\": [\"TRIGGER_REPO=matchbox/nci-treatment-arm-api\"]}}}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-match-deploy-prod/requests"
+  - "curl -s -X POST -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Travis-API-Version: 3\" -H \"Authorization: token $TRAVIS_TOKEN\" -d '{\"request\": {\"branch\":\"master\", \"config\": {\"env\": {\"matrix\": [\"TRIGGER_REPO=matchbox/nci-treatment-arm-api;CUC_TAG=@demo\"]}}}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests"
+  # - "curl -s -X POST -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Travis-API-Version: 3\" -H \"Authorization: token $TRAVIS_TOKEN\" -d '{\"request\": {\"branch\":\"master\", \"config\": {\"env\": {\"matrix\": [\"TRIGGER_REPO=matchbox/nci-treatment-arm-api;CUC_TAG=@demo\"],[\"CUC_TAG=bob\"]}}}}' https://api.travis-ci.org/repo/CBIIT%2Fnci-match-deploy-prod/requests"
 #after_script:
 notifications:
   slack:
