@@ -9,7 +9,7 @@ module Aws
         def find(opts)
           if (!self.table_exists?)
             migration = Aws::Record::TableMigration.new(self)
-            migration.create!(provisioned_throughput: { read_capacity_units: 5, write_capacity_units: 5 })
+            migration.create!(provisioned_throughput: { read_capacity_units: 10, write_capacity_units: 10 })
             migration.wait_until_available
           end
           original_find(opts)
@@ -25,7 +25,7 @@ module Aws
         def scan(opts = {})
           if (!self.table_exists?)
             migration = Aws::Record::TableMigration.new(self)
-            migration.create!(provisioned_throughput: { read_capacity_units: 5, write_capacity_units: 5 })
+            migration.create!(provisioned_throughput: { read_capacity_units: 10, write_capacity_units: 10 })
             migration.wait_until_available
           end
           orginal_scan(opts)

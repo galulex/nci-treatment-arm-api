@@ -1,6 +1,6 @@
 
 class TreatmentarmController < ApplicationController
-  before_action :authenticate
+  # before_action :authenticate
 
 
   def new_treatment_arm
@@ -56,11 +56,14 @@ class TreatmentarmController < ApplicationController
 
   def basic_treatment_arms
     begin
-      if !params[:id].nil?
-        basic_treatment_arm_json = BasicTreatmentArm.find(treatment_arm_id: params[:id]).to_h
-      else
-        basic_treatment_arm_json = BasicTreatmentArm.scan({}).collect { |data| data.to_h }
-      end
+        basic_treatment_arm_json = TreatmentArm.scan({:attributes_to_get => ["name",
+                                                                             "current_patients",
+                                                                             "former_patients",
+                                                                             "not_enrolled_patients",
+                                                                             "pending_patients",
+                                                                             "date_opened",
+                                                                             "treatment_arm_status",
+                                                                             "date_opened","date_created"]}).collect { |data| data.to_h }
       render json: basic_treatment_arm_json
     rescue => error
       standard_error_message(error)

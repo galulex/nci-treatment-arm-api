@@ -8,18 +8,27 @@ describe TreatmentarmController do
   end
 
   let(:basic_treatment_arm) do
-    stub_model BasicTreatmentArm,
-               :treatment_arm_id => "EAY131-A",
-               :treatment_arm_name => "AZD9291 in TKI resistance EGFR T790M mutation",
-               :current_patients => 6,
-               :former_patients => 1 ,
-               :not_enrolled_patients => 0 ,
-               :pending_patients => 2 ,
-               :treatment_arm_status => "OPEN" ,
-               :date_created => "2016-03-03T19:38:37.890Z" ,
-               :date_opened =>"2016-03-03T19:38:37.890Z" ,
-               :date_closed => "2016-03-03T19:38:37.890Z" ,
-               :date_suspended=> "2016-03-03T19:38:37.890Z"
+    stub_model TreatmentArm,
+               :version => "2016-20-02",
+               :description => "WhoKnows",
+               :target_id => "HDFD",
+               :target_name => "OtherHen",
+               :gene => "GENE",
+               :treatment_arm_status => "BROKEN",
+               :max_patients_allowed => 35,
+               :num_patients_assigned => 4,
+               :date_created => "2016-03-03T19:38:37.890Z",
+               :treatment_arm_drugs => [],
+               :variant_report => [],
+               :exclusion_criterias => [],
+               :exclusion_diseases => [],
+               :exclusion_drugs => [],
+               :pten_results => [],
+               :status_log => [],
+               :current_patients => 0,
+               :former_patients => 1,
+               :not_enrolled_patients => 2,
+               :pending_patients => 0
   end
   
   let(:treatment_arm) do
@@ -130,14 +139,14 @@ describe TreatmentarmController do
     end
 
     it "should handle errors correctly" do
-      allow(BasicTreatmentArm).to receive(:scan).and_raise("this error")
+      allow(TreatmentArm).to receive(:scan).and_raise("this error")
       get :basic_treatment_arms
       expect(response.body).to include("this error")
       expect(response).to have_http_status(500)
     end
 
     it "should send the correct json back" do
-      allow(BasicTreatmentArm).to receive(:scan).and_return([basic_treatment_arm])
+      allow(TreatmentArm).to receive(:scan).and_return([basic_treatment_arm])
       get :basic_treatment_arms
       expect(response.body).to eq(([basic_treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
