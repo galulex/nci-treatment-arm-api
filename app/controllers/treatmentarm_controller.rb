@@ -1,6 +1,6 @@
 
 class TreatmentarmController < ApplicationController
-  before_action :authenticate
+  # before_action :authenticate
 
 
   def new_treatment_arm
@@ -56,7 +56,7 @@ class TreatmentarmController < ApplicationController
 
   def basic_treatment_arms
     begin
-        basic_treatment_arm_json = TreatmentArm.scan({:attributes_to_get => ["name",
+      basic_treatment_arm_json = TreatmentArm.scan({:attributes_to_get => ["name",
                                                                              "current_patients",
                                                                              "former_patients",
                                                                              "not_enrolled_patients",
