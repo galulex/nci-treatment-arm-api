@@ -18,6 +18,12 @@ module TreatmentArmValidator
                       "target" => {"type" => "string"}
                   },
                   "required" => ["name"]
+              },
+              "treatment_arm_status" => {
+                  "type" => "string",
+                  "enum" => ["OPEN", "SUSPENDED", "UNKNOWN",
+                              "CLOSED"],
+                  "required" => ["enum"]
               }
           },
           "type" => "object",
@@ -55,14 +61,11 @@ module TreatmentArmValidator
               "pten_results" => {"type" => "array", "items" => {"type" => "object", "properties" => {
 
               }}},
-              "treatment_arm_status" => {"type" => "string", "minLength" => 1, "enum" => ["OPEN", "SUSPENDED", "UNKNOWN",
-                                                                                        "CLOSED"]
-              },
+              "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" },
               "date_created" => {"type" => "string"},
               "status_log" => {"type" => "object", "properties" => {
                   "id" => {"type" => "number"},
-                  "treatment_arm_status" => {"type" => "string", "enum" => ["OPEN", "SUSPENDED", "UNKNOWN",
-                                                                          "CLOSED"]}
+                  "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" }
               }}
           }
       }
