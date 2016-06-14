@@ -17,7 +17,9 @@ class TreatmentArm
   string_attr :gene
   string_attr :treatment_arm_status
   string_attr :study_id
+  string_attr :stratum_id
 
+  list_attr :assay_results
   integer_attr :num_patients_assigned
   string_attr :date_created
   string_attr :date_opened

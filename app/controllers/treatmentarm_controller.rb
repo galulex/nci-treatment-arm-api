@@ -5,8 +5,8 @@ class TreatmentarmController < ApplicationController
   def new_treatment_arm
     begin
       @treatment_arm = JSON.parse(request.raw_post)
+      @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
-        @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
         treatment_arm_model = TreatmentArm.new.from_json(TreatmentArm.new.convert_models(@treatment_arm).to_json)
         Aws::Publisher.publish(@treatment_arm)
         render json: {:status => "SUCCESS"}, :status => 200
