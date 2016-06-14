@@ -2,7 +2,6 @@
 class TreatmentarmController < ApplicationController
   # before_action :authenticate
 
-
   def new_treatment_arm
     begin
       @treatment_arm = JSON.parse(request.raw_post)
