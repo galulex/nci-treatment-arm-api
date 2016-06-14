@@ -8,8 +8,6 @@ class TreatmentArm
   include ActiveModel::Validations
   set_table_name "#{ENV['table_prefix']}_#{self.name.underscore}_#{Rails.env}"
 
-  validates_presence_of :name, :version, :treatment_arm_drugs#, :study_id
-
   boolean_attr :active, database_attribute_name: "is_active_flag"
   string_attr :name, hash_key: true
   string_attr :version, range_key: true

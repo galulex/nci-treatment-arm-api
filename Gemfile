@@ -18,6 +18,7 @@ gem 'rack-cors'
 
 gem 'aws-sdk-rails'
 gem 'aws-record'
+gem 'json-schema'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'

@@ -57,12 +57,14 @@ describe TreatmentarmController do
     context "with valid data" do
       it "should save data to the database" do
         allow(Aws::Publisher).to receive(:publish).and_return("")
+        allow(JSON::Validator).to receive(:validate).and_return(true)
         post "new_treatment_arm", {:id => "EAY131-A", :study_id => "EAY131", :version => "TestVersion", :treatment_arm_drugs => [{:drug_id => "1234565"}]}.to_json
         expect(response).to have_http_status(200)
       end
 
       it "should respond with a success json message" do
         allow(Aws::Publisher).to receive(:publish).and_return("")
+        allow(JSON::Validator).to receive(:validate).and_return(true)
         post "new_treatment_arm", {:id => "EAY131-A", :study_id => "EAY131", :version => "TestVersion", :treatment_arm_drugs => [{:drug_id => "1234565"}]}.to_json
         expect(response.body).to include("SUCCESS")
         expect(response).to have_http_status(200)
@@ -70,22 +72,19 @@ describe TreatmentarmController do
 
       it "should respond with a failure json message" do
         allow(Aws::Publisher).to receive(:publish).and_return("")
+        allow(JSON::Validator).to receive(:validate).and_return(false)
         post "new_treatment_arm", {:id => "EAY131-A", :version => "TestVersion"}.to_json
         expect(response.body).to include("FAILURE")
-        expect(response).to have_http_status(400)
+        expect(response).to have_http_status(500)
       end
     end
 
     context "with invalid data" do
       it "should throw a 500 status" do
+        allow(JSON::Validator).to receive(:validate).and_return(false)
         post "new_treatment_arm", {}
         expect(response).to have_http_status(500)
-      end
-
-      it "should respond with a failure json message" do
-        post "new_treatment_arm", {}
         expect(response.body).to include("FAILURE")
-        expect(response).to have_http_status(500)
       end
     end
 
