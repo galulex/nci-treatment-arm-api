@@ -10,12 +10,12 @@ module TreatmentArmValidator
               "drug" => {
                   "type" => "object",
                   "properties" => {
-                      "drug_id" => {"type" => "string"},
+                      "drug_id" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "name" => {"type" => "string", "minLength" => 1},
-                      "pathway" => {"type" => "string"},
-                      "description" => {"type" => "string"},
-                      "drug_class" => {"type" => "string"},
-                      "target" => {"type" => "string"}
+                      "pathway" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "description" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "drug_class" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "target" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                   },
                   "required" => ["name"]
               },
@@ -33,16 +33,16 @@ module TreatmentArmValidator
               "version" => {"type" => "string", "minLength" => 1},
               "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
               "description" => {"type" => "string"},
-              "target_id" => {"type" => "string"},
+              "target_id" => {"type" => "number"},
               "target_name" => {"type" => "string"},
               "gene" => {"type" => "string"},
               "exclusion_diseases" => {"type" => "array", "items" =>{"type" => "object", "properties" => {
                   "_id" => {"type" => "string", "minLength" => 1},
-                  "medra_code" => {"type" => "string"},
-                  "ctep_sub_category" => {"type" => "string"},
-                  "ctep_term" => {"type" => "string"},
-                  "ctep_category" => {"type" => "string"},
-                  "short_name" => {"type" => "string"}
+                  "medra_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                  "ctep_sub_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                  "ctep_term" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                  "ctep_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                  "short_name" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
               }}},
               "exclusion_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug"}},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
@@ -50,8 +50,8 @@ module TreatmentArmValidator
                   "description" => {"type" => "string", "minLength" => 1}
               }}},
               "assay_results" => {"type" => "array", "items" => {"type" => "object", "properties" => {
-                  "gene" => {"type" => "string"},
-                  "description" => {"type" => "string"},
+                  "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                  "description" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                   "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
                   "assay_result_status" => {"type" => "string", "enum" => ["POSITIVE", "NEGATIVE", "INDETERMINATE",
                                                                          "PRE_PRESENT", "PRE_NEGATIVE", "PRE_INDETERMINATE"]
