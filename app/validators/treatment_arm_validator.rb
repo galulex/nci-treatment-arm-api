@@ -24,6 +24,17 @@ module TreatmentArmValidator
                   "enum" => ["OPEN", "SUSPENDED", "UNKNOWN",
                               "CLOSED"],
                   "required" => ["enum"]
+              },
+              "diseases" => {
+                  "type" => "object",
+                  "properties" => {
+                      "_id" => {"type" => "string", "minLength" => 1},
+                      "medra_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ctep_sub_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ctep_term" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ctep_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "short_name" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]}
+                  }
               }
           },
           "type" => "object",
@@ -36,14 +47,8 @@ module TreatmentArmValidator
               "target_id" => {"type" => "number"},
               "target_name" => {"type" => "string"},
               "gene" => {"type" => "string"},
-              "exclusion_diseases" => {"type" => "array", "items" =>{"type" => "object", "properties" => {
-                  "_id" => {"type" => "string", "minLength" => 1},
-                  "medra_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                  "ctep_sub_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                  "ctep_term" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                  "ctep_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                  "short_name" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-              }}},
+              "exclusion_diseases" => {"type" => "array", "items" => {"$ref" => "#/definitions/diseases" }},
+              "inclusion_diseases" => {"type" => "array", "items" => {"$ref" => "#/definitions/diseases" }},
               "exclusion_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug"}},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
                   "id" => {"type" => "string", "minLength" => 1},
