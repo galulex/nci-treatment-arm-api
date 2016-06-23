@@ -44,7 +44,7 @@ module TreatmentArmValidator
               "version" => {"type" => "string", "minLength" => 1},
               "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
               "description" => {"type" => "string"},
-              "target_id" => {"type" => "number"},
+              "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
               "target_name" => {"type" => "string"},
               "gene" => {"type" => "string"},
               "exclusion_diseases" => {"type" => "array", "items" => {"$ref" => "#/definitions/diseases" }},
