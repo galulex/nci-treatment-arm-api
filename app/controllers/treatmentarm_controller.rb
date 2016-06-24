@@ -20,7 +20,7 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arms
     begin
-      render json: TreatmentArm.scan({}).collect { |data| data.to_h }
+      render json: TreatmentArm.scan({}).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
     rescue => error
       standard_error_message(error)
     end
@@ -34,7 +34,7 @@ class TreatmentarmController < ApplicationController
                 :comparison_operator => "EQ",
                 :attribute_value_list => [params[:id]]
             }
-        }).collect { |data| data.to_h }
+        }).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
       elsif !params[:id].nil? && !params[:version].nil?
         treatment_arm_json = TreatmentArm.find(:name => params[:id], :version => params[:version]).to_h
       end
