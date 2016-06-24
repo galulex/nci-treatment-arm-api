@@ -55,14 +55,23 @@ class TreatmentarmController < ApplicationController
 
   def basic_treatment_arms
     begin
-      basic_treatment_arm_json = TreatmentArm.scan({:attributes_to_get => ["name",
+      if !params[:id].nil?
+        basic_treatment_arm_json = TreatmentArm.scan(:scan_filter => {
+            "name" => {
+                :comparison_operator => "EQ",
+                :attribute_value_list => [params[:id]]
+            }
+        }).collect { | data | data.to_h }.uniq { | arm | arm[:name] }
+      else
+        basic_treatment_arm_json = TreatmentArm.scan({:attributes_to_get => ["name",
                                                                              "current_patients",
                                                                              "former_patients",
                                                                              "not_enrolled_patients",
                                                                              "pending_patients",
                                                                              "date_opened",
                                                                              "treatment_arm_status",
-                                                                             "date_opened","date_created"]}).collect { |data| data.to_h }
+                                                                             "date_opened","date_created"]}).collect { |data| data.to_h }.uniq { | arm | arm[:name] }
+      end
       render json: basic_treatment_arm_json
     rescue => error
       standard_error_message(error)
