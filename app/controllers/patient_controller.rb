@@ -19,6 +19,22 @@ class PatientController < ApplicationController
     end
   end
 
+
+  def patient_assignment
+    begin
+      @patient_assignment = JSON.parse(request.raw_post)
+      @patient_assignment.deep_transform_keys!(&:underscore).symbolize_keys!
+      if JSON::Validator.validate(PatientAssignmentValidator.schema, @patient_assignment)
+        # Aws::Publisher.publish(@treatment_arm)
+        render json: {:status => "SUCCESS"}, :status => 200
+      else
+        JSON::Validator.validate!(PatientAssignmentValidator.schema, @patient_assignment)
+      end
+    rescue => error
+      standard_error_message(error)
+    end
+  end
+
   private
   def standard_error_message(error)
     logger.error error.message

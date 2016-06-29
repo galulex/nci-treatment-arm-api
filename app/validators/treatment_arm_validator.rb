@@ -63,9 +63,6 @@ module TreatmentArmValidator
                   },
                   "assay_variant" => {"type" => "string", "enum" => ["PRESENT", "NEGATIVE", "EMPTY"]}
               }}},
-              "pten_results" => {"type" => "array", "items" => {"type" => "object", "properties" => {
-
-              }}},
               "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" },
               "date_created" => {"type" => "string"},
               "status_log" => {"type" => "object", "properties" => {
