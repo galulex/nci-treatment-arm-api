@@ -96,7 +96,7 @@ describe TreatmentarmController do
     it "should return all treatment arms if params are empty" do
       expect(:get => "/treatmentArms" ).to route_to(:controller => "treatmentarm", :action => "treatment_arms")
       expect(:get => "/treatmentArms/EAY131-A" ).to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A")
-      expect(:get => "/treatmentArms/EAY131-A/2016-02-20").to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A", :version => "2016-02-20")
+      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A", :stratum_id => "12")
     end
 
     it "treatment_arms should handle errors correctly" do
@@ -114,9 +114,9 @@ describe TreatmentarmController do
     end
 
     it "should return a treatmentArm if id is given" do
-      allow(TreatmentArm).to receive(:find).and_return(treatment_arm)
-      get :treatment_arm, :id => "EAY131-A", :version => "2016-20-02"
-      expect(response.body).to eq((treatment_arm.to_h).to_json)
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      get :treatment_arm, :id => "EAY131-A"
+      expect(response.body).to eq([treatment_arm.to_h].to_json)
       expect(response).to have_http_status(200)
     end
 

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
     get 'treatmentArms/:id' => :treatment_arm
     get 'treatmentArms/:id/:stratum_id' => :treatment_arm
-    get 'treatmentArms/:id/:stratum_id/:version' => :treatment_arm
+    # get 'treatmentArms/:id/:stratum_id/:version' => :treatment_arm
     get 'treatmentArms' => :treatment_arms
     get 'treatmentArmVersions' => :treatment_arm_versions
     get 'basicTreatmentArms' => :basic_treatment_arms
