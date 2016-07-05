@@ -11,18 +11,18 @@ class TreatmentArm
 
   boolean_attr :active, database_attribute_name: "is_active_flag"
   string_attr :name, hash_key: true
-  string_attr :version, range_key: true
+  datetime_attr :date_created, range_key: true
+  string_attr :version
+  string_attr :stratum_id
   string_attr :description
   string_attr :target_id
   string_attr :target_name
   string_attr :gene
   string_attr :treatment_arm_status
   string_attr :study_id
-  string_attr :stratum_id
 
   list_attr :assay_results
   integer_attr :num_patients_assigned
-  string_attr :date_created
   string_attr :date_opened
   list_attr :treatment_arm_drugs
   map_attr :variant_report
@@ -50,7 +50,7 @@ class TreatmentArm
         gene: treatment_arm[:gene],
         assay_results: treatment_arm[:assay_results],
         treatment_arm_status: treatment_arm[:treatment_arm_status],
-        date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc().to_s : treatment_arm[:date_created],
+        date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc() : treatment_arm[:date_created],
         num_patients_assigned: treatment_arm[:num_patients_assigned],
         treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
         exclusion_diseases: treatment_arm[:exclusion_diseases],

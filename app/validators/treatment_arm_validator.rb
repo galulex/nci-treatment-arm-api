@@ -38,10 +38,12 @@ module TreatmentArmValidator
               }
           },
           "type" => "object",
-          "required" => ["name", "version","treatment_arm_drugs", "study_id"],
+          "required" => ["name", "version", "date_created", "stratum_id","treatment_arm_drugs", "study_id"],
           "properties" => {
-              "name" => {"type" => "string", "minLength" => 1},
-              "version" => {"type" => "string", "minLength" => 1},
+              "name" => {"type" => "string", "not" => {"type" => "null"}},
+              "version" => {"type" => "string", "not" => {"type" => "null"}},
+              "date_created" => {"type" => "string", "not" => {"type" => "null"}},
+              "stratum_id" => {"type" => "string", "not" => {"type" => "null"}},
               "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
               "description" => {"type" => "string"},
               "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
@@ -64,7 +66,6 @@ module TreatmentArmValidator
                   "assay_variant" => {"type" => "string", "enum" => ["PRESENT", "NEGATIVE", "EMPTY"]}
               }}},
               "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" },
-              "date_created" => {"type" => "string"},
               "status_log" => {"type" => "object", "properties" => {
                   "id" => {"type" => "number"},
                   "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" }

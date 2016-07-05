@@ -7,7 +7,6 @@ class TreatmentarmController < ApplicationController
       @treatment_arm = JSON.parse(request.raw_post)
       @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
-        treatment_arm_model = TreatmentArm.new.from_json(TreatmentArm.new.convert_models(@treatment_arm).to_json)
         Aws::Publisher.publish(@treatment_arm)
         render json: {:status => "SUCCESS"}, :status => 200
       else
@@ -28,15 +27,20 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arm
     begin
-      if !params[:id].nil? && params[:version].nil?
+      if !params[:id].nil? && params[:stratum_id].nil?
         treatment_arm_json = TreatmentArm.scan(:scan_filter => {
             "name" => {
                 :comparison_operator => "EQ",
                 :attribute_value_list => [params[:id]]
             }
         }).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
-      elsif !params[:id].nil? && !params[:version].nil?
-        treatment_arm_json = TreatmentArm.find(:name => params[:id], :version => params[:version]).to_h
+      elsif !params[:id].nil? && !params[:stratum_id].nil?
+        treatment_arm_json = TreatmentArm.scan(:scan_filter =>
+                                  {"name" => {:comparison_operator => "EQ",
+                                              :attribute_value_list => [params[:id]]},
+                                   "stratum_id" => {:comparison_operator => "EQ",
+                                                    :attribute_value_list => [params[:stratum_id]]
+                                   }}, :conditional_operator => "AND")
       end
       render json: treatment_arm_json
     rescue => error
