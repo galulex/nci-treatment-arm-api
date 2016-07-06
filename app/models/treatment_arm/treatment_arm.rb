@@ -38,29 +38,61 @@ class TreatmentArm
   integer_attr :pending_patients
 
 
-  def convert_models(treatment_arm)
-    return {
-        name: treatment_arm[:id],
-        version: treatment_arm[:version],
-        study_id: treatment_arm[:study_id],
-        stratum_id: treatment_arm[:stratum_id],
-        description: treatment_arm[:description],
-        target_id: treatment_arm[:target_id],
-        target_name: treatment_arm[:target_name],
-        gene: treatment_arm[:gene],
-        assay_results: treatment_arm[:assay_results],
-        treatment_arm_status: treatment_arm[:treatment_arm_status],
-        date_created: treatment_arm[:date_created].blank? ? DateTime.current.getutc() : treatment_arm[:date_created],
-        num_patients_assigned: treatment_arm[:num_patients_assigned],
-        treatment_arm_drugs: treatment_arm[:treatment_arm_drugs],
-        exclusion_diseases: treatment_arm[:exclusion_diseases],
-        inclusion_diseases: treatment_arm[:inclusion_diseases],
-        exclusion_drugs: treatment_arm[:exclusion_drugs],
-        pten_results: treatment_arm[:pten_results],
-        status_log: treatment_arm[:status_log],
-        variant_report: treatment_arm[:variant_report]
-    }
+  def self.find_by(id, stratum_id=nil, version=nil)
+    query = {}
+    query.merge!(build_scan_filter(id, stratum_id, version))
+    if !(stratum_id.nil? || version.nil?)
+      query.merge!(:conditional_operator => "AND")
+    end
+    self.scan(query).collect { |data| data.to_h }
   end
+
+  def self.build_scan_filter(id, stratum_id, version)
+    query = {:scan_filter => {}}
+    query[:scan_filter].merge!("name" => {:comparison_operator => "EQ", :attribute_value_list => [id]})
+    if(!stratum_id.nil?)
+      query[:scan_filter].merge!("stratum_id" => {:comparison_operator => "EQ", :attribute_value_list => [stratum_id]})
+    end
+    if(!version.nil?)
+      query[:scan_filter].merge!("version" => {:comparison_operator => "EQ", :attribute_value_list => [version]})
+    end
+    query
+  end
+
+  # def self.find_by_id(id)
+  #   self.scan(:scan_filter => {
+  #       "name" => {
+  #           :comparison_operator => "EQ",
+  #           :attribute_value_list => [id]
+  #       }
+  #   }).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
+  # end
+  #
+  # def self.find_by_id_stratum(id, stratum_id)
+  #   self.scan(:scan_filter =>
+  #                         {"name" => {:comparison_operator => "EQ",
+  #                                     :attribute_value_list => [id]},
+  #                          "stratum_id" => {:comparison_operator => "EQ",
+  #                                           :attribute_value_list => [stratum_id]
+  #                          }}, :conditional_operator => "AND")
+  #       .collect { |data| data.to_h }
+  #       .uniq { | arm | arm[:name] && arm[:stratum_id] }
+  #       .sort_by{ | ta | ta[:date_created]}.reverse
+  # end
+  #
+  # def self.find_by_id_stratum_version(id, stratum_id=nil, version=nil)
+  #   query = {}
+  #   query.merge(:scan_filter => {"name" => {:comparison_operator => "EQ",
+  #                                           :attribute_value_list => [id]},
+  #                                "stratum_id" => {:comparison_operator => "EQ",
+  #                                                 :attribute_value_list => [stratum_id]
+  #                                },
+  #                                "version" => {:comparison_operator => "EQ",
+  #                                              :attribute_value_list => [version]
+  #                                }})
+  #   query.merge(:conditional_operator => "AND")
+  #   self.scan(query).collect { |data| data.to_h }
+  # end
 
 end
 

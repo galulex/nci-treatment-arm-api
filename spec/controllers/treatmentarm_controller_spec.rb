@@ -97,9 +97,9 @@ describe TreatmentarmController do
     it "should return all treatment arms if params are empty" do
       expect(:get => "/treatmentArms" ).to route_to(:controller => "treatmentarm", :action => "treatment_arms")
       expect(:get => "/treatmentArms/EAY131-A" ).to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A")
-      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arms_by_id_and_stratum",
+      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arm",
                                                                :id => "EAY131-A", :stratum_id => "12")
-      expect(:get => "/treatmentArms/EAY131-A/12/2016-12-31").to route_to(:controller => "treatmentarm", :action => "treatment_arm_by_id_stratum_version",
+      expect(:get => "/treatmentArms/EAY131-A/12/2016-12-31").to route_to(:controller => "treatmentarm", :action => "treatment_arm",
                                                                  :id => "EAY131-A", :stratum_id => "12", :version => "2016-12-31")
     end
 
@@ -132,15 +132,15 @@ describe TreatmentarmController do
     end
 
     it "should return all treatmentArms with id and stratum_id" do
-      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm, treatment_arm])
-      get :treatment_arms_by_id_and_stratum, :id => "EAY131-A", :stratum_id => "12"
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      get :treatment_arm, :id => "EAY131-A", :stratum_id => "12"
       expect(response.body).to eq(([treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
     end
 
     it "should return all treatmentArms with id, stratum_id, version" do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :treatment_arm_by_id_stratum_version, :id => "EAY131-A", :stratum_id => "12", :version => "2016-20-02"
+      get :treatment_arm, :id => "EAY131-A", :stratum_id => "12", :version => "2016-20-02"
       expect(response.body).to eq(([treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
     end

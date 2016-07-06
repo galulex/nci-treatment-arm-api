@@ -27,53 +27,7 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arm
     begin
-      if !params[:id].nil?
-        treatment_arm_json = TreatmentArm.scan(:scan_filter => {
-            "name" => {
-                :comparison_operator => "EQ",
-                :attribute_value_list => [params[:id]]
-            }
-        }).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
-      end
-      render json: treatment_arm_json
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
-  def treatment_arms_by_id_and_stratum
-    begin
-      if !params[:id].nil? && !params[:stratum_id].nil?
-        treatment_arm_json = TreatmentArm.scan(:scan_filter =>
-                                                   {"name" => {:comparison_operator => "EQ",
-                                                               :attribute_value_list => [params[:id]]},
-                                                    "stratum_id" => {:comparison_operator => "EQ",
-                                                                     :attribute_value_list => [params[:stratum_id]]
-                                                    }}, :conditional_operator => "AND")
-                                 .collect { |data| data.to_h }
-                                 .uniq { | arm | arm[:name] && arm[:stratum_id] }
-                                 .sort_by{ | ta | ta[:date_created]}.reverse
-      end
-      render json: treatment_arm_json
-    rescue => error
-      standard_error_message(error)
-    end
-  end
-
-  def treatment_arm_by_id_stratum_version
-    begin
-      if !params[:id].nil? && !params[:stratum_id].nil? && !params[:version].nil?
-        treatment_arm_json = TreatmentArm.scan(:scan_filter =>
-                                                   {"name" => {:comparison_operator => "EQ",
-                                                               :attribute_value_list => [params[:id]]},
-                                                    "stratum_id" => {:comparison_operator => "EQ",
-                                                                     :attribute_value_list => [params[:stratum_id]]
-                                                    },
-                                                    "version" => {:comparison_operator => "EQ",
-                                                                  :attribute_value_list => [params[:version]]
-                                                    }
-                                                   }, :conditional_operator => "AND").collect { |data| data.to_h }
-      end
+      treatment_arm_json = TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
       render json: treatment_arm_json
     rescue => error
       standard_error_message(error)
