@@ -96,7 +96,7 @@ describe TreatmentarmController do
     it "should return all treatment arms if params are empty" do
       expect(:get => "/treatmentArms" ).to route_to(:controller => "treatmentarm", :action => "treatment_arms")
       expect(:get => "/treatmentArms/EAY131-A" ).to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A")
-      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A", :stratum_id => "12")
+      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arms_by_id_and_stratum", :id => "EAY131-A", :stratum_id => "12")
     end
 
     it "treatment_arms should handle errors correctly" do
