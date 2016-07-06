@@ -49,7 +49,10 @@ class TreatmentarmController < ApplicationController
                                                                :attribute_value_list => [params[:id]]},
                                                     "stratum_id" => {:comparison_operator => "EQ",
                                                                      :attribute_value_list => [params[:stratum_id]]
-                                                    }}, :conditional_operator => "AND").collect { |data| data.to_h }.sort_by{ | ta | ta[:date_created]}.reverse
+                                                    }}, :conditional_operator => "AND")
+                                 .collect { |data| data.to_h }
+                                 .uniq { | arm | arm[:name] && arm[:stratum_id] }
+                                 .sort_by{ | ta | ta[:date_created]}.reverse
       end
       render json: treatment_arm_json
     rescue => error
