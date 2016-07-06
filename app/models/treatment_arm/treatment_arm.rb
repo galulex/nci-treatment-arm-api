@@ -47,9 +47,11 @@ class TreatmentArm
     self.scan(query).collect { |data| data.to_h }
   end
 
-  def self.build_scan_filter(id, stratum_id, version)
+  def self.build_scan_filter(id=nil, stratum_id=nil, version=nil)
     query = {:scan_filter => {}}
-    query[:scan_filter].merge!("name" => {:comparison_operator => "EQ", :attribute_value_list => [id]})
+    if(!id.nil?)
+      query[:scan_filter].merge!("name" => {:comparison_operator => "EQ", :attribute_value_list => [id]})
+    end
     if(!stratum_id.nil?)
       query[:scan_filter].merge!("stratum_id" => {:comparison_operator => "EQ", :attribute_value_list => [stratum_id]})
     end
@@ -57,6 +59,21 @@ class TreatmentArm
       query[:scan_filter].merge!("version" => {:comparison_operator => "EQ", :attribute_value_list => [version]})
     end
     query
+  end
+
+  def self.find_basic_treatment_arm_by(id=nil)
+    query = {}
+    query.merge!(build_scan_filter(id))
+    query.merge!({:attributes_to_get => ["name",
+                                         "stratum_id",
+                                         "current_patients",
+                                         "former_patients",
+                                         "not_enrolled_patients",
+                                         "pending_patients",
+                                         "date_opened",
+                                         "treatment_arm_status",
+                                         "date_opened","date_created"]})
+    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq { | arm | arm[:name] && arm[:stratum_id] }
   end
 
   # def self.find_by_id(id)
