@@ -73,43 +73,8 @@ class TreatmentArm
                                          "date_opened",
                                          "treatment_arm_status",
                                          "date_opened","date_created"]})
-    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq { | arm | arm[:name] && arm[:stratum_id] }
+    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq { | arm | arm[:name] }
   end
-
-  # def self.find_by_id(id)
-  #   self.scan(:scan_filter => {
-  #       "name" => {
-  #           :comparison_operator => "EQ",
-  #           :attribute_value_list => [id]
-  #       }
-  #   }).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
-  # end
-  #
-  # def self.find_by_id_stratum(id, stratum_id)
-  #   self.scan(:scan_filter =>
-  #                         {"name" => {:comparison_operator => "EQ",
-  #                                     :attribute_value_list => [id]},
-  #                          "stratum_id" => {:comparison_operator => "EQ",
-  #                                           :attribute_value_list => [stratum_id]
-  #                          }}, :conditional_operator => "AND")
-  #       .collect { |data| data.to_h }
-  #       .uniq { | arm | arm[:name] && arm[:stratum_id] }
-  #       .sort_by{ | ta | ta[:date_created]}.reverse
-  # end
-  #
-  # def self.find_by_id_stratum_version(id, stratum_id=nil, version=nil)
-  #   query = {}
-  #   query.merge(:scan_filter => {"name" => {:comparison_operator => "EQ",
-  #                                           :attribute_value_list => [id]},
-  #                                "stratum_id" => {:comparison_operator => "EQ",
-  #                                                 :attribute_value_list => [stratum_id]
-  #                                },
-  #                                "version" => {:comparison_operator => "EQ",
-  #                                              :attribute_value_list => [version]
-  #                                }})
-  #   query.merge(:conditional_operator => "AND")
-  #   self.scan(query).collect { |data| data.to_h }
-  # end
 
 end
 
