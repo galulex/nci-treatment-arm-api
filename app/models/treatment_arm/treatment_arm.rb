@@ -38,7 +38,7 @@ class TreatmentArm
   integer_attr :pending_patients
 
 
-  def self.find_by(id, stratum_id=nil, version=nil)
+  def self.find_by(id=nil, stratum_id=nil, version=nil)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
     if append_and?(!id.nil? ,!stratum_id.nil?, !version.nil?)

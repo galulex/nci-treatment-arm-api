@@ -91,16 +91,19 @@ describe TreatmentarmController do
 
   end
 
+  describe "GET #treatmentArm" do
+    
+
+  end
+
 
   describe "GET #treatmentArms" do
 
-    it "should return all treatment arms if params are empty" do
+    it "should map to the correct controller" do
       expect(:get => "/treatmentArms" ).to route_to(:controller => "treatmentarm", :action => "treatment_arms")
-      expect(:get => "/treatmentArms/EAY131-A" ).to route_to(:controller => "treatmentarm", :action => "treatment_arm", :id => "EAY131-A")
-      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arm",
+      expect(:get => "/treatmentArms/EAY131-A" ).to route_to(:controller => "treatmentarm", :action => "treatment_arms", :id => "EAY131-A")
+      expect(:get => "/treatmentArms/EAY131-A/12").to route_to(:controller => "treatmentarm", :action => "treatment_arms",
                                                                :id => "EAY131-A", :stratum_id => "12")
-      expect(:get => "/treatmentArms/EAY131-A/12/2016-12-31").to route_to(:controller => "treatmentarm", :action => "treatment_arm",
-                                                                 :id => "EAY131-A", :stratum_id => "12", :version => "2016-12-31")
     end
 
     it "treatment_arms should handle errors correctly" do
@@ -112,14 +115,14 @@ describe TreatmentarmController do
 
     it "treatment_arm should handle errors correctly" do
       allow(TreatmentArm).to receive(:scan).and_raise("this error")
-      get :treatment_arm, :id => "EAY131-A"
+      get :treatment_arms, :id => "EAY131-A"
       expect(response.body).to include("this error")
       expect(response).to have_http_status(500)
     end
 
     it "should return a treatmentArm if id is given" do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :treatment_arm, :id => "EAY131-A"
+      get :treatment_arms, :id => "EAY131-A"
       expect(response.body).to eq([treatment_arm.to_h].to_json)
       expect(response).to have_http_status(200)
     end
@@ -133,7 +136,7 @@ describe TreatmentarmController do
 
     it "should return all treatmentArms with id and stratum_id" do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :treatment_arm, :id => "EAY131-A", :stratum_id => "12"
+      get :treatment_arms, :id => "EAY131-A", :stratum_id => "12"
       expect(response.body).to eq(([treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)
     end
@@ -141,7 +144,7 @@ describe TreatmentarmController do
     it "should return all treatmentArms with id, stratum_id, version" do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :treatment_arm, :id => "EAY131-A", :stratum_id => "12", :version => "2016-20-02"
-      expect(response.body).to eq(([treatment_arm.to_h]).to_json)
+      expect(response.body).to eq((treatment_arm.to_h).to_json)
       expect(response).to have_http_status(200)
     end
     

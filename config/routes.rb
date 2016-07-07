@@ -7,10 +7,14 @@ Rails.application.routes.draw do
     # post 'ecogTreatmentArmList' => :ecog_treatment_arm_list
 
 
-    get 'treatmentArms/:id' => :treatment_arm
-    get 'treatmentArms/:id/:stratum_id' => :treatment_arm
-    get 'treatmentArms/:id/:stratum_id/:version' => :treatment_arm
+    get 'treatmentArm/:id' => :treatment_arm
+    get 'treatmentArm/:id/:stratum_id' => :treatment_arm
+    get 'treatmentArm/:id/:stratum_id/:version' => :treatment_arm
+
+    get 'treatmentArms/:id' => :treatment_arms
+    get 'treatmentArms/:id/:stratum_id' => :treatment_arms
     get 'treatmentArms' => :treatment_arms
+
     get 'treatmentArmVersions' => :treatment_arm_versions
     get 'basicTreatmentArms' => :basic_treatment_arms
     get 'basicTreatmentArms/:id' => :basic_treatment_arms

@@ -19,7 +19,9 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arms
     begin
-      render json: TreatmentArm.scan({}).collect { |data| data.to_h }.sort_by{| ta | ta[:date_created]}.reverse
+      render json: TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
+                       .sort_by{| ta | ta[:date_created]}
+                       .reverse
     rescue => error
       standard_error_message(error)
     end
@@ -27,10 +29,9 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arm
     begin
-      treatment_arm_json = TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
-                               .sort_by{| ta | ta[:date_created]}
-                               .reverse
-      render json: treatment_arm_json
+      render json: TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
+                       .sort_by{| ta | ta[:date_created]}
+                       .reverse.first
     rescue => error
       standard_error_message(error)
     end
