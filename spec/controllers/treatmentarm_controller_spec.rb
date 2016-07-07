@@ -132,7 +132,7 @@ describe TreatmentarmController do
     end
 
     it "should return all treatmentArms with id and stratum_id" do
-      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm, treatment_arm])
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :treatment_arm, :id => "EAY131-A", :stratum_id => "12"
       expect(response.body).to eq(([treatment_arm.to_h]).to_json)
       expect(response).to have_http_status(200)

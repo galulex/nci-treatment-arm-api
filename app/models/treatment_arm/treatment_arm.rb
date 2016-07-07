@@ -41,7 +41,7 @@ class TreatmentArm
   def self.find_by(id, stratum_id=nil, version=nil)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if !(stratum_id.nil? || version.nil?)
+    if append_and?(!id.nil? ,!stratum_id.nil?, !version.nil?)
       query.merge!(:conditional_operator => "AND")
     end
     self.scan(query).collect { |data| data.to_h }
@@ -61,6 +61,10 @@ class TreatmentArm
     query
   end
 
+  def self.append_and?(a=false, b=false, c=false)
+    (a && (b || c)) || (b && (c || a)) || (c && (a || b))
+  end
+
   def self.find_basic_treatment_arm_by(id=nil)
     query = {}
     query.merge!(build_scan_filter(id))
@@ -73,7 +77,7 @@ class TreatmentArm
                                          "date_opened",
                                          "treatment_arm_status",
                                          "date_opened","date_created"]})
-    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq { | arm | arm[:name] }
+    TreatmentArm.scan(query).collect { |data| data.to_h }
   end
 
 end

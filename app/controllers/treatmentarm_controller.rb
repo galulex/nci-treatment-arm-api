@@ -29,7 +29,7 @@ class TreatmentarmController < ApplicationController
     begin
       treatment_arm_json = TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
                                .sort_by{| ta | ta[:date_created]}
-                               .reverse.uniq { | arm | arm[:name] && arm[:stratum_id] }
+                               .reverse
       render json: treatment_arm_json
     rescue => error
       standard_error_message(error)
