@@ -92,7 +92,7 @@ describe TreatmentarmController do
   end
 
   describe "GET #treatmentArm" do
-    
+
 
   end
 
