@@ -1,23 +1,31 @@
 development:
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_development"
   table_prefix: "ta"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm_test"
   table_prefix: "ta"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm"
   table_prefix: "ta"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
 
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
   queue_name: "treatment_arm"
   table_prefix: "ta"
+  read_capacity_units: "30"
+  write_capacity_units: "30"
