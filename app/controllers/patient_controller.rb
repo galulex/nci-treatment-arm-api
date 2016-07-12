@@ -25,7 +25,7 @@ class PatientController < ApplicationController
       @patient_assignment = JSON.parse(request.raw_post)
       @patient_assignment.deep_transform_keys!(&:underscore).symbolize_keys!
       if JSON::Validator.validate(PatientAssignmentValidator.schema, @patient_assignment)
-        Aws::Publisher.publish(@treatment_arm)
+        Aws::Publisher.publish(@patient_assignment)
         render json: {:status => "SUCCESS"}, :status => 200
       else
         JSON::Validator.validate!(PatientAssignmentValidator.schema, @patient_assignment)

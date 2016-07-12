@@ -1,6 +1,8 @@
 
 class TreatmentarmController < ApplicationController
-  # before_action :authenticate
+
+  # before_action :authenticate, if: "Rails.env.production?"
+  after_action :update_ta_status, only: [:treatment_arm, :treatment_arms, :basic_treatment_arms, :treatment_arm_versions]
 
   def new_treatment_arm
     begin
@@ -59,6 +61,14 @@ class TreatmentarmController < ApplicationController
   def standard_error_message(error)
     logger.error error.message
     render :json => {:status => "FAILURE" ,:error => error.message}, :status => 500
+  end
+
+  def update_ta_status
+    begin
+      Aws::Publisher.publish({})
+    rescue => error
+      logger.error "Failed to send message to SQS with error #{error.message}"
+    end
   end
 
 end
