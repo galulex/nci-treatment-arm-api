@@ -29,7 +29,8 @@ module TreatmentArmValidator
                   "type" => "object",
                   "properties" => {
                       "_id" => {"type" => "string", "minLength" => 1},
-                      "medra_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "disease_type_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "disease_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ctep_sub_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ctep_term" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ctep_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
