@@ -1,8 +1,10 @@
 
 class TreatmentarmController < ApplicationController
+  include HTTParty
 
-  # before_action :authenticate, if: "Rails.env.production?"
-  after_action :update_ta_status, only: [:treatment_arm, :treatment_arms, :basic_treatment_arms, :treatment_arm_versions]
+  before_action :authenticate, if: "Rails.env.production?"
+  before_action :update_ta_status, only: [:treatment_arm, :treatment_arms, :basic_treatment_arms, :treatment_arm_versions]
+  attr_accessor :cog_treatment_arms
 
   def new_treatment_arm
     begin
@@ -21,6 +23,13 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arms
     begin
+      data = TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
+            .sort_by{| ta | ta[:date_created]}
+            .reverse
+      data.each do | ta |
+        # p ta[:name]
+        # # p @cog_treatment_arms
+      end
       render json: TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
                        .sort_by{| ta | ta[:date_created]}
                        .reverse
@@ -65,9 +74,10 @@ class TreatmentarmController < ApplicationController
 
   def update_ta_status
     begin
-      Aws::Publisher.publish({})
+      results = HTTParty.get(ENV["cog_url"] + ENV["cog_treatment_arms"])
+      @cog_treatment_arms = JSON.parse(results.body).deep_transform_keys!(&:underscore).symbolize_keys![:treatment_arms]
     rescue => error
-      logger.error "Failed to send message to SQS with error #{error.message}"
+      logger.error "Failed to connect to cog service with error #{error.message}"
     end
   end
 

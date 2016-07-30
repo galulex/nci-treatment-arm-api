@@ -1,8 +1,10 @@
 development:
   aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_development"
+  queue_name: "jv_ta_dev"
   table_prefix: "ta"
+  cog_url: "http://localhost:3000"
+  cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -11,6 +13,8 @@ test:
   aws_region: "us-east-1"
   queue_name: "treatment_arm_test"
   table_prefix: "ta"
+  cog_url: "http://localhost:3000"
+  cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -19,6 +23,8 @@ uat:
   aws_region: "us-east-1"
   queue_name: "treatment_arm"
   table_prefix: "ta"
+  cog_url: "http://localhost:3000"
+  cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -27,5 +33,7 @@ production:
   aws_region: "us-east-1"
   queue_name: "treatment_arm"
   table_prefix: "ta"
+  cog_url: "http://localhost:3000"
+  cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"

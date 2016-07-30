@@ -31,6 +31,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # AuthO
 gem 'knock', '~> 1.4.2'
 gem 'auth0'
+gem 'httparty'
 
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
