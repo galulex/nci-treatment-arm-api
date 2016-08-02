@@ -35,6 +35,17 @@ class PatientController < ApplicationController
     end
   end
 
+  def queue_treatment_arm_assignment
+    begin
+      queue_treatment_arm = JSON.parse(request.raw_post)
+      queue_treatment_arm = {"queue_treatment_arm" => queue_treatment_arm}
+      Aws::Publisher.publish(queue_treatment_arm)
+      render json: {:status => "SUCCESS"}, :status => 200
+    rescue => error
+      standard_error_message(error)
+    end
+  end
+
   private
   def standard_error_message(error)
     logger.error error.message

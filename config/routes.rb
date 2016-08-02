@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   controller :patient do
     get 'patientsOnTreatmentArm/:id' => :patient_on_treatment_arm
     post 'patientAssignment' => :patient_assignment
+    post 'patientReadyForAssignment' => :queue_treatment_arm_assignment
   end
 
   controller :graph_data do
