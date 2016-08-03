@@ -25,7 +25,7 @@ class PatientController < ApplicationController
       @patient_assignment = JSON.parse(request.raw_post)
       @patient_assignment.deep_transform_keys!(&:underscore).symbolize_keys!
       if JSON::Validator.validate(PatientAssignmentValidator.schema, @patient_assignment)
-        Aws::Publisher.publish(@patient_assignment)
+        Aws::Publisher.publish({:patient_assignment => @patient_assignment})
         render json: {:status => "SUCCESS"}, :status => 200
       else
         JSON::Validator.validate!(PatientAssignmentValidator.schema, @patient_assignment)
@@ -38,8 +38,7 @@ class PatientController < ApplicationController
   def queue_treatment_arm_assignment
     begin
       queue_treatment_arm = JSON.parse(request.raw_post)
-      queue_treatment_arm = {"queue_treatment_arm" => queue_treatment_arm}
-      Aws::Publisher.publish(queue_treatment_arm)
+      Aws::Publisher.publish({:queue_treatment_arm => queue_treatment_arm})
       render json: {:status => "SUCCESS"}, :status => 200
     rescue => error
       standard_error_message(error)

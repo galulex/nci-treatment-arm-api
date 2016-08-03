@@ -16,8 +16,8 @@ describe TreatmentArmPatient do
 
   let(:patient_treatment_arm) do
     ba = TreatmentArmPatient.new
-    ba.treatment_arm_name_version = "2012-02-20"
-    ba.patient_sequence_number = "200re"
+    ba.date_assigned = "2012-02-20"
+    ba.patient_id = "200re"
     ba.concordance = "Y"
     ba.current_patient_status = "ON_TREATMENT_ARM"
     ba.date_created = "2013-02-15"

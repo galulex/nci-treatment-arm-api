@@ -5,8 +5,13 @@ class TreatmentArmPatient
 
   set_table_name "#{self.name.underscore}"
 
-  string_attr :treatment_arm_name_version, hash_key: true
-  string_attr :patient_sequence_number, range_key: true
+  string_attr :patient_id, hash_key: true
+  date_attr :date_assigned, range_key: true
+
+  string_attr :treatment_arm_name
+  string_attr :stratum_id
+  string_attr :version
+
   string_attr :concordance
   string_attr :current_patient_status
   string_attr :date_created
@@ -32,7 +37,6 @@ class TreatmentArmPatient
   list_attr :treatment_arm_drugs
   string_attr :treatment_arm_status
   list_attr :variant_report
-  string_attr :version
 
   map_attr :status_log
 
