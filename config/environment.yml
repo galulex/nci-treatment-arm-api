@@ -1,7 +1,7 @@
 development:
   aws_dynamo_endpoint: "http://localhost:8000"
   aws_region: "us-east-1"
-  queue_name: "ta_dev_jv2"
+  queue_name: "treatment_arm_dev"
   table_prefix: "ta"
   cog_url: "http://localhost:3000"
   cog_treatment_arms: "/treatmentArms"
