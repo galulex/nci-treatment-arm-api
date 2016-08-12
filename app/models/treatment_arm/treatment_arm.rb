@@ -69,10 +69,12 @@ class TreatmentArm
   def self.build_ui_model(id=nil, stratum_id=nil, version=nil)
     treatment_arms = self.find_by(id, stratum_id, version).sort_by{| ta | ta[:date_created]}.reverse
     treatment_arms.each do | treatment_arm |
-      variant = treatment_arm[:variant_report].symbolize_keys!
-      variant[:single_nucleotide_variants] = (variant[:single_nucleotide_variants] << variant[:indels]).flatten!
-      variant[:snvs_and_indels] = variant.delete :single_nucleotide_variants
-      variant.delete :indels
+      if(!treatment_arm[:variant_report].blank?)
+        variant = treatment_arm[:variant_report].symbolize_keys!
+        variant[:single_nucleotide_variants] = (variant[:single_nucleotide_variants] << variant[:indels]).flatten!
+        variant[:snvs_and_indels] = variant.delete :single_nucleotide_variants
+        variant.delete :indels
+      end
     end
 
   end

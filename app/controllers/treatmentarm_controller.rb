@@ -29,9 +29,7 @@ class TreatmentarmController < ApplicationController
 
   def treatment_arm
     begin
-      render json: TreatmentArm.find_by(params[:id], params[:stratum_id], params[:version])
-                       .sort_by{| ta | ta[:date_created]}
-                       .reverse.first
+      render json: TreatmentArm.build_ui_model(params[:id], params[:stratum_id], params[:version]).first
     rescue => error
       standard_error_message(error)
     end
