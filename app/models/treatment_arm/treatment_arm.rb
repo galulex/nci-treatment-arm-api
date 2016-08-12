@@ -65,6 +65,18 @@ class TreatmentArm
     (a && (b || c)) || (b && (c || a)) || (c && (a || b))
   end
 
+
+  def self.build_ui_model(id=nil, stratum_id=nil, version=nil)
+    treatment_arms = self.find_by(id, stratum_id, version).sort_by{| ta | ta[:date_created]}.reverse
+    treatment_arms.each do | treatment_arm |
+      variant = treatment_arm[:variant_report].symbolize_keys!
+      variant[:single_nucleotide_variants] = (variant[:single_nucleotide_variants] << variant[:indels]).flatten!
+      variant[:snvs_and_indels] = variant.delete :single_nucleotide_variants
+      variant.delete :indels
+    end
+
+  end
+
   def self.find_basic_treatment_arm_by(id=nil)
     query = {}
     query.merge!(build_scan_filter(id))
