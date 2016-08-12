@@ -90,7 +90,7 @@ class TreatmentArm
                                          "pending_patients",
                                          "date_opened",
                                          "treatment_arm_status",
-                                         "date_opened","date_created"]})
+                                         "date_created"]})
     TreatmentArm.scan(query).collect { |data| data.to_h }.uniq{ | value | value.values_at(:name, :stratum_id)}
   end
 
