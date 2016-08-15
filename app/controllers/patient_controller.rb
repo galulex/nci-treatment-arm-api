@@ -6,7 +6,7 @@ class PatientController < ApplicationController
   def patient_on_treatment_arm
     begin
       if !params[:id].nil?
-        treatment_arm_json = TreatmentArmPatient.find_by(:patient_id => params[:id])
+        treatment_arm_json = TreatmentArmPatient.find_by(:treatment_arm_name => params[:id])
       end
       render json: treatment_arm_json
     rescue => error
