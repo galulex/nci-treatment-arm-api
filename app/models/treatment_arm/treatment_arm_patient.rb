@@ -3,7 +3,7 @@ class TreatmentArmPatient
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
-  set_table_name "#{self.name.underscore}_#{Rails.env}"
+  set_table_name "#{self.name.underscore}"
 
   string_attr :patient_id, hash_key: true
   date_attr :date_assigned, range_key: true
