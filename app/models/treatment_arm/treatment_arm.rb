@@ -24,8 +24,7 @@ class TreatmentArm
   integer_attr :num_patients_assigned
   string_attr :date_opened
   list_attr :treatment_arm_drugs
-  list_attr :exclusion_diseases
-  list_attr :inclusion_diseases
+  list_attr :diseases
   list_attr :exclusion_drugs
   map_attr :status_log
   list_attr :single_nucleotide_variants
@@ -42,7 +41,7 @@ class TreatmentArm
   def self.find_by(id=nil, stratum_id=nil, version=nil)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if append_and?(!id.nil? ,!stratum_id.nil?, !version.nil?)
+    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
       query.merge!(:conditional_operator => "AND")
     end
     self.scan(query).collect { |data| data.to_h }
@@ -68,8 +67,8 @@ class TreatmentArm
 
 
   def self.build_ui_model(id=nil, stratum_id=nil, version=nil)
-    treatment_arms = self.find_by(id, stratum_id, version).sort_by{| ta | ta[:date_created]}.reverse
-    treatment_arms.each do | treatment_arm |
+    treatment_arms = self.find_by(id, stratum_id, version).sort_by{ |ta| ta[:date_created] }.reverse
+    treatment_arms.each do |treatment_arm|
       if(!treatment_arm[:variant_report].blank?)
         variant = treatment_arm[:variant_report].symbolize_keys!
         variant[:single_nucleotide_variants] = (variant[:single_nucleotide_variants] << variant[:indels]).flatten!
@@ -77,7 +76,6 @@ class TreatmentArm
         variant.delete :indels
       end
     end
-
   end
 
   def self.find_basic_treatment_arm_by(id=nil)
@@ -92,8 +90,7 @@ class TreatmentArm
                                          "date_opened",
                                          "treatment_arm_status",
                                          "date_created"]})
-    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq{ | value | value.values_at(:name, :stratum_id)}
+    TreatmentArm.scan(query).collect { |data| data.to_h }.uniq{ |value| value.values_at(:name, :stratum_id) }
   end
-
 end
 
