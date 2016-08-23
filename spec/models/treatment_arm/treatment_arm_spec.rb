@@ -28,10 +28,8 @@ describe TreatmentArm do
     ba.num_patients_assigned = 4
     ba.date_created = "2014-02-30"
     ba.treatment_arm_drugs = []
-    ba.variant_report = {}
     ba.exclusion_diseases = []
     ba.exclusion_drugs = []
-    ba.pten_results = []
     ba.status_log = {}
     ba
   end
@@ -49,7 +47,6 @@ describe TreatmentArm do
     expect(treatment_arm.gene).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_status).to be_kind_of(String)
     expect(treatment_arm.study_id).to be_kind_of(String)
-
     expect(treatment_arm.num_patients_assigned).to be_kind_of(Integer)
 
 
