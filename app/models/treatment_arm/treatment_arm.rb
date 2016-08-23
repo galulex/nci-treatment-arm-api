@@ -20,18 +20,19 @@ class TreatmentArm
   string_attr :gene
   string_attr :treatment_arm_status
   string_attr :study_id
-
-  list_attr :assay_results
+  list_attr :assay_rules
   integer_attr :num_patients_assigned
   string_attr :date_opened
   list_attr :treatment_arm_drugs
-  map_attr :variant_report
   list_attr :exclusion_diseases
   list_attr :inclusion_diseases
   list_attr :exclusion_drugs
-  list_attr :pten_results
   map_attr :status_log
-
+  list_attr :single_nucleotide_variants
+  list_attr :indels
+  list_attr :non_hotspot_rules
+  list_attr :copy_number_variants
+  list_attr :gene_fusions
   integer_attr :current_patients
   integer_attr :former_patients
   integer_attr :not_enrolled_patients
