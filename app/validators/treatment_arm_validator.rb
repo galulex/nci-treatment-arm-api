@@ -85,6 +85,63 @@ module TreatmentArmValidator
                       "exon" => {"type" => "string"}
                   }
               },
+              "snvs" => {
+                  "type" => "object",
+                  "required" => ["identifier", "chromosome", "position", "reference", "alternative",
+                                 "level_of_evidence"],
+                  "properties" => {
+                      "type" => {"type" => "string"},
+                      "confirmed" => {"type" => "boolean"},
+                      "chromosome" => {"type" => "string"},
+                      "position" => {"type" => "string"},
+                      "identifier" => {"type" => "string"},
+                      "reference" => {"type" => "string"},
+                      "alternative" => {"type" => "string"},
+                      "rare" => {"type" => "boolean"},
+                      "level_of_evidence" => {"type" => "number"},
+                      "inclusion" => {"type" => "boolean"},
+                      "armSpecific" => {"type" => "boolean"}
+                  }
+              },
+              "indels" => {
+                  "type" => "object",
+                  "required" => ["identifier", "chromosome", "position", "ocp_alternative", "ocp_reference",
+                                 "level_of_evidence"],
+                  "properties" => {
+                      "type" => {"type" => "string"},
+                      "confirmed" => {"type" => "boolean"},
+                      "chromosome" => {"type" => "string"},
+                      "position" => {"type" => "string"},
+                      "identifier" => {"type" => "string"},
+                      "ocp_reference" => {"type" => "string"},
+                      "ocp_alternative" => {"type" => "string"},
+                      "rare" => {"type" => "boolean"},
+                      "level_of_evidence" => {"type" => "number"},
+                      "inclusion" => {"type" => "boolean"}
+                  }
+              },
+              "cnvs" => {
+                  "type" => "object",
+                  "required" => ["identifier", "chromosome", "position", "level_of_evidence"],
+                  "properties" => {
+                      "ref_copy_number" => {"type" => "number"},
+                      "raw_copy_number" => {"type" => "number"},
+                      "copy_number" => {"type" => "number"},
+                      "confidence_interval_95percent" => {"type" => "number"},
+                      "confidence_interval_5percent" => {"type" => "number"},
+                      "confirmed" => {"type" => "boolean"},
+                      "chromosome" => {"type" => "string"},
+                      "position" => {"type" => "string"},
+                      "identifier" => {"type" => "string"},
+                      "ocp_reference" => {"type" => "string"},
+                      "ocp_alternative" => {"type" => "string"},
+                      "rare" => {"type" => "boolean"},
+                      "level_of_evidence" => {"type" => "number"},
+                      "inclusion" => {"type" => "boolean"},
+                      "armSpecific" => {"type" => "boolean"},
+                      "type" => {"type" => "string"}
+                  }
+              },
               "edrugs" => {
                   "type" => "object",
                   "required" => ["drug_id"],
@@ -110,11 +167,14 @@ module TreatmentArmValidator
               "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
               "target_name" => {"type" => "string"},
               "gene" => {"type" => "string"},
-              "diseases" => {"type" => "array", "items" => {"$ref" => "#/definitions/diseases" }},
-              "assay_rules" => {"type" => "array", "items" => {"$ref" => "#/definitions/rules" }},
-              "gene_fusions" => {"type" => "array", "items" => {"$ref" => "#/definitions/genes" }},
-              "non_hotspot_rules" => {"type" => "array", "items" => {"$ref" => "#/definitions/hotspotrules" }},
-              "exclusion_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/edrugs"}},
+              "single_nucleotide_variants" => {"type" => "array", "items" => { "$ref" => "#/definitions/snvs" }},
+              "indels" => {"type" => "array", "items" => { "$ref" => "#/definitions/indels" }},
+              "copy_number_variants" => {"type" => "array", "items" => { "$ref" => "#/definitions/cnvs" }},
+              "diseases" => {"type" => "array", "items" => { "$ref" => "#/definitions/diseases" }},
+              "assay_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/rules" }},
+              "gene_fusions" => {"type" => "array", "items" => { "$ref" => "#/definitions/genes" }},
+              "non_hotspot_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/hotspotrules" }},
+              "exclusion_drugs" => {"type" => "array", "items" => { "$ref" => "#/definitions/edrugs" }},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
                   "id" => {"type" => "string", "minLength" => 1},
                   "description" => {"type" => "string", "minLength" => 1}
@@ -122,7 +182,7 @@ module TreatmentArmValidator
               "treatment_arm_status" => { "$ref" => "#/definitions/treatment_arm_status" },
               "status_log" => {"type" => "object", "properties" => {
                   "id" => {"type" => "number"},
-                  "treatment_arm_status" => {"$ref" => "#/definitions/treatment_arm_status" }
+                  "treatment_arm_status" => { "$ref" => "#/definitions/treatment_arm_status" }
               }}
           }
       }
