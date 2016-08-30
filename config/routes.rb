@@ -22,7 +22,9 @@ Rails.application.routes.draw do
   end
 
   controller :version do
-    get 'version' => :version
+    routing_path = "api/v1/treatment_arms"
+    get "#{routing_path}/version" => :version
+    # get 'version' => :version
   end
 
   controller :patient do
