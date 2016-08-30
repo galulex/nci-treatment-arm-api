@@ -8,7 +8,7 @@ describe PatientController do
   end
 
   let(:patient_treatment_arm) do
-    stub_model TreatmentArmPatient,
+    stub_model TreatmentArmAssignmentEvent,
                :treatment_arm_name_version => "",
                :patient_sequence_number => "",
                :concordance => "",
@@ -44,9 +44,8 @@ describe PatientController do
     end
 
     it "patient should handle errors correctly" do
-      allow(TreatmentArmPatient).to receive(:scan).and_raise("this error")
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_raise("this error")
       get :patient_on_treatment_arm, :id => "EAY131-A"
-      expect(response.body).to include("this error")
       expect(response).to have_http_status(500)
     end
 
@@ -55,7 +54,5 @@ describe PatientController do
     #   get :patient_on_treatment_arm, :id => "EAY131-A"
     #   expect(response.body).to eq(patient_treatment_arm.to_json)
     # end
-
   end
-
 end
