@@ -10,7 +10,7 @@ class TreatmentarmController < ApplicationController
       @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
       if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
         Aws::Publisher.publish({:treatment_arm => @treatment_arm})
-        render json: {:status => "SUCCESS"}, :status => 200
+        render json: {:message => "Message has been processed successfully"}, :status => 200
       else
         JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
       end
@@ -56,7 +56,7 @@ class TreatmentarmController < ApplicationController
 
   def standard_error_message(error)
     logger.error error.message
-    render :json => {:status => "FAILURE" ,:error => error.message}, :status => 500
+    render :json => {:message => error.message}, :status => 500
   end
 
 end
