@@ -75,7 +75,7 @@ module TreatmentArmValidator
                   "properties" => {
                       "inclusion" => {"type" => "boolean"},
                       "oncomine_variant_class" => {"type" => "string"},
-                      "public_med_ids" => {"type" => "string"},
+                      "public_med_ids" => [{"type" => "array"}, {"type" => "null"}],
                       "func_gene" => {"type" => "string"},
                       "arm_specific" => {"type" => "boolean"},
                       "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
@@ -87,7 +87,7 @@ module TreatmentArmValidator
               },
               "snvs" => {
                   "type" => "object",
-                  "required" => ["identifier", "chromosome", "position", "reference", "alternative",
+                  "required" => ["identifier", "chromosome", "position", "ocp_reference", "ocp_alternative",
                                  "level_of_evidence"],
                   "properties" => {
                       "type" => {"type" => "string"},
@@ -95,8 +95,8 @@ module TreatmentArmValidator
                       "chromosome" => {"type" => "string"},
                       "position" => {"type" => "string"},
                       "identifier" => {"type" => "string"},
-                      "reference" => {"type" => "string"},
-                      "alternative" => {"type" => "string"},
+                      "ocp_reference" => {"type" => "string"},
+                      "ocp_alternative" => {"type" => "string"},
                       "rare" => {"type" => "boolean"},
                       "level_of_evidence" => {"type" => "number"},
                       "inclusion" => {"type" => "boolean"},
@@ -173,7 +173,7 @@ module TreatmentArmValidator
               "diseases" => {"type" => "array", "items" => { "$ref" => "#/definitions/diseases" }},
               "assay_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/rules" }},
               "gene_fusions" => {"type" => "array", "items" => { "$ref" => "#/definitions/genes" }},
-              "non_hotspot_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/hotspotrules" }},
+              "non_hotspot_rules" => {"type" => "array", "minItems" => 1 },
               "exclusion_drugs" => {"type" => "array", "items" => { "$ref" => "#/definitions/edrugs" }},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
                   "id" => {"type" => "string", "minLength" => 1},
