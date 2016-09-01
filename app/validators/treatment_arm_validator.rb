@@ -154,13 +154,12 @@ module TreatmentArmValidator
               }
           },
           "type" => "object",
-          "required" => ["name", "version", "active", "id", "date_created", "stratum_id", "treatment_arm_drugs", "study_id"],
+          "required" => ["name", "version", "active", "id", "stratum_id", "treatment_arm_drugs", "study_id"],
           "properties" => {
               "name" => {"type" => "string", "not" => {"type" => "null"}},
               "active" => {"type" => "boolean", "not" => {"type" => "null"}},
               "id" => {"type" => "string", "not" => {"type" => "null"}},
               "version" => {"type" => "string", "not" => {"type" => "null"}},
-              "date_created" => {"type" => "string", "not" => {"type" => "null"}},
               "stratum_id" => {"type" => "string", "not" => {"type" => "null"}},
               "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
               "description" => {"type" => "string"},
