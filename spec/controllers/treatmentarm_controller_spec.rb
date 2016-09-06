@@ -30,7 +30,7 @@ describe TreatmentarmController do
                :not_enrolled_patients => 2,
                :pending_patients => 0
   end
-  
+
   let(:treatment_arm) do
     stub_model TreatmentArm,
                :version => "2016-20-02",
@@ -50,7 +50,7 @@ describe TreatmentarmController do
                :exclusion_drugs => [],
                :pten_results => [],
                :status_log => []
-               
+
   end
 
   describe "POST #newTreatmentArm" do
@@ -67,7 +67,7 @@ describe TreatmentarmController do
         allow(Aws::Publisher).to receive(:publish).and_return("")
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post "new_treatment_arm", {:id => "EAY131-A", :study_id => "EAY131", :version => "TestVersion", :treatment_arm_drugs => [{:drug_id => "1234565"}]}.to_json
-        expect(response.body).to include("SUCCESS")
+        expect(response.body).to include("Message has been processed successfully")
         expect(response).to have_http_status(200)
       end
 
@@ -75,7 +75,7 @@ describe TreatmentarmController do
         allow(Aws::Publisher).to receive(:publish).and_return("")
         allow(JSON::Validator).to receive(:validate).and_return(false)
         post "new_treatment_arm", {:id => "EAY131-A", :version => "TestVersion"}.to_json
-        expect(response.body).to include("FAILURE")
+        expect(response.body).to include("The property '#/' did not contain a required property of 'name'")
         expect(response).to have_http_status(500)
       end
     end
@@ -85,7 +85,7 @@ describe TreatmentarmController do
         allow(JSON::Validator).to receive(:validate).and_return(false)
         post "new_treatment_arm", {}
         expect(response).to have_http_status(500)
-        expect(response.body).to include("FAILURE")
+        expect(response.body).to include("A JSON text must at least contain two octets!")
       end
     end
 
@@ -147,7 +147,7 @@ describe TreatmentarmController do
       expect(response.body).to eq((treatment_arm.to_h).to_json)
       expect(response).to have_http_status(200)
     end
-    
+
 
   end
 
