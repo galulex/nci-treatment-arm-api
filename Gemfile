@@ -19,6 +19,12 @@ gem 'rack-cors'
 gem 'aws-sdk-rails'
 gem 'aws-record'
 gem 'json-schema'
+gem 'dynamoid', '~> 1', git: 'https://github.com/asampatoor/Dynamoid.git', branch: 'master'
+# Dynamoid is an ORM for Amazon's DynamoDB for Ruby applications.
+# It provides similar functionality to ActiveRecord and improves on Amazon's
+# existing HashModel by providing better searching tools and native association support.
+gem 'aws-sdk', '~>2'
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
