@@ -1,30 +1,22 @@
 
 Rails.application.routes.draw do
-
   controller :treatmentarm do
-    post 'newTreatmentArm' => :new_treatment_arm
-    # post 'approveTreatmentArm' => :approve_treatment_arm
-    # post 'ecogTreatmentArmList' => :ecog_treatment_arm_list
-
-
-    get 'treatmentArm/:id' => :treatment_arm
-    get 'treatmentArm/:id/:stratum_id' => :treatment_arm
-    get 'treatmentArm/:id/:stratum_id/:version' => :treatment_arm
-
-    get 'treatmentArms/:id' => :treatment_arms
-    get 'treatmentArms/:id/:stratum_id' => :treatment_arms
-    get 'treatmentArms' => :treatment_arms
-
-    get 'treatmentArmVersions' => :treatment_arm_versions
-    get 'basicTreatmentArms' => :basic_treatment_arms
-    get 'basicTreatmentArms/:id' => :basic_treatment_arms
-    get 'variantReport' => :variant_report
-  end
-
-  controller :version do
-    routing_path = "api/v1/treatment_arms"
-    get "#{routing_path}/version" => :version
-    # get 'version' => :version
+    namespace 'api' do
+      namespace 'v1' do
+        resources :treatment_arms, except: %w(new update edit create show) do
+          member do
+            post ':stratum_id/:version', to: 'treatment_arms#create'
+            get ':stratum_id/:version', to: 'treatment_arms#show'
+            get ':stratum_id', to: 'treatment_arms#show'
+            put ':stratum_id/:version', to: 'treatment_arms#update_clone'
+          end
+          collection do
+            get 'version', to: 'version#version', as: 'version'
+            get 'ping', to: 'ping#ping', as: 'ping'
+          end
+        end
+      end
+    end
   end
 
   controller :patient do
@@ -39,9 +31,4 @@ Rails.application.routes.draw do
     get 'patientDiseaseGraph' => :patient_disease_data
     get 'patientDiseaseGraph/:id' => :patient_disease_data
   end
-
-  controller :ping do
-    get 'ping' => :ping
-  end
-
 end
