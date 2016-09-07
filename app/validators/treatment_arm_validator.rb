@@ -25,12 +25,9 @@ module TreatmentArmValidator
                   "properties" => {
                       "_id" => {"type" => "string", "minLength" => 1},
                       "disease_code_type" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "disease_code" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "exclusion" => {"type" => "boolean"},
-                      "ctep_sub_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "ctep_term" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "ctep_category" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "short_name" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]}
+                      "disease_code" => {"type" => "string"},
+                      "disease_name" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "exclusion" => {"type" => "boolean"}
                   }
               },
               "rules" => {
@@ -50,17 +47,17 @@ module TreatmentArmValidator
                   "type" => "object",
                   "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
-                      "ocp_reference" => {"type" => "string"},
-                      "func_gene" => {"type" => "string"},
+                      "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "identifier" => {"type" => "string"},
+                      "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "inclusion" => {"type" => "boolean"},
                       "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
-                      "chromosome" => {"type" => "string"},
-                      "ocp_alternative" => {"type" => "string"},
-                      "description" => {"type" => "string"},
-                      "position" => {"type" => "string"},
-                      "type" => {"type" => "string"}
+                      "arm_specific" => {"anyOf" => [{"type" => "boolean"}, {"type" => "null"}]}
                   }
               },
               "hotspotrules" => {
@@ -68,9 +65,9 @@ module TreatmentArmValidator
                   "required" => ["inclusion", "level_of_evidence"],
                   "properties" => {
                       "inclusion" => {"type" => "boolean"},
-                      "description" => {"type" => "string"},
+                      "description" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "oncomine_variant_class" => {"type" => "string"},
-                      "public_med_ids" => [{"type" => "array"}],
+                      "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
                       "func_gene" => {"type" => "string"},
                       "arm_specific" => {"type" => "boolean"},
                       "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
@@ -82,55 +79,51 @@ module TreatmentArmValidator
                   "type" => "object",
                   "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
-                      "type" => {"type" => "string"},
-                      "confirmed" => {"type" => "boolean"},
-                      "chromosome" => {"type" => "string"},
-                      "position" => {"type" => "string"},
+                      "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "identifier" => {"type" => "string"},
-                      "ocp_reference" => {"type" => "string"},
-                      "ocp_alternative" => {"type" => "string"},
-                      "rare" => {"type" => "boolean"},
-                      "level_of_evidence" => {"type" => "number"},
+                      "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
+                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
                       "inclusion" => {"type" => "boolean"},
-                      "armSpecific" => {"type" => "boolean"}
+                      "arm_specific" => {"anyOf" => [{"type" => "boolean"}, {"type" => "null"}]}
                   }
               },
               "indels" => {
                   "type" => "object",
                   "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
-                      "type" => {"type" => "string"},
-                      "confirmed" => {"type" => "boolean"},
-                      "chromosome" => {"type" => "string"},
-                      "position" => {"type" => "string"},
+                      "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "identifier" => {"type" => "string"},
-                      "ocp_reference" => {"type" => "string"},
-                      "ocp_alternative" => {"type" => "string"},
-                      "rare" => {"type" => "boolean"},
-                      "level_of_evidence" => {"type" => "number"},
-                      "inclusion" => {"type" => "boolean"}
+                      "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
+                      "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "inclusion" => {"type" => "boolean"},
+                      "arm_specific" => {"anyOf" => [{"type" => "boolean"}, {"type" => "null"}]}
                   }
               },
               "cnvs" => {
                   "type" => "object",
                   "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
-                      "ref_copy_number" => {"type" => "number"},
-                      "raw_copy_number" => {"type" => "number"},
-                      "copy_number" => {"type" => "number"},
-                      "confidence_interval_95percent" => {"type" => "number"},
-                      "confidence_interval_5percent" => {"type" => "number"},
-                      "confirmed" => {"type" => "boolean"},
-                      "chromosome" => {"type" => "string"},
-                      "position" => {"type" => "string"},
+                      "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "identifier" => {"type" => "string"},
-                      "ocp_reference" => {"type" => "string"},
-                      "ocp_alternative" => {"type" => "string"},
-                      "rare" => {"type" => "boolean"},
-                      "level_of_evidence" => {"type" => "number"},
+                      "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
+                      "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "inclusion" => {"type" => "boolean"},
-                      "armSpecific" => {"type" => "boolean"},
-                      "type" => {"type" => "string"}
+                      "arm_specific" => {"anyOf" => [{"type" => "boolean"}, {"type" => "null"}]}
                   }
               },
               "edrugs" => {
@@ -139,8 +132,8 @@ module TreatmentArmValidator
                   "properties" => {
                       "name" => {"type" => "string"},
                       "drug_id" => {"type" => "string"},
-                      "drug_class" => {"type" => "string"},
-                      "target" => {"type" => "string"}
+                      "drug_class" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "target" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]}
                   }
               }
           },
@@ -148,12 +141,13 @@ module TreatmentArmValidator
           "required" => ["name", "version", "id", "stratum_id", "treatment_arm_drugs", "study_id"],
           "properties" => {
               "name" => {"type" => "string", "not" => {"type" => "null"}},
+              "study_id" => {"type" => "string", "not" => {"type" => "null"}},
               "active" => {"type" => "boolean", "not" => {"type" => "null"}},
               "id" => {"type" => "string", "not" => {"type" => "null"}},
               "version" => {"type" => "string", "not" => {"type" => "null"}},
               "stratum_id" => {"type" => "string", "not" => {"type" => "null"}},
               "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
-              "description" => {"type" => "string"},
+              "description" => {"anyOf" => [{"type" => "string"},{"type" => "null"}]},
               "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
               "target_name" => {"type" => "string"},
               "gene" => {"type" => "string"},
