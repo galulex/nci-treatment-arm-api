@@ -8,14 +8,10 @@ module TreatmentArmValidator
           "definitions" => {
               "drug" => {
                   "type" => "object",
-                  "required" => ["name", "drug_id", "pathway"],
+                  "required" => ["name", "drug_id"],
                   "properties" => {
                       "drug_id" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "name" => {"type" => "string", "minLength" => 1},
-                      "pathway" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "description" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "drug_class" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "target" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "name" => {"type" => "string", "minLength" => 1}
                   }
               },
               "treatment_arm_status" => {
@@ -52,7 +48,7 @@ module TreatmentArmValidator
               },
               "genes" => {
                   "type" => "object",
-                  "required" => ["ocp_reference", "identifier", "inclusion", "level_of_evidence"],
+                  "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
                       "ocp_reference" => {"type" => "string"},
                       "func_gene" => {"type" => "string"},
@@ -84,8 +80,7 @@ module TreatmentArmValidator
               },
               "snvs" => {
                   "type" => "object",
-                  "required" => ["identifier", "chromosome", "position", "ocp_reference", "ocp_alternative",
-                                 "level_of_evidence"],
+                  "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
                       "type" => {"type" => "string"},
                       "confirmed" => {"type" => "boolean"},
@@ -102,8 +97,7 @@ module TreatmentArmValidator
               },
               "indels" => {
                   "type" => "object",
-                  "required" => ["identifier", "chromosome", "position", "ocp_alternative", "ocp_reference",
-                                 "level_of_evidence"],
+                  "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
                       "type" => {"type" => "string"},
                       "confirmed" => {"type" => "boolean"},
@@ -119,7 +113,7 @@ module TreatmentArmValidator
               },
               "cnvs" => {
                   "type" => "object",
-                  "required" => ["identifier", "chromosome", "position", "level_of_evidence"],
+                  "required" => ["identifier", "inclusion", "level_of_evidence"],
                   "properties" => {
                       "ref_copy_number" => {"type" => "number"},
                       "raw_copy_number" => {"type" => "number"},
