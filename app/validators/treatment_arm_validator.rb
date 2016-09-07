@@ -1,5 +1,4 @@
 module TreatmentArmValidator
-
   class << self
 
     attr_reader :schema
@@ -26,7 +25,7 @@ module TreatmentArmValidator
               },
               "diseases" => {
                   "type" => "object",
-                  "required" => ["disease_code_type", "disease_code", "exclusion"],
+                  "required" => ["disease_code", "exclusion"],
                   "properties" => {
                       "_id" => {"type" => "string", "minLength" => 1},
                       "disease_code_type" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
@@ -70,18 +69,16 @@ module TreatmentArmValidator
               },
               "hotspotrules" => {
                   "type" => "object",
-                  "required" => ["inclusion", "oncomine_variant_class", "func_gene", "level_of_evidence", "function",
-                                 "protein_match", "exon"],
+                  "required" => ["inclusion", "level_of_evidence"],
                   "properties" => {
                       "inclusion" => {"type" => "boolean"},
+                      "description" => {"type" => "string"},
                       "oncomine_variant_class" => {"type" => "string"},
-                      "public_med_ids" => [{"type" => "array"}, {"type" => "null"}],
+                      "public_med_ids" => [{"type" => "array"}],
                       "func_gene" => {"type" => "string"},
                       "arm_specific" => {"type" => "boolean"},
                       "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
                       "function" => {"type" => "string"},
-                      "protein_match" => {"type" => "string"},
-                      "type" => {"type" => "string"},
                       "exon" => {"type" => "string"}
                   }
               },
@@ -144,7 +141,7 @@ module TreatmentArmValidator
               },
               "edrugs" => {
                   "type" => "object",
-                  "required" => ["drug_id"],
+                  "required" => ["drug_id", "name"],
                   "properties" => {
                       "name" => {"type" => "string"},
                       "drug_id" => {"type" => "string"},
@@ -154,7 +151,7 @@ module TreatmentArmValidator
               }
           },
           "type" => "object",
-          "required" => ["name", "version", "active", "id", "stratum_id", "treatment_arm_drugs", "study_id"],
+          "required" => ["name", "version", "id", "stratum_id", "treatment_arm_drugs", "study_id"],
           "properties" => {
               "name" => {"type" => "string", "not" => {"type" => "null"}},
               "active" => {"type" => "boolean", "not" => {"type" => "null"}},
@@ -172,13 +169,12 @@ module TreatmentArmValidator
               "diseases" => {"type" => "array", "items" => { "$ref" => "#/definitions/diseases" }},
               "assay_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/rules" }},
               "gene_fusions" => {"type" => "array", "items" => { "$ref" => "#/definitions/genes" }},
-              "non_hotspot_rules" => {"type" => "array", "minItems" => 1 },
+              "non_hotspot_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/hotspotrules" }},
               "exclusion_drugs" => {"type" => "array", "items" => { "$ref" => "#/definitions/edrugs" }},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
                   "id" => {"type" => "string", "minLength" => 1},
                   "description" => {"type" => "string", "minLength" => 1}
               }}},
-              "treatment_arm_status" => { "$ref" => "#/definitions/treatment_arm_status" },
               "status_log" => {"type" => "object", "properties" => {
                   "id" => {"type" => "number"},
                   "treatment_arm_status" => { "$ref" => "#/definitions/treatment_arm_status" }
