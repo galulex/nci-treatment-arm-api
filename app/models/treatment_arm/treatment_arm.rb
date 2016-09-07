@@ -37,7 +37,7 @@ class TreatmentArm
    field :pending_patients, :integer
 
    def clone_attributes
-     attributes.merge!(active: !active)
+     attributes.merge!(is_active_flag: !is_active_flag)
    end
 end
 

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
            member do
              post ':stratum_id/:version', to: 'treatment_arms#create'
              get ':stratum_id/:version', to: 'treatment_arms#show'
-             get ':stratum_id', to: 'treatment_arms#show'
+             get ':stratum_id', to: 'treatment_arms#index'
              put ':stratum_id/:version', to: 'treatment_arms#update_clone'
            end
            collection do

@@ -16,7 +16,7 @@ describe TreatmentArm do
 
   let(:treatment_arm) do
     ba = TreatmentArm.new
-    ba.active = true
+    ba.is_active_flag= true
     ba.name = "TestData"
     ba.version = "EAY13102"
     ba.description = "testDescription"
@@ -37,7 +37,6 @@ describe TreatmentArm do
     stub_client.stub_responses(:describe_table, {
         table: {table_status: "ACTIVE"}
     })
-    treatment_arm.configure_client(client: stub_client)
     expect(treatment_arm.name).to be_kind_of(String)
     expect(treatment_arm.version).to be_kind_of(String)
     expect(treatment_arm.description).to be_kind_of(String)

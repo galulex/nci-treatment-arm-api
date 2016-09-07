@@ -30,6 +30,8 @@
          begin
            if @basic_serializer == true
              render json: @treatment_arms, each_serializer: ::TreatmentArmBasicSerializer
+           elsif params[:combine_variants].present?
+             render json: @treatment_arms, each_serializer: ::TreatmentArmCombineSerializer
            else
              render json: @treatment_arms, each_serializer: ::TreatmentArmSerializer
            end
@@ -43,7 +45,6 @@
            if @basic_serializer == true
              render json: @treatment_arm, serializer: ::TreatmentArmBasicSerializer
            elsif params[:combine_variants].present?
-             # Work around as we are unable pass options to active model serializer
              render json: @treatment_arm, serializer: ::TreatmentArmCombineSerializer
            else
              render json: @treatment_arm, serializer: ::TreatmentArmSerializer

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe VersionController do
-
+describe Api::V1::VersionController do
   describe "GET #version" do
     it "Should return the API version" do
      get :version
@@ -10,7 +9,7 @@ describe VersionController do
     end
 
     it "should route to the correct controller" do
-      expect(:get => "/api/v1/treatment_arms/version" ).to route_to(:controller => "version", :action => "version")
+      expect(:get => "/api/v1/treatment_arms/version" ).to route_to(:controller => "api/v1/version", :action => "version")
     end
 
     it "should handle an error correctly" do
@@ -18,6 +17,5 @@ describe VersionController do
       get :version
       expect(response).to have_http_status(500)
     end
-
   end
 end
