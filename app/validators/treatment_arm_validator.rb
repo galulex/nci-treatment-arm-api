@@ -150,7 +150,7 @@ module TreatmentArmValidator
               "description" => {"anyOf" => [{"type" => "string"},{"type" => "null"}]},
               "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
               "target_name" => {"type" => "string"},
-              "gene" => {"type" => "string"},
+              "gene" => {"anyOf" => [{"type" => "string"},{"type" => "null"}]},
               "single_nucleotide_variants" => {"type" => "array", "items" => { "$ref" => "#/definitions/snvs" }},
               "indels" => {"type" => "array", "items" => { "$ref" => "#/definitions/indels" }},
               "copy_number_variants" => {"type" => "array", "items" => { "$ref" => "#/definitions/cnvs" }},
