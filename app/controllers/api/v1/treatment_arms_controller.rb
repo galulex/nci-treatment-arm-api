@@ -56,7 +56,7 @@
 
        def update_clone
          begin
-           Aws::Publisher.publish(treatment_arm: @treatment_arm.clone_attributes.merge!(clone_params))
+           Aws::Publisher.publish(clone_treatment_arm: @treatment_arm.clone_attributes.merge!(clone_params))
            render json: { message: 'Message has been processed successfully' }, status: 200
          rescue => error
            standard_error_message(error)
@@ -67,6 +67,7 @@
 
        def set_treatment_arms
          params[:is_active_flag] = params[:active]
+         params[:name] = params[:id]
          if params[:basic].present?
            @basic_serializer = params[:basic].downcase == 'true' ? true : false
          end
@@ -75,18 +76,22 @@
 
        def set_treatment_arm
          @treatment_arm = filter_query(TreatmentArm.where(name: params[:id]).entries).first
-         # standard_error_message("Unable to find treatment_arm with given details") if @treatment_arm.nil?
+         standard_error_message('Unable to find treatment_arm with given details') if @treatment_arm.nil?
        end
 
        def clone_params
-         params.require(:treatment_arm).permit(:version)
+         body_params = JSON.parse(request.raw_post)
+         body_params.deep_transform_keys!(&:underscore).symbolize_keys!
+         body_params[:new_version] = body_params[:version]
+         [:id, :name, :date_created, :version].each { |k| body_params.delete(k) }
+         body_params
        end
 
        def filter_query(query_result)
          return [] if query_result.nil?
          [:name, :stratum_id, :version, :is_active_flag].each do |key|
            if params[key].present?
-             new_query_result = query_result.select{ |t| t.send(key) == params[key] }
+             new_query_result = query_result.select { |t| t.send(key) == params[key] }
              query_result = new_query_result
            end
          end
