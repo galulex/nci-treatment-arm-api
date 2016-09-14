@@ -1,6 +1,6 @@
 # This gets rendered for displaying all the TreatmentArms
  class TreatmentArmSerializer < ActiveModel::Serializer
-   attributes :name, :active, :id, :date_created, :version, :stratum_id,
+   attributes :id, :name, :active, :date_created, :version, :stratum_id,
               :description, :target_id, :target_name, :gene,
               :treatment_arm_status, :study_id, :assay_rules,
               :num_patients_assigned, :date_opened, :treatment_arm_drugs,
@@ -11,9 +11,5 @@
 
    def active
      object.is_active_flag == 'true' ? true : false
-   end
-
-   def id
-     object.name
    end
  end

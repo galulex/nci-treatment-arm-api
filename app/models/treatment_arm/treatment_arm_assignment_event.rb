@@ -6,11 +6,9 @@ class TreatmentArmAssignmentEvent
   set_table_name "#{self.name.underscore}"
 
   string_attr :patient_id, hash_key: true
-  date_attr :date_created, range_key: true
-  date_attr :date_selected
+  date_attr :date_generated, range_key: true
   date_attr :date_on_arm
   date_attr :date_off_arm
-  string_attr :treatment_arm_name
   string_attr :treatment_arm_id
   string_attr :stratum_id
   string_attr :version
@@ -21,7 +19,6 @@ class TreatmentArmAssignmentEvent
   string_attr :surgical_event_id
   string_attr :molecular_id
   string_attr :analysis_id
-
 
   def self.find_by(opts = {})
     query = {}

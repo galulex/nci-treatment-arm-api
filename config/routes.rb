@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   controller :treatmentarm do
     namespace 'api' do
        namespace 'v1' do
-         resources :treatment_arms, except: %w(new update edit create show) do
+         resources :treatment_arms, except: %w(new update edit create show destroy) do
            member do
              post ':stratum_id/:version', to: 'treatment_arms#create'
              get ':stratum_id/:version', to: 'treatment_arms#show'

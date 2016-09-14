@@ -6,7 +6,8 @@
        include HTTParty
        # before_action :authenticate, if: "Rails.env.production?"
        before_action :set_treatment_arms, only: ['index']
-       before_action :set_treatment_arm, only: %w(show update_clone)
+       before_action :set_treatment_arm, only: ['show']
+       before_action :set_latest_treatment_arm, only: ['update_clone']
 
        def create
          begin
@@ -75,21 +76,26 @@
        end
 
        def set_treatment_arm
-         @treatment_arm = filter_query(TreatmentArm.where(name: params[:id]).entries).first
-         standard_error_message('Unable to find treatment_arm with given details') if @treatment_arm.nil?
+         @treatment_arm = filter_query(TreatmentArm.where(id: params[:id]).entries).first
+         # standard_error_message('Unable to find treatment_arm with given details') if @treatment_arm.nil?
+       end
+
+       def set_latest_treatment_arm
+        treatment_arms = TreatmentArm.where(id: params[:id],stratum_id: params[:stratum_id])
+        @treatment_arm=treatment_arms.sort{|x,y| y.date_created <=> x.date_created}.first
        end
 
        def clone_params
          body_params = JSON.parse(request.raw_post)
          body_params.deep_transform_keys!(&:underscore).symbolize_keys!
-         body_params[:new_version] = body_params[:version]
+         body_params[:new_version] = params[:version]
          [:id, :name, :date_created, :version].each { |k| body_params.delete(k) }
          body_params
        end
 
        def filter_query(query_result)
          return [] if query_result.nil?
-         [:name, :stratum_id, :version, :is_active_flag].each do |key|
+         [:id, :stratum_id, :version, :is_active_flag].each do |key|
            if params[key].present?
              new_query_result = query_result.select { |t| t.send(key) == params[key] }
              query_result = new_query_result

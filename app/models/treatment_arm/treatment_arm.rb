@@ -4,7 +4,7 @@
 class TreatmentArm
   include Dynamoid::Document
 
-  table name: 'treatment_arm', key: :name, range_key: :date_created
+  table name: 'treatment_arm', key: :id, range_key: :date_created
 
   field :id
   field :is_active_flag
@@ -37,7 +37,7 @@ class TreatmentArm
   field :pending_patients, :integer
 
   def clone_attributes
-    attributes.merge!(id: name, date_created: nil)
+    attributes.merge!(date_created: nil)
   end
 end
 

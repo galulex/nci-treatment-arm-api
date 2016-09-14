@@ -16,10 +16,6 @@
      ]
    end
 
-   def id
-     object.name
-   end
-
    def active
      object.is_active_flag == 'true' ? true : false
    end
