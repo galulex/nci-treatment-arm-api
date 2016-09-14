@@ -40,7 +40,7 @@ module TreatmentArmValidator
                                                },
                       "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "assay_variant" => {"type" => "string", "enum" => ["PRESENT", "NEGATIVE", "EMPTY"]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0}
+                      "level_of_evidence" => {"type" => "number"}
                   }
               },
               "genes" => {
@@ -50,7 +50,7 @@ module TreatmentArmValidator
                       "gene" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "identifier" => {"type" => "string"},
                       "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "level_of_evidence" => {"type" => "number"},
                       "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
@@ -70,7 +70,7 @@ module TreatmentArmValidator
                       "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
                       "func_gene" => {"type" => "string"},
                       "arm_specific" => {"type" => "boolean"},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "level_of_evidence" => {"type" => "number"},
                       "function" => {"type" => "string"},
                       "exon" => {"type" => "string"}
                   }
@@ -87,7 +87,7 @@ module TreatmentArmValidator
                       "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "level_of_evidence" => {"type" => "number"},
                       "inclusion" => {"type" => "boolean"},
                       "arm_specific" => {"anyOf" => [{"type" => "boolean"}, {"type" => "null"}]}
                   }
@@ -101,7 +101,7 @@ module TreatmentArmValidator
                       "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "level_of_evidence" => {"type" => "number"},
                       "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
                       "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
@@ -118,7 +118,7 @@ module TreatmentArmValidator
                       "chromosome" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "position" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "protein" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
-                      "level_of_evidence" => {"type" => "number", "multipleOf" => 1.0},
+                      "level_of_evidence" => {"type" => "number"},
                       "public_med_ids" => {"anyOf" => [{"type" => "array"}, {"type" => "null"}]},
                       "ocp_reference" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
                       "ocp_alternative" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
