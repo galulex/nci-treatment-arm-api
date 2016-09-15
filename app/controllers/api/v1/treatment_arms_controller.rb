@@ -81,7 +81,7 @@
        end
 
        def set_latest_treatment_arm
-        treatment_arms = TreatmentArm.where(id: params[:id],stratum_id: params[:stratum_id])
+        treatment_arms = TreatmentArm.where(id: params[:id], stratum_id: params[:stratum_id])
         @treatment_arm=treatment_arms.sort{|x,y| y.date_created <=> x.date_created}.first
        end
 

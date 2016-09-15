@@ -2,27 +2,31 @@
 Rails.application.routes.draw do
   controller :treatmentarm do
     namespace 'api' do
-       namespace 'v1' do
-         resources :treatment_arms, except: %w(new update edit create show destroy) do
-           member do
-             post ':stratum_id/:version', to: 'treatment_arms#create'
-             get ':stratum_id/:version', to: 'treatment_arms#show'
-             get ':stratum_id', to: 'treatment_arms#index'
-             put ':stratum_id/:version', to: 'treatment_arms#update_clone'
-           end
-           collection do
-             get 'version', to: 'version#version', as: 'version'
-             get 'ping', to: 'ping#ping', as: 'ping'
-           end
-         end
-       end
-     end
+      namespace 'v1' do
+        resources :treatment_arms, except: %w(new update edit create show destroy) do
+          member do
+            post ':stratum_id/:version', to: 'treatment_arms#create'
+            get ':stratum_id/:version', to: 'treatment_arms#show'
+            get ':stratum_id', to: 'treatment_arms#index'
+            put ':stratum_id/:version', to: 'treatment_arms#update_clone'
+          end
+          collection do
+            get 'version', to: 'version#version', as: 'version'
+            get 'ping', to: 'ping#ping', as: 'ping'
+          end
+        end
+      end
+    end
   end
 
   controller :patient do
-    get 'patientsOnTreatmentArm/:id' => :patient_on_treatment_arm
-    post 'patientAssignment' => :patient_assignment
-    get 'patientReadyForAssignment' => :queue_treatment_arm_assignment
+    namespace 'api' do
+      namespace 'v1' do
+        get 'patients_on_treatment_arm/:id', to: 'patients#patient_on_treatment_arm'
+        post 'patient_assignment', to: 'patients#patient_assignment'
+        get 'patient_ready_for_assignment', to: 'patients#queue_treatment_arm_assignment'
+      end
+    end
   end
 
   controller :graph_data do

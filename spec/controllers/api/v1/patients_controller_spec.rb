@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'factory_girl_rails'
 
-describe PatientController do
+describe Api::V1::PatientsController do
 
   before(:each) do
     setup_knock()
@@ -9,6 +9,7 @@ describe PatientController do
 
   let(:patient_treatment_arm) do
     stub_model TreatmentArmAssignmentEvent,
+               :id => "",
                :treatment_arm_name_version => "",
                :patient_sequence_number => "",
                :concordance => "",
@@ -36,23 +37,28 @@ describe PatientController do
   end
 
   describe "GET #patientsOnTreatmentArm" do
-
     it "should route to the correct controller" do
-      expect(:get => "/patientsOnTreatmentArm/EAY131-A" ).to route_to(:controller => "patient",
-                                                                      :action => "patient_on_treatment_arm",
-                                                                      :id => "EAY131-A")
+      expect(:get => "api/v1/patients_on_treatment_arm/EAY131-A").to route_to(:controller => "api/v1/patients",
+                                                                               :action => "patient_on_treatment_arm",
+                                                                               :id => "EAY131-A")
+
+      expect(:get => "/api/v1/patient_ready_for_assignment").to route_to(:controller => "api/v1/patients",
+                                                                         :action => "queue_treatment_arm_assignment")
+
+      expect(:post => "/api/v1/patient_assignment").to route_to(:controller => "api/v1/patients",
+                                                                :action => "patient_assignment")
     end
 
     it "patient should handle errors correctly" do
       allow(TreatmentArmAssignmentEvent).to receive(:scan).and_raise("this error")
-      get :patient_on_treatment_arm, :id => "EAY131-A"
+      get :patient_on_treatment_arm, id: 'EAY131-A'
       expect(response).to have_http_status(500)
     end
 
-    # it "should pull data correctly from DB" do
-    #   allow(TreatmentArmPatient).to receive(:scan).and_return(patient_treatment_arm)
-    #   get :patient_on_treatment_arm, :id => "EAY131-A"
-    #   expect(response.body).to eq(patient_treatment_arm.to_json)
-    # end
+    it "should pull data correctly from DB" do
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return(patient_treatment_arm)
+      get :patient_on_treatment_arm, id: 'EAY131-A'
+      expect(response).to_not be_nil
+    end
   end
 end
