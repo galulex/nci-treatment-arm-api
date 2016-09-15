@@ -89,7 +89,7 @@
          body_params = JSON.parse(request.raw_post)
          body_params.deep_transform_keys!(&:underscore).symbolize_keys!
          body_params[:new_version] = params[:version]
-         [:id, :name, :date_created, :version].each { |k| body_params.delete(k) }
+         [:id, :date_created, :version].each { |k| body_params.delete(k) }
          body_params
        end
 
