@@ -39,14 +39,11 @@ describe Api::V1::PatientsController do
   describe "GET #patientsOnTreatmentArm" do
     it "should route to the correct controller" do
       expect(:get => "api/v1/patients_on_treatment_arm/EAY131-A").to route_to(:controller => "api/v1/patients",
-                                                                               :action => "patient_on_treatment_arm",
-                                                                               :id => "EAY131-A")
+                                                                              :action => "patient_on_treatment_arm",
+                                                                              :id => "EAY131-A")
 
       expect(:get => "/api/v1/patient_ready_for_assignment").to route_to(:controller => "api/v1/patients",
                                                                          :action => "queue_treatment_arm_assignment")
-
-      expect(:post => "/api/v1/patient_assignment").to route_to(:controller => "api/v1/patients",
-                                                                :action => "patient_assignment")
     end
 
     it "patient should handle errors correctly" do
@@ -59,6 +56,28 @@ describe Api::V1::PatientsController do
       allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return(patient_treatment_arm)
       get :patient_on_treatment_arm, id: 'EAY131-A'
       expect(response).to_not be_nil
+    end
+  end
+
+  describe "POST #patient_assignment" do
+    context "With Valid Data" do
+      it "Should route to the correct controller" do
+        expect(:post => "/api/v1/patient_assignment").to route_to(:controller => "api/v1/patients",
+                                                                  :action => "patient_assignment")
+      end
+
+      it "Should save date to the DataBase" do
+        params = { treatment_arm_id: "EAY131-A", stratum_id: "100", version: "2017-10-07"}
+        post :patient_assignment, params.to_json, params.merge(format: 'json')
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context "With Invalid Data" do
+      it "Should fail saving data to the DataBase" do
+        post :patient_assignment, id: 'EAY131-A'
+        expect(response).to have_http_status(500)
+      end
     end
   end
 end
