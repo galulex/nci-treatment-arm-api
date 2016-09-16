@@ -146,7 +146,7 @@ module TreatmentArmValidator
               "id" => {"type" => "string", "not" => {"type" => "null"}},
               "version" => {"type" => "string", "not" => {"type" => "null"}},
               "stratum_id" => {"type" => "string", "not" => {"type" => "null"}},
-              "treatment_arm_drugs" => {"type" => "array", "items" => {"$ref" => "#/definitions/drug" }},
+              "treatment_arm_drugs" => {"type" => "array", "uniqueItems": "drug_id", "items" => {"$ref" => "#/definitions/drug" }},
               "description" => {"anyOf" => [{"type" => "string"},{"type" => "null"}]},
               "target_id" => {"anyOf" => [{"type" => "string"}, {"type" => "number"}, {"type" => "null"}]},
               "target_name" => {"type" => "string"},
@@ -158,7 +158,7 @@ module TreatmentArmValidator
               "assay_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/rules" }},
               "gene_fusions" => {"type" => "array", "items" => { "$ref" => "#/definitions/genes" }},
               "non_hotspot_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/hotspotrules" }},
-              "exclusion_drugs" => {"type" => "array", "items" => { "$ref" => "#/definitions/edrugs" }},
+              "exclusion_drugs" => {"type" => "array", "uniqueItems": "drug_id", "items" => { "$ref" => "#/definitions/edrugs" }},
               "exclusion_criterias" => {"type" => "array", "items" => {"type" => "object", "properties" => {
                   "id" => {"type" => "string", "minLength" => 1},
                   "description" => {"type" => "string", "minLength" => 1}
