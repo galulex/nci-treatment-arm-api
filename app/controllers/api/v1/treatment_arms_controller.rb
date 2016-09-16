@@ -64,6 +64,20 @@
          end
        end
 
+       def assignment_event
+         begin
+           @assignment_event = JSON.parse(request.raw_post)
+           @assignment_event.deep_transform_keys!(&:underscore).symbolize_keys!
+           @assignment_event.merge!(treatment_arm_id: params[:id],
+                                    stratum_id: params[:stratum_id],
+                                    version: params[:version])
+           Aws::Publisher.publish({ assignment_event: @assignment_event })
+           render json: { message: 'Message has been processed successfully' }, status: 200
+         rescue => error
+           standard_error_message(error)
+         end
+       end
+
        private
 
        def set_treatment_arms
@@ -72,6 +86,7 @@
          if params[:basic].present?
            @basic_serializer = params[:basic].downcase == 'true' ? true : false
          end
+         Aws::Publisher.publish({ cog_treatment_refresh: {} }) if params[:refresh].try(:downcase) == 'true'
          @treatment_arms = filter_query(TreatmentArm.all.entries)
        end
 

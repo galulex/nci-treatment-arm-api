@@ -9,6 +9,7 @@ Rails.application.routes.draw do
             get ':stratum_id/:version', to: 'treatment_arms#show'
             get ':stratum_id', to: 'treatment_arms#index'
             put ':stratum_id/:version', to: 'treatment_arms#update_clone'
+            post ':stratum_id/:version/assignment_event', to: 'treatment_arms#assignment_event'
           end
           collection do
             get 'version', to: 'version#version', as: 'version'
