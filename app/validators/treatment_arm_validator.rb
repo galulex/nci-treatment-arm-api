@@ -10,13 +10,13 @@ module TreatmentArmValidator
                   "type" => "object",
                   "required" => ["name", "drug_id"],
                   "properties" => {
-                      "drug_id" => {"anyOf" => [{"type" => "string"}, {"type" => "null"}]},
+                      "drug_id" => {"type" => "string"},
                       "name" => {"type" => "string", "minLength" => 1}
                   }
               },
               "treatment_arm_status" => {
                   "type" => "string",
-                  "enum" => ["OPEN", "SUSPENDED", "UNKNOWN", "CLOSED"],
+                  "enum" => ["OPEN", "SUSPENDED", "PENDING", "CLOSED"],
                   "required" => ["enum"]
               },
               "diseases" => {
@@ -155,7 +155,7 @@ module TreatmentArmValidator
               "indels" => {"type" => "array", "items" => { "$ref" => "#/definitions/indels" }},
               "copy_number_variants" => {"type" => "array", "items" => { "$ref" => "#/definitions/cnvs" }},
               "diseases" => {"type" => "array", "items" => { "$ref" => "#/definitions/diseases" }},
-              "assay_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/rules" }},
+              "assay_rules" => {"anyOf" => [{"type" => "array"},{"type" => "null"}], "items" => { "$ref" => "#/definitions/rules" }},
               "gene_fusions" => {"type" => "array", "items" => { "$ref" => "#/definitions/genes" }},
               "non_hotspot_rules" => {"type" => "array", "items" => { "$ref" => "#/definitions/hotspotrules" }},
               "exclusion_drugs" => {"type" => "array", "uniqueItems": "drug_id", "items" => { "$ref" => "#/definitions/edrugs" }},
