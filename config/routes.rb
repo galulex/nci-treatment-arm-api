@@ -23,7 +23,6 @@ Rails.application.routes.draw do
     namespace 'api' do
       namespace 'v1' do
         get 'patients_on_treatment_arm/:id', to: 'patients#patient_on_treatment_arm'
-        post 'patient_assignment', to: 'patients#patient_assignment'
         get 'patient_ready_for_assignment', to: 'patients#queue_treatment_arm_assignment'
       end
     end
