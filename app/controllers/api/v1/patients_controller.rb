@@ -13,23 +13,6 @@ module Api
         end
       end
 
-      def patient_assignment
-        begin
-          @patient_assignment = JSON.parse(request.raw_post)
-          @patient_assignment.deep_transform_keys!(&:underscore).symbolize_keys!
-          Aws::Publisher.publish({ patient_assignment: @patient_assignment })
-          render json: { message: 'Message has been processed successfully' }, status: 200
-          # if JSON::Validator.validate(PatientAssignmentValidator.schema, @patient_assignment)
-          #   Aws::Publisher.publish({:patient_assignment => @patient_assignment})
-          #   render json: {:status => "SUCCESS"}, :status => 200
-          # else
-          #   JSON::Validator.validate!(PatientAssignmentValidator.schema, @patient_assignment)
-          # end
-        rescue => error
-          standard_error_message(error)
-        end
-      end
-
       def queue_treatment_arm_assignment
         begin
           Aws::Publisher.publish({ queue_treatment_arm: {} })

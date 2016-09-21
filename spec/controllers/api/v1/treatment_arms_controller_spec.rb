@@ -9,8 +9,10 @@ describe Api::V1::TreatmentArmsController do
 
   let(:basic_treatment_arm) do
     stub_model TreatmentArm,
+               :id => "",
                :name => "",
-               :treatment_arm_status => "BROKEN",
+               :stratum_id => "",
+               :treatment_arm_status => "PENDING",
                :date_opened => "",
                :date_closed => "",
                :current_patients => 0,
@@ -21,6 +23,7 @@ describe Api::V1::TreatmentArmsController do
 
   let(:treatment_arm) do
     stub_model TreatmentArm,
+               :id => "APEC1621-A",
                :version => "2016-20-02",
                :stratum_id => "12",
                :description => "WhoKnows",
@@ -78,14 +81,6 @@ describe Api::V1::TreatmentArmsController do
     end
   end
 
-  describe "PUT #treatment_arm" do
-    it "should route to the correct controller" do
-      expect(:put => "api/v1/treatment_arms/EAY131-A/100/2016-10-07" ).to route_to(:controller => "api/v1/treatment_arms", :action => "update_clone",
-             :id => "EAY131-A", :stratum_id => "100", :version => "2016-10-07")
-    end
-  end
-
-
   describe "GET #treatment_arms" do
 
     it "should route to the correct controller" do
@@ -114,8 +109,9 @@ describe Api::V1::TreatmentArmsController do
 
     it "should return all treatmentArms with id and stratum_id" do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :index, :id => "EAY131-A", :stratum_id => "100"
+      get :index, :id => "APEC1621-A", :stratum_id => "12"
       expect(response).to_not be_nil
+      # expect(response.body).to eq(treatment_arm[:id])
       expect(response).to have_http_status(200)
     end
 
@@ -126,6 +122,22 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe "POST #PatientAssignment" do
+    context "with valid data" do
+      it "Should route to the correct controller" do
+        expect(:post => "api/v1/treatment_arms/EAY131-A/100/2016-10-07/assignment_event").to route_to(:controller => "api/v1/treatment_arms", :action => "assignment_event",
+               :id => "EAY131-A", :stratum_id => "100", :version => "2016-10-07")
+      end
+
+      it "Should save date to the DataBase" do
+          params = { id: "EAY131-A", stratum_id: "100", version: "2017-10-07"}
+          post :assignment_event, params.to_json, params.merge(format: 'json')
+          expect(response).to have_http_status(200)
+      end
+    end
+  end
+
 
   describe "GET #basicTreatmentArms" do
    #  it "should return the basic data for all treatment arms" do

@@ -58,26 +58,4 @@ describe Api::V1::PatientsController do
       expect(response).to_not be_nil
     end
   end
-
-  describe "POST #patient_assignment" do
-    context "With Valid Data" do
-      it "Should route to the correct controller" do
-        expect(:post => "/api/v1/patient_assignment").to route_to(:controller => "api/v1/patients",
-                                                                  :action => "patient_assignment")
-      end
-
-      it "Should save date to the DataBase" do
-        params = { treatment_arm_id: "EAY131-A", stratum_id: "100", version: "2017-10-07"}
-        post :patient_assignment, params.to_json, params.merge(format: 'json')
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context "With Invalid Data" do
-      it "Should fail saving data to the DataBase" do
-        post :patient_assignment, id: 'EAY131-A'
-        expect(response).to have_http_status(500)
-      end
-    end
-  end
 end
