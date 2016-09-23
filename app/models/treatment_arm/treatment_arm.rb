@@ -26,8 +26,7 @@ class TreatmentArm
   field :diseases, :array
   field :exclusion_drugs, :array
   field :status_log, :serialized
-  field :single_nucleotide_variants, :array
-  field :indels, :array
+  field :snv_indels, :array
   field :non_hotspot_rules, :array
   field :copy_number_variants, :array
   field :gene_fusions, :array
