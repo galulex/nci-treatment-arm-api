@@ -75,24 +75,7 @@ module TreatmentArmValidator
                       'exon' => { 'type' => 'string' }
                   }
               },
-              'snvs' => {
-                  'type' => 'object',
-                  'required' => ['identifier', 'inclusion', 'level_of_evidence'],
-                  'properties' => {
-                      'gene' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'identifier' => { 'type' => 'string' },
-                      'protein' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'chromosome' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'position' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'ocp_reference' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'ocp_alternative' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
-                      'public_med_ids' => { 'anyOf' => [{ 'type' => 'array' }, { 'type' => 'null' }] },
-                      'level_of_evidence' => { 'type' => 'number', 'minimum' => 0, 'maximum' => 100, 'exclusiveMinimum' => true },
-                      'inclusion' => { 'type' => 'boolean' },
-                      'arm_specific' => { 'anyOf' => [{ 'type' => 'boolean' }, { 'type' => 'null' }] }
-                  }
-              },
-              'indels' => {
+              'snv_indels' => {
                   'type' => 'object',
                   'required' => ['identifier', 'inclusion', 'level_of_evidence'],
                   'properties' => {
@@ -106,7 +89,8 @@ module TreatmentArmValidator
                       'ocp_reference' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
                       'ocp_alternative' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
                       'inclusion' => { 'type' => 'boolean' },
-                      'arm_specific' => { 'anyOf' => [{ 'type' => 'boolean' }, { 'type' => 'null' }] }
+                      'arm_specific' => { 'anyOf' => [{ 'type' => 'boolean' }, { 'type' => 'null' }] },
+                      'property' => { 'type' => 'string' },
                   }
               },
               'cnvs' => {
@@ -151,8 +135,7 @@ module TreatmentArmValidator
               'target_id' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'number' }, { 'type' => 'null' }] },
               'target_name' => { 'type' => 'string' },
               'gene' => { 'anyOf' => [{ 'type' => 'string' },{ 'type' => 'null' }] },
-              'single_nucleotide_variants' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/snvs' } },
-              'indels' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/indels' } },
+              'snv_indels' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/snv_indels' } },
               'copy_number_variants' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/cnvs' } },
               'diseases' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/diseases' } },
               'assay_rules' => { 'anyOf' => [{ 'type' => 'array' },{ 'type' => 'null' }], 'items' => { '$ref' => '#/definitions/rules' } },
