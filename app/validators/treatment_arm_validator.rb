@@ -16,7 +16,7 @@ module TreatmentArmValidator
           },
           'treatment_arm_status' => {
             'type' => 'string',
-            'enum' => %w(OPEN SUSPENDED PENDING CLOSED),
+            'enum' => %w(OPEN SUSPENDED CLOSED),
             'required' => ['enum']
           },
           'diseases' => {
@@ -79,7 +79,7 @@ module TreatmentArmValidator
             'type' => 'object',
             'required' => ['identifier', 'inclusion', 'level_of_evidence', 'variant_type'],
             'properties' => {
-              'variant_type' => { 'type' => 'string', 'enum' => %w(snp del), 'required' => ['enum'] },
+              'variant_type' => { 'type' => 'string', 'enum' => %w(snp del ins complex mnp), 'required' => ['enum'] },
               'gene' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
               'identifier' => { 'type' => 'string' },
               'chromosome' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
             post ':stratum_id/:version/assignment_event', to: 'treatment_arms#assignment_event'
           end
           collection do
+            put 'status', to: 'treatment_arms#refresh', as: 'refresh'
             get 'version', to: 'version#version', as: 'version'
             get 'ping', to: 'ping#ping', as: 'ping'
           end

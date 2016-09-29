@@ -9,6 +9,7 @@ module Api
       before_action :set_treatment_arm, only: ['show']
       before_action :set_latest_treatment_arm, only: ['create']
 
+      # Checks if the TreatmentArm exists in the DB, if not Creates it
       def create
         begin
           if @treatment_arm.nil?
@@ -33,12 +34,11 @@ module Api
         end
       end
 
+      # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
       def index
         begin
-          if @basic_serializer == true
-            render json: @treatment_arms, each_serializer: ::TreatmentArmBasicSerializer
-          elsif params[:combine_variants].present?
-            render json: @treatment_arms, each_serializer: ::TreatmentArmCombineSerializer
+          if params[:projection].present? || attribute_params.present?
+            render json: TreatmentArm.serialized_hash(@treatment_arms, projection_params || [])
           else
             render json: @treatment_arms, each_serializer: ::TreatmentArmSerializer
           end
@@ -47,12 +47,25 @@ module Api
         end
       end
 
+      # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
+      def refresh
+        begin
+          TreatmentArm.cog_status_sync
+          treatment_arms = TreatmentArm.where(is_active_flag: true).all
+          treatment_arms.each do |ta|
+            Aws::Publisher.publish(cog_treatment_refresh: ta)
+          end
+          render json: treatment_arms.as_json
+        rescue => error
+          standard_error_message(error)
+        end
+      end
+
+      # This retrieves a Specific TreatmentArm
       def show
         begin
-          if @basic_serializer == true
-            render json: @treatment_arm, serializer: ::TreatmentArmBasicSerializer
-          elsif params[:combine_variants].present?
-            render json: @treatment_arm, serializer: ::TreatmentArmCombineSerializer
+          if params[:projection].present?
+            render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params)
           else
             render json: @treatment_arm, serializer: ::TreatmentArmSerializer
           end
@@ -61,6 +74,7 @@ module Api
         end
       end
 
+      # This creates TreatmentArm into the Database with the new version
       def update_clone
         begin
           treatment_arm_hash = @treatment_arm.clone_attributes.merge!(clone_params)
@@ -75,6 +89,7 @@ module Api
         end
       end
 
+      # This Assigns a PatientAssignment to a particular TreatmentArm
       def assignment_event
         begin
           @assignment_event = JSON.parse(request.raw_post)
@@ -82,7 +97,7 @@ module Api
           @assignment_event.merge!(treatment_arm_id: params[:id],
                                    stratum_id: params[:stratum_id],
                                    version: params[:version])
-          Aws::Publisher.publish({ assignment_event: @assignment_event })
+          Aws::Publisher.publish(assignment_event: @assignment_event)
           render json: { message: 'Message has been processed successfully' }, status: 200
         rescue => error
           standard_error_message(error)
@@ -92,14 +107,16 @@ module Api
       private
 
       def set_treatment_arms
-        params[:is_active_flag] = params[:active]
-        params[:name] = params[:id]
-        if params[:basic].present?
-          @basic_serializer = params[:basic].downcase == 'true' ? true : false
+        if params[:active].present?
+          params[:is_active_flag] = params[:active] == 'true' ?  true : false
         end
-        Aws::Publisher.publish({ cog_treatment_refresh: {} }) if params[:refresh].try(:downcase) == 'true'
-        ta_json = filter_query(TreatmentArm.all.entries)
-        @treatment_arms = ta_json.sort{|x,y| y.date_created <=> x.date_created}
+        params[:name] = params[:id]
+        if attribute_params.present? || projection_params.present?
+          ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
+        else
+          ta_json = filter_query(TreatmentArm.all.entries)
+        end
+        @treatment_arms = ta_json.sort{ |x, y| y.date_created <=> x.date_created }
       end
 
       def set_treatment_arm
@@ -109,7 +126,7 @@ module Api
 
       def set_latest_treatment_arm
         treatment_arms = TreatmentArm.where(id: params[:id], stratum_id: params[:stratum_id])
-        @treatment_arm = treatment_arms.sort{|x,y| y.date_created <=> x.date_created}.first
+        @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first
       end
 
       def clone_params
@@ -121,15 +138,43 @@ module Api
         body_params
       end
 
+      def projection_params
+        if params[:projection].is_a?(Array)
+          projection = params[:projection] || []
+          projection.map(&:to_sym)
+        end
+      end
+
+      def attribute_params
+        if params[:attribute].is_a?(Array)
+          attribute = params[:attribute] || []
+          attribute.map(&:to_sym)
+        end
+      end
+
       def filter_query(query_result)
         return [] if query_result.nil?
         [:id, :stratum_id, :version, :is_active_flag].each do |key|
-          if params[key].present?
+          if !params[key].nil?
             new_query_result = query_result.select { |t| t.send(key) == params[key] }
             query_result = new_query_result
           end
         end
         query_result
+      end
+
+      def filter_query_by_attributes(query_result)
+        return [] if query_result.nil?
+        unless attribute_params.nil?
+          attribute_params.each do |key|
+            new_query_result = query_result.select do |t|
+              t.send(key).present?
+            end
+            query_result = new_query_result
+          end
+        end
+        query_result = filter_query(query_result) #query_result.select { |t| t.send(:is_active_flag) == params[:active] }
+        query_result || []
       end
 
       def standard_error_message(error)
