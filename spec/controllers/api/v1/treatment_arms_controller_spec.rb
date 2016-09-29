@@ -106,7 +106,6 @@ describe Api::V1::TreatmentArmsController do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :index, id: 'APEC1621-A', stratum_id: '12'
       expect(response).to_not be_nil
-      # expect(response.body).to eq(treatment_arm[:id])
       expect(response).to have_http_status(200)
     end
 
@@ -130,27 +129,6 @@ describe Api::V1::TreatmentArmsController do
         post :assignment_event, params.to_json, params.merge(format: 'json')
         expect(response).to have_http_status(200)
       end
-    end
-  end
-
-  describe 'GET #basicTreatmentArms' do
-   #  it 'should return the basic data for all treatment arms' do
-   #    expect(:get: 'api/v1/treatment_arms?basic=true').to route_to(:controller: 'api/v1/treatment_arms', :action: 'index')
-   #    #expect(:get: '/basicTreatmentArms/EAY131-A' ).to route_to(:controller: 'treatmentarm', :action: 'basic_treatment_arms', :id: 'EAY131-A')
-   #  end
-
-  #   it 'should handle errors correctly' do
-  #     allow(TreatmentArm).to receive(:scan).and_raise('this error')
-  #     get :basic_treatment_arms
-  #     expect(response.body).to include('this error')
-  #     expect(response).to have_http_status(500)
-  #   end
-
-    it 'should send the correct json back' do
-      allow(TreatmentArm).to receive(:scan).and_return([basic_treatment_arm])
-      get :index, basic: 'true'
-      #expect(response.body).to eq(([basic_treatment_arm.to_h]).to_json)
-      expect(response).to have_http_status(200)
     end
   end
 end
