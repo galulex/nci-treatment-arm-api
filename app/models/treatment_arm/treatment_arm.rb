@@ -35,7 +35,6 @@ class TreatmentArm
   field :former_patients, :integer
   field :not_enrolled_patients, :integer
   field :pending_patients, :integer
-  #field :version_statistics, :serialized
 
   def clone_attributes
     attributes.merge!(date_created: nil)

@@ -36,6 +36,6 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def treatment_arm_title
-    "#{object.id}(#{object.stratum_id})"
+    "#{object.id} (#{object.stratum_id})"
   end
 end
