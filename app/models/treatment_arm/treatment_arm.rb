@@ -78,14 +78,14 @@ class TreatmentArm
     end
   end
 
-  def self.stratum_stats(id,stratum_id)
+  def self.stratum_stats(id, stratum_id)
     result = {
                 current_patients: 0,
                 former_patients: 0,
                 not_enrolled_patients: 0,
                 pending_patients: 0
              }
-    treatment_arms = TreatmentArm.where(id: id,stratum_id: stratum_id)
+    treatment_arms = TreatmentArm.where(id: id, stratum_id: stratum_id)
     treatment_arms.each do |treatment_arm|
       result[:current_patients] += treatment_arm.current_patients
       result[:former_patients] += treatment_arm.former_patients

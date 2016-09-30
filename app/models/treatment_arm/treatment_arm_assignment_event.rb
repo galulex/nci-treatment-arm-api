@@ -13,6 +13,7 @@ class TreatmentArmAssignmentEvent
   string_attr :stratum_id
   string_attr :version
   string_attr :patient_status
+  string_attr :event
   string_attr :assignment_reason
   list_attr :diseases
   string_attr :step_number

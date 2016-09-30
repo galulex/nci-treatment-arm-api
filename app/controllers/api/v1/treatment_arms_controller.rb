@@ -37,7 +37,7 @@ module Api
       # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
       def index
         begin
-          if params[:projection].present? || attribute_params.present?
+          if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arms, projection_params || [])
           else
             render json: @treatment_arms, each_serializer: ::TreatmentArmSerializer
@@ -64,8 +64,8 @@ module Api
       # This retrieves a Specific TreatmentArm
       def show
         begin
-          if params[:projection].present?
-            render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params)
+          if projection_params.present? || attribute_params.present?
+            render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params || [])
           else
             render json: @treatment_arm, serializer: ::TreatmentArmSerializer
           end
@@ -120,13 +120,15 @@ module Api
       end
 
       def set_treatment_arm
-        @treatment_arm = filter_query(TreatmentArm.where(id: params[:id]).entries).first
+        set_treatment_arms
+        @treatment_arm = @treatment_arms.first
         # standard_error_message('Unable to find treatment_arm with given details') if @treatment_arm.nil?
       end
 
       def set_latest_treatment_arm
         treatment_arms = TreatmentArm.where(id: params[:id], stratum_id: params[:stratum_id])
-        @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first
+        @treatment_arm = treatment_arms.detect{|t| t.version == params[:version]}
+        @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end
 
       def clone_params
@@ -173,7 +175,7 @@ module Api
             query_result = new_query_result
           end
         end
-        query_result = filter_query(query_result) #query_result.select { |t| t.send(:is_active_flag) == params[:active] }
+        query_result = filter_query(query_result)
         query_result || []
       end
 
