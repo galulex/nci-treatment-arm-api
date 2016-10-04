@@ -55,7 +55,7 @@ class TreatmentArm
 
   def self.cog_status_sync
     begin
-      results = HTTParty.get(ENV['cog_url'] + ENV['cog_treatment_arms'])
+      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
       cog_arms_status = results.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |cog_arm|
         match_treatment_arm = TreatmentArm.where(id: cog_arm['treatment_arm_id'],

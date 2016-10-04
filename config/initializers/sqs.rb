@@ -4,7 +4,7 @@ module Aws
 
     attr_accessor :client, :url
 
-    def self.publish(message, passed_queue_name = ENV['queue_name'])
+    def self.publish(message, passed_queue_name = Rails.configuration.environment.fetch('queue_name'))
       begin
         @url = self.client.get_queue_url(queue_name: passed_queue_name).queue_url
         @client.send_message({queue_url: @url, :message_body => message.to_json})

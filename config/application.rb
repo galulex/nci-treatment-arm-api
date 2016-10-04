@@ -27,15 +27,16 @@ module TreatmentArmRestfulApi
       end
     end
 
+    config.environment = Rails.application.config_for(:environment)
 
-    config.before_configuration do
-      env_file = Rails.root.join('config', 'environment.yml')
-      if File.exists?(env_file)
-        YAML.load_file(env_file)[Rails.env].each do |key, value|
-          ENV[key.to_s] = value
-        end
-      end
-    end
+    # config.before_configuration do
+    #   env_file = Rails.root.join('config', 'environment.yml')
+    #   if File.exists?(env_file)
+    #     YAML.load_file(env_file)[Rails.env].each do |key, value|
+    #       ENV[key.to_s] = value
+    #     end
+    #   end
+    # end
 
 
     # Settings in config/environments/* take precedence over those specified here.
