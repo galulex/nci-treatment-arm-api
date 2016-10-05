@@ -11,7 +11,7 @@ development:
 test:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm_test"
+  queue_name: "treatment_arm_queue"
   table_prefix: "ta"
   cog_url: "http://pedmatch-int.nci.nih.gov:3000"
   cog_treatment_arms: "/treatmentArms"
@@ -21,7 +21,7 @@ test:
 uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm"
+  queue_name: "treatment_arm_queue"
   table_prefix: "ta"
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
@@ -31,7 +31,7 @@ uat:
 production:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   aws_region: "us-east-1"
-  queue_name: "treatment_arm"
+  queue_name: "treatment_arm_queue"
   table_prefix: "ta"
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
