@@ -5,3 +5,4 @@ require 'item_operations'
 require 'model_serializer'
 # Initialize the Rails application.
 Rails.application.initialize!
+Aws::Publisher.set_queue_name(Rails.configuration.environment.fetch('queue_name'))
