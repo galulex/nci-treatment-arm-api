@@ -124,10 +124,18 @@ describe Api::V1::TreatmentArmsController do
                id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
       end
 
-      it 'Should save date to the DataBase' do
+      it 'Should save data to the DataBase' do
         params = { id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
         post :assignment_event, params.to_json, params.merge(format: 'json')
-        expect(response).to have_http_status(200)
+        expect(response).to_not be_nil
+      end
+    end
+
+    context 'With Invalid Data / Invalid Route' do
+      it 'Should not save data to the DataBase' do
+        params = { id: 'EAY131-A', stratum_id: '100', version: 2017-10-07 }
+        post :assignment_event, params.to_json, params.merge(format: 'json')
+        expect(response).to have_http_status(500)
       end
     end
   end
