@@ -46,15 +46,15 @@ class TreatmentArmAssignmentEvent
   end
 
   def self.find_with_variant_stats(treatment_arm_id)
-    stats = { "snv_indels" => {}, "cnv" => {}, "gene_fusions" => {} }
-    reports =[ "snv_indels", "cnv", "gene_fusions" ]
+    stats = { "snv_indels" => {}, "copy_number_variants" => {}, "gene_fusions" => {} }
+    reports =[ "snv_indels", "copy_number_variants", "gene_fusions" ]
     treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({"treatment_arm_id" => treatment_arm_id}, false)
     treatment_arm_assignments.each do |taa|
       reports.each do |report_name|
         stats[report_name].merge!(taa.matched_treament_arm(report_name)){|a,b,c| b + c}
       end
     end
-    treatment_arm_assignments.collect(&:to_h) << { "stats_by_identifier" => stats } if treatment_arm_assignments.present?
+    treatment_arm_assignments.collect(&:to_h) << { "variant_stats_by_identifier" => stats } if treatment_arm_assignments.present?
   end
 
   def matched_treament_arm(report_name)
@@ -88,7 +88,7 @@ class TreatmentArmAssignmentEvent
     result
   end
 
-  def cnv_count_by_patient
+  def copy_number_variants_count_by_patient
     result = {}
     if variant_report && variant_report["copy_number_variants"]
       variant_report["copy_number_variants"].each do |cnv|

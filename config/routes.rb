@@ -12,7 +12,7 @@ Rails.application.routes.draw do
           end
           collection do
             put 'status', to: 'treatment_arms#refresh', as: 'refresh'
-            get 'version', to: 'version#version', as: 'version'
+            get 'version', to: 'versions#version', as: 'version'
             get 'ping', to: 'ping#ping', as: 'ping'
           end
         end

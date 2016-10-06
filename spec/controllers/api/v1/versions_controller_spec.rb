@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::VersionController do
+describe Api::V1::VersionsController do
   describe "GET #version" do
     it "Should return the API version" do
      get :version
@@ -9,7 +9,7 @@ describe Api::V1::VersionController do
     end
 
     it "should route to the correct controller" do
-      expect(:get => "/api/v1/treatment_arms/version" ).to route_to(:controller => "api/v1/version", :action => "version")
+      expect(:get => "/api/v1/treatment_arms/version" ).to route_to(:controller => "api/v1/versions", :action => "version")
     end
 
     it "should handle an error correctly" do

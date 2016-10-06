@@ -1,8 +1,8 @@
-# Version Controller
+# Versions Controller
 # gets triggered when GET '/api/v1/treatment_arms/version'
 module Api
   module V1
-    class VersionController < ApplicationController
+    class VersionsController < ApplicationController
       def version
         begin
           render json: TreatmentArmRestfulApi::Application.VERSION

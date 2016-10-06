@@ -6,20 +6,6 @@ describe Api::V1::TreatmentArmsController do
     setup_knock
   end
 
-  let(:basic_treatment_arm) do
-    stub_model TreatmentArm,
-                 id: '',
-                 name: '',
-                 stratum_id: '',
-                 treatment_arm_status: 'PENDING',
-                 date_opened: '',
-                 date_closed: '',
-                 current_patients: 0,
-                 former_patients: 1,
-                 not_enrolled_patients: 2,
-                 pending_patients: 0
-  end
-
   let(:treatment_arm) do
     stub_model TreatmentArm,
                  id: 'APEC1621-A',
@@ -92,14 +78,13 @@ describe Api::V1::TreatmentArmsController do
     it 'should handle errors correctly' do
       allow(TreatmentArm).to receive(:scan).and_raise('this error')
       get :index
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(500)
     end
 
-    it 'should return all treatment_arms if nothing is given' do
+    it 'should return all treatment_arms' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :index, format: :json
       expect(response).to_not be_nil
-      expect(response).to have_http_status(200)
     end
 
     it 'should return all treatmentArms with id and stratum_id' do

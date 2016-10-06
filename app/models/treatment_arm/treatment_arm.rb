@@ -99,7 +99,7 @@ class TreatmentArm
     snv_indels.collect{|indel| "#{indel["identifier"]}" }
   end
 
-  def cnv_identifiers
+  def copy_number_variants_identifiers
     copy_number_variants.collect{|cnv| "#{cnv["identifier"]}" }
   end
 
