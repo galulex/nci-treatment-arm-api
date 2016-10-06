@@ -115,6 +115,19 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to_not be_nil
       expect(response).to have_http_status(200)
     end
+
+    it 'should return 404 Not Found for a TA that is not present in the DB' do
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      get :show, id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
+      expect(response).to_not be_nil
+      expect(response).to have_http_status(404)
+    end
+
+    it 'should respond with a Resource Not Found message' do
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      get :show, id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
+      expect(response.body).to include("Resource Not Found")
+    end
   end
 
   describe 'POST #PatientAssignment' do
