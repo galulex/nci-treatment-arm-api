@@ -5,7 +5,7 @@ module Api
       def patient_on_treatment_arm
         begin
           unless params[:id].nil?
-            treatment_arm_json = TreatmentArmAssignmentEvent.find_by(treatment_arm_id: params[:id])
+            treatment_arm_json = TreatmentArmAssignmentEvent.find_with_variant_stats(params[:id])
             render json: treatment_arm_json
           end
         rescue => error
