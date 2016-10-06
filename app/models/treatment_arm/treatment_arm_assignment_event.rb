@@ -58,10 +58,10 @@ class TreatmentArmAssignmentEvent
   end
 
   def matched_treament_arm(report_name)
-    result={}
+    result = {}
     treatment_arm = ::TreatmentArm.where(id: treatment_arm_id, stratum_id: stratum_id, version: version).first
     if treatment_arm
-      identifiers= treatment_arm.send("#{report_name}_identifiers")
+      identifiers = treatment_arm.send("#{report_name}_identifiers")
       identifiers_by_count = send("#{report_name}_count_by_patient")
       identifiers.each do |identifier|
         if identifiers_by_count[identifier]

@@ -122,7 +122,7 @@ module Api
       def set_treatment_arm
         set_treatment_arms
         @treatment_arm = @treatment_arms.first
-        # standard_error_message('Unable to find treatment_arm with given details') if @treatment_arm.nil?
+        error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
       end
 
       def set_latest_treatment_arm
@@ -157,7 +157,7 @@ module Api
       def filter_query(query_result)
         return [] if query_result.nil?
         [:id, :stratum_id, :version, :is_active_flag].each do |key|
-          if !params[key].nil?
+          unless params[key].nil?
             new_query_result = query_result.select { |t| t.send(key) == params[key] }
             query_result = new_query_result
           end
@@ -182,6 +182,11 @@ module Api
       def standard_error_message(error)
         logger.error error.message
         render json: { message: error.message }, status: 500
+      end
+
+      def error_message(error)
+        logger.error error.message
+        render json: { message: error.message }, status: 404
       end
     end
   end
