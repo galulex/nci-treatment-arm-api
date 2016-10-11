@@ -7,7 +7,7 @@ services:
   - docker
 language: ruby
 rvm:
-  - 2.2.3
+  - 2.2.5
 # before_install:
   # - pip install --user awscli
   # - export PATH=$PATH:$HOME/.local/bin
@@ -16,18 +16,15 @@ script:
   - RAILS_ENV=test bundle exec rspec spec/
 after_success:
   # - ls -alth
-  - docker build -t matchbox/nci-treatment-arm-api .
+  - docker build -t matchbox/nci-treatment-arm-api:latest .
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker tag -f matchbox/nci-treatment-arm-api matchbox/nci-treatment-arm-api:latest
   - docker images
   - docker push matchbox/nci-treatment-arm-api:latest
   #Deploy to AWS IntTest
   # - aws ecs update-service --cluster uMatch-Test --service uMatch-nci-treatment-arm-api-TEST --task-definition uMatch-nci-treatment-arm-api-TEST 
-  # - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster PedMatch-IntTest --service-name uMatch-nci-treatment-arm-api-INTTEST -i matchbox/nci-treatment-arm-api:latest
   - docker run -it --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION=us-east-1 silintl/ecs-deploy --cluster PedMatch-IntTest-Backend --service-name uMatch-nci-treatment-arm-api-INTTEST -i matchbox/nci-treatment-arm-api:latest
   #Trigger Travis bdd tests
   - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-api $TRAVIS_COMMIT\", \"branch\":\"master\", \"config\":{\"env\":{\"matrix\":[\"TRIGGER_REPO=nci-treatment-arm-api;CUC_TAG=@treatment_arm\"]}}}}" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
-#  - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-api $TRAVIS_COMMIT\", \"branch\":\"master\",\"config\":{\"env\":{\"global\":[\"TRIGGER_REPO=nci-treatment-arm-api;CUC_TAG=@treatment_arm\"], \"matrix\":[\"PRIORITY=_p1,_p2\",\"PRIORITY=_p3\"]}}}}" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
 #after_script:
 notifications:
   slack:
