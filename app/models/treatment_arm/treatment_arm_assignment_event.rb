@@ -78,6 +78,7 @@ class TreatmentArmAssignmentEvent
     result = {}
     if variant_report && variant_report["snv_indels"]
       variant_report["snv_indels"].each do |indel|
+        next if indel["confirmed"] != true
         if result[indel["identifier"]]
           result[indel["identifier"]] += 1
         else
@@ -92,6 +93,7 @@ class TreatmentArmAssignmentEvent
     result = {}
     if variant_report && variant_report["copy_number_variants"]
       variant_report["copy_number_variants"].each do |cnv|
+        next if cnv["confirmed"] != true
         if result[cnv["identifier"]]
           result[cnv["identifier"]] += 1
         else
@@ -106,6 +108,7 @@ class TreatmentArmAssignmentEvent
     result = {}
     if variant_report && variant_report["gene_fusions"]
       variant_report["gene_fusions"].each do |fusion|
+        next if fusion["confirmed"] != true
         if result[fusion["identifier"]]
           result[fusion["identifier"]] += 1
         else
