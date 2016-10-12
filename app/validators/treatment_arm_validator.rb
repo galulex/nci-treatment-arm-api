@@ -11,7 +11,7 @@ module TreatmentArmValidator
             'required' => ['name', 'drug_id'],
             'properties' => {
               'drug_id' => { 'type' => 'string', 'minLength' => 1 },
-              'name' => { 'type' => 'string' }
+              'name' => { 'type' => 'string','minLength' => 1  }
             }
           },
           'treatment_arm_status' => {

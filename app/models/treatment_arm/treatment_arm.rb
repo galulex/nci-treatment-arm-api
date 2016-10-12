@@ -95,15 +95,15 @@ class TreatmentArm
     result
   end
 
-  def snv_indels_identifiers
-    snv_indels.collect{|indel| "#{indel["identifier"]}" }
+  def snv_identifiers
+    snv_indels.collect{|indel| { indel["identifier"] => indel["inclusion"] }}.compact
   end
 
-  def copy_number_variants_identifiers
-    copy_number_variants.collect{|cnv| "#{cnv["identifier"]}" }
+  def cnv_identifiers
+    copy_number_variants.collect{|cnv| { cnv["identifier"] => cnv["inclusion"] }}
   end
 
-  def gene_fusions_identifiers
-    copy_number_variants.collect{|fusion| "#{fusion["identifier"]}" }
+  def gf_identifiers
+    copy_number_variants.collect{|fusion| { fusion["identifier"] => fusion["inclusion"] }}
   end
 end
