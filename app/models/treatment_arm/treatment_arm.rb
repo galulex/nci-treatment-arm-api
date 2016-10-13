@@ -5,9 +5,9 @@ require './lib/extensions/hash_extension'
 class TreatmentArm
   include Dynamoid::Document
 
-  table name: 'treatment_arm', key: :id, range_key: :date_created
+  table name: 'treatment_arm', key: :treatment_arm_id, range_key: :date_created
 
-  field :id
+  field :treatment_arm_id
   field :is_active_flag, :boolean
   field :name
   field :date_created
@@ -58,7 +58,7 @@ class TreatmentArm
       results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
       cog_arms_status = results.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |cog_arm|
-        match_treatment_arm = TreatmentArm.where(id: cog_arm['treatment_arm_id'],
+        match_treatment_arm = TreatmentArm.where(treatment_arm_id: cog_arm['treatment_arm_id'],
                                                  stratum_id: cog_arm['stratum_id']).first
         unless match_treatment_arm.blank?
           if match_treatment_arm.treatment_arm_status != 'CLOSED' && match_treatment_arm.treatment_arm_status != cog_arm['status']
@@ -73,14 +73,14 @@ class TreatmentArm
     end
   end
 
-  def self.stratum_stats(id, stratum_id)
+  def self.stratum_stats(treatment_arm_id, stratum_id)
     result = {
                current_patients: 0,
                former_patients: 0,
                not_enrolled_patients: 0,
                pending_patients: 0
              }
-    treatment_arms = TreatmentArm.where(id: id, stratum_id: stratum_id)
+    treatment_arms = TreatmentArm.where(treatment_arm_id: treatment_arm_id, stratum_id: stratum_id)
     treatment_arms.each do |treatment_arm|
       result[:current_patients] += treatment_arm.current_patients
       result[:former_patients] += treatment_arm.former_patients

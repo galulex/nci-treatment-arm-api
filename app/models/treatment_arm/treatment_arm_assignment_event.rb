@@ -68,7 +68,7 @@ class TreatmentArmAssignmentEvent
   end
 
   def treatment_arm
-    @treatment_arm ||= ::TreatmentArm.where(id: treatment_arm_id, stratum_id: stratum_id, version: version).first
+    @treatment_arm ||= ::TreatmentArm.where(treatment_arm_id: treatment_arm_id, stratum_id: stratum_id, version: version).first
   end
 
   def matched_treament_arm_for_variant_non_hot_spot_rules

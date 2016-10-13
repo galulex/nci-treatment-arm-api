@@ -15,7 +15,7 @@ module Api
           if @treatment_arm.nil?
             @treatment_arm = JSON.parse(request.raw_post)
             @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
-            @treatment_arm.merge!(id: params[:id],
+            @treatment_arm.merge!(treatment_arm_id: params[:id],
                                   stratum_id: params[:stratum_id],
                                   version: params[:version])
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
@@ -123,7 +123,7 @@ module Api
       end
 
       def set_latest_treatment_arm
-        treatment_arms = TreatmentArm.where(id: params[:id], stratum_id: params[:stratum_id])
+        treatment_arms = TreatmentArm.where(treatment_arm_id: params[:id], stratum_id: params[:stratum_id])
         @treatment_arm = treatment_arms.detect{|t| t.version == params[:version]}
         @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end
@@ -132,7 +132,7 @@ module Api
         body_params = JSON.parse(request.raw_post)
         body_params.deep_transform_keys!(&:underscore).symbolize_keys!
         body_params[:new_version] = params[:version]
-        [:id, :date_created, :version, :stratum_id].each { |k| body_params.delete(k) }
+        [:treatment_arm_id, :date_created, :version, :stratum_id].each { |k| body_params.delete(k) }
         body_params[:stratum_id] = params[:stratum_id]
         body_params
       end
@@ -153,7 +153,7 @@ module Api
 
       def filter_query(query_result)
         return [] if query_result.nil?
-        [:id, :stratum_id, :version, :is_active_flag].each do |key|
+        [:treatment_arm_id, :stratum_id, :version, :is_active_flag].each do |key|
           unless params[key].nil?
             new_query_result = query_result.select { |t| t.send(key) == params[key] }
             query_result = new_query_result

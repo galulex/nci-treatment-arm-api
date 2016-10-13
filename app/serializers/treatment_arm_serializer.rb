@@ -1,6 +1,7 @@
 # This gets rendered for displaying all the TreatmentArms
 class TreatmentArmSerializer < ActiveModel::Serializer
-  attributes :id, :treatment_arm_title, :name, :active, :date_created, :version, :stratum_id,
+  attributes :treatment_arm_id, :treatment_arm_title, :name,
+             :active, :date_created, :version, :stratum_id,
              :description, :target_id, :target_name, :gene,
              :treatment_arm_status, :study_id, :assay_rules,
              :num_patients_assigned, :total_patients_on_arm,
@@ -28,7 +29,7 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def stratum_statistics
-    TreatmentArm.stratum_stats(object.id, object.stratum_id)
+    TreatmentArm.stratum_stats(object.treatment_arm_id, object.stratum_id)
   end
 
   def num_patients_assigned
@@ -36,6 +37,6 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def treatment_arm_title
-    "#{object.id} (#{object.stratum_id})"
+    "#{object.treatment_arm_id} (#{object.stratum_id})"
   end
 end
