@@ -51,7 +51,6 @@ module Api
       def refresh
         begin
           TreatmentArm.async_cog_status_update
-          byebug
           treatment_arms = TreatmentArm.where(is_active_flag: true).all
           render json: treatment_arms.as_json
         rescue => error
