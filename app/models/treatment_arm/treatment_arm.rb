@@ -53,26 +53,21 @@ class TreatmentArm
     end
   end
 
-  def self.cog_status_sync
+  def self.async_cog_status_update
     begin
-      results = HTTParty.get(ENV['cog_url'] + ENV['cog_treatment_arms'])
+      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
       cog_arms_status = results.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys!
       cog_arms_status[:treatment_arms].each do |cog_arm|
         match_treatment_arm = TreatmentArm.where(id: cog_arm['treatment_arm_id'],
                                                  stratum_id: cog_arm['stratum_id']).first
         unless match_treatment_arm.blank?
           if match_treatment_arm.treatment_arm_status != 'CLOSED' && match_treatment_arm.treatment_arm_status != cog_arm['status']
-            match_treatment_arm.treatment_arm_status = cog_arm['status']
-            #match_treatment_arm.save
-            #logger.info("Treatment arm #{cog_arm[:treatment_arm_id]} (#{cog_arm[:stratum_id]}) has been updated")
-          else
-            p "error"
-            #logger.info("Treatment arm #{cog_arm[:treatment_arm_id]} (#{cog_arm[:stratum_id]}) is currently CLOSED or Already in the correct state")
+            Aws::Publisher.publish(cog_treatment_refresh: match_treatment_arm)
           end
         end
        # logger.info('No Treatment Arms status to update')
       end
-    rescue Exception => e
+    rescue Exception => error
       p "#{e.message}"
       #logger.warn("Unable to sync treatment_arm with cog #{e}")
     end
@@ -80,10 +75,10 @@ class TreatmentArm
 
   def self.stratum_stats(id, stratum_id)
     result = {
-                current_patients: 0,
-                former_patients: 0,
-                not_enrolled_patients: 0,
-                pending_patients: 0
+               current_patients: 0,
+               former_patients: 0,
+               not_enrolled_patients: 0,
+               pending_patients: 0
              }
     treatment_arms = TreatmentArm.where(id: id, stratum_id: stratum_id)
     treatment_arms.each do |treatment_arm|
@@ -104,6 +99,6 @@ class TreatmentArm
   end
 
   def gf_identifiers
-    copy_number_variants.collect{|fusion| { fusion["identifier"] => fusion["inclusion"] }}
+    gene_fusions.collect{|fusion| { fusion["identifier"] => fusion["inclusion"] }}
   end
 end

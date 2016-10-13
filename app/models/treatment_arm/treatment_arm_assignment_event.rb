@@ -23,7 +23,7 @@ class TreatmentArmAssignmentEvent
   map_attr :variant_report
   map_attr :assignment_report
 
-  def self.find_by(opts = {},to_hash=true)
+  def self.find_by(opts = {}, to_hash=true)
     query = {}
     query.merge!(build_scan_filter(opts))
     query.merge!(conditional_operator: 'AND') if query[:scan_filter].length >= 2
@@ -48,30 +48,45 @@ class TreatmentArmAssignmentEvent
   def self.find_with_variant_stats(treatment_arm_id)
     assignment_stats = { "snv_indels" => {}, "copy_number_variants" => {}, "gene_fusions" => {} }
     variant_stats = { "snv_indels" => {}, "copy_number_variants" => {}, "gene_fusions" => {} }
+    variant_non_hotspot_stats = {}
+    assignment_non_hotspot_stats = {}
     reports = { "snv" => "snv_indels", "cnv" => "copy_number_variants", "gf" => "gene_fusions" }
     treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({"treatment_arm_id" => treatment_arm_id}, false).entries
     treatment_arm_assignments.each do |taa|
       reports.each do |report_name, stat_name|
         variant_stats[stat_name].merge!(taa.matched_treament_arm_for_variant_report(report_name)){|a,b,c| b + c}
-        assignment_stats[stat_name].merge!(taa.matched_treament_arm_for_assignment_report(report_name)){|a,b,c| b + c}
+        assignment_stats[stat_name].merge!(taa.matched_treament_arm_for_variant_report(report_name, "assignment")){|a,b,c| b + c}
       end
+      variant_non_hotspot_stats.merge!(taa.matched_treament_arm_for_variant_non_hot_spot_rules){|a,b,c| b + c}
+      #assignment_non_hotspot_stats.merge!(taa.matched_treament_arm_for_assignment_non_hot_spot_rules){|a,b,c| b + c}
     end
-     treatment_arm_assignments.collect(&:to_h) << { "variant_stats_by_identifier" => variant_stats, "assginment_stats_by_identifier" => assignment_stats } if treatment_arm_assignments.present?
+     treatment_arm_assignments.collect(&:to_h) << {
+                                                    "variant_stats_by_identifier" => variant_stats,
+                                                    "assginment_stats_by_identifier" => assignment_stats,
+                                                    "variant_non_hotspot_stats" => variant_non_hotspot_stats,
+                                                    "assignment_non_hotspot_stats" => assignment_non_hotspot_stats } if treatment_arm_assignments.present?
   end
 
-  def matched_treament_arm_for_variant_report(report_name)
+  def treatment_arm
+    @treatment_arm ||= ::TreatmentArm.where(id: treatment_arm_id, stratum_id: stratum_id, version: version).first
+  end
+
+  def matched_treament_arm_for_variant_non_hot_spot_rules
     result = {}
-    treatment_arm = ::TreatmentArm.where(id: treatment_arm_id, stratum_id: stratum_id, version: version).first
     if treatment_arm
-      identifiers = treatment_arm.send("#{report_name}_identifiers")
-      identifiers_by_count = send("#{report_name}_count_by_patient")
-      identifiers.each do |identifier_hash|
-        identifier_hash.each do |identifier, inclusion|
-          result[identifier] = {"inclusion" => inclusion}
-          if identifiers_by_count[identifier]
-            result[identifier]["count"] = result[identifier]["count"].nil? ? identifiers_by_count[identifier] : result[identifier]["count"]+identifiers_by_count[identifier]
-          else
-            result[identifier]["count"] = 0
+      ta_non_hotspot_rules = treatment_arm.non_hotspot_rules
+      ta_non_hotspot_rules.each do |ta_rule|
+        result[ta_rule["func_gene"]] = { "inclusion" => ta_rule["inclusion"] }
+        non_hotspot_rules.each do |e_rule|
+          if ta_rule["func_gene"] == e_rule["func_gene"] &&
+            ta_rule["exon"] == e_rule["exon"] &&
+            ta_rule["oncomine_variant_class"] == e_rule["oncomine_variant_class"] &&
+            ta_rule["function"] == e_rule["function"]
+            if result[ta_rule["func_gene"]]["count"]
+              result[ta_rule["func_gene"]]["count"] +=1
+            else
+              result[ta_rule["func_gene"]]["count"] = 1
+            end
           end
         end
       end
@@ -79,18 +94,45 @@ class TreatmentArmAssignmentEvent
     result
   end
 
-  def matched_treament_arm_for_assignment_report(report_name)
+  def matched_treament_arm_for_assignment_non_hot_spot_rules
     result = {}
-    treatment_arm = ::TreatmentArm.where(id: treatment_arm_id, stratum_id: stratum_id, version: version).first
+    if treatment_arm
+      ta_non_hotspot_rules = treatment_arm.non_hotspot_rules_a
+      ta_non_hotspot_rules.each do |ta_rule|
+        result[ta_rule["func_gene"]] = { "inclusion" => ta_rule["inclusion"] }
+        non_hotspot_rules_a.each do |e_rule|
+          if ta_rule["func_gene"] == e_rule["func_gene"] &&
+            ta_rule["exon"] == e_rule["exon"] &&
+            ta_rule["oncomine_variant_class"] == e_rule["oncomine_variant_class"] &&
+            ta_rule["function"] == e_rule["function"]
+            if result[ta_rule["func_gene"]]["count"]
+              result[ta_rule["func_gene"]]["count"] +=1
+            else
+              result[ta_rule["func_gene"]]["count"] = 1
+            end
+          end
+        end
+      end
+    end
+    result
+  end
+
+  def matched_treament_arm_for_variant_report(report_name, report_suffix=nil)
+    result = {}
     if treatment_arm
       identifiers = treatment_arm.send("#{report_name}_identifiers")
-      identifiers_by_count = send("assignment_#{report_name}_count_by_patient")
+      if report_suffix
+        identifiers_by_count = send("#{report_suffix}_#{report_name}_count_by_patient")
+      else
+        identifiers_by_count = send("#{report_name}_count_by_patient")
+      end
       identifiers.each do |identifier_hash|
         identifier_hash.each do |identifier, inclusion|
-          if identifiers_by_count[identifier] && result[identifier].present?
+          result[identifier] = { "inclusion" => inclusion }
+          if identifiers_by_count[identifier]
             result[identifier]["count"] = result[identifier]["count"].nil? ? identifiers_by_count[identifier] : result[identifier]["count"]+identifiers_by_count[identifier]
           else
-            result[identifier] = { "count" => 0 }
+            result[identifier]["count"] = 0
           end
         end
       end
@@ -186,5 +228,25 @@ class TreatmentArmAssignmentEvent
       end
     end
     result
+  end
+
+  def non_hotspot_rules
+    variant_report["snv_indels"].collect do |indel|
+      { "func_gene" => indel["func_gene"],
+        "exon" => indel["exon"],
+        "oncomine_variant_class" => indel["oncomine_variant_class"],
+        "function" => indel["function"]
+      }
+    end if variant_report && variant_report["snv_indels"]
+  end
+
+  def non_hotspot_rules_a
+    assignment_report["patient"]["snv_indels"].collect do |indel|
+      { "func_gene" => indel["func_gene"],
+        "exon" => indel["exon"],
+        "oncomine_variant_class" => indel["oncomine_variant_class"],
+        "function" => indel["function"]
+      }
+    end if assignment_report && assignment_report["patient"]["snv_indels"]
   end
 end

@@ -50,11 +50,9 @@ module Api
       # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
       def refresh
         begin
-          TreatmentArm.cog_status_sync
+          TreatmentArm.async_cog_status_update
+          byebug
           treatment_arms = TreatmentArm.where(is_active_flag: true).all
-          treatment_arms.each do |ta|
-            Aws::Publisher.publish(cog_treatment_refresh: ta)
-          end
           render json: treatment_arms.as_json
         rescue => error
           standard_error_message(error)
