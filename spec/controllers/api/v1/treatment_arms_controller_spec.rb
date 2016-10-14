@@ -67,12 +67,12 @@ describe Api::V1::TreatmentArmsController do
     it 'should route to the correct controller' do
       expect(get: 'api/v1/treatment_arms').to route_to(controller: 'api/v1/treatment_arms', action: 'index')
       expect(get: 'api/v1/treatment_arms/EAY131-A/100').to route_to(controller: 'api/v1/treatment_arms', action: 'index',
-             id: 'EAY131-A', stratum_id: '100')
+             treatment_arm_id: 'EAY131-A', stratum_id: '100')
     end
 
     it 'should retrieve a specific treatment_arm' do
       expect(get: 'api/v1/treatment_arms/EAY131-A/100/2016-10-07').to route_to(controller: 'api/v1/treatment_arms', action: 'show',
-             id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
+             treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
     end
 
     it 'should handle errors correctly' do
@@ -103,14 +103,14 @@ describe Api::V1::TreatmentArmsController do
 
     it 'should return 404 Not Found for a TA that is not present in the DB' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :show, id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
+      get :show, treatment_arm_id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
       expect(response).to_not be_nil
       expect(response).to have_http_status(404)
     end
 
     it 'should respond with a Resource Not Found message' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      get :show, id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
+      get :show, treatment_arm_id: 'EAY131-A', stratum_id: '11', version: '2016-20-05'
       expect(response.body).to include("Resource Not Found")
     end
   end
