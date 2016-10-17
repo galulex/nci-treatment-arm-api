@@ -5,10 +5,10 @@ Rails.application.routes.draw do
       namespace 'v1' do
         resources :treatment_arms, except: %w(new update edit create show destroy) do
           member do
-            post ':stratum_id/:version', to: 'treatment_arms#create'
             post ':stratum_id/:version/assignment_event', to: 'treatment_arms#assignment_event'
           end
           collection do
+            post ':treatment_arm_id/:stratum_id/:version', to: 'treatment_arms#create'
             get ':treatment_arm_id/:stratum_id/:version', to: 'treatment_arms#show'
             get ':treatment_arm_id/:stratum_id', to: 'treatment_arms#index'
             put 'status', to: 'treatment_arms#refresh', as: 'refresh'

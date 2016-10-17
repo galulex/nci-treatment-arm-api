@@ -8,7 +8,7 @@ describe Api::V1::TreatmentArmsController do
 
   let(:treatment_arm) do
     stub_model TreatmentArm,
-                 id: 'APEC1621-A',
+                 treatment_arm_id: 'APEC1621-A',
                  version: '2016-20-02',
                  stratum_id: '12',
                  description: 'WhoKnows',
@@ -29,13 +29,13 @@ describe Api::V1::TreatmentArmsController do
     context 'with valid data' do
       it 'Should route to the correct controller' do
         expect(post: 'api/v1/treatment_arms/EAY131-A/100/2016-10-07').to route_to(controller: 'api/v1/treatment_arms', action: 'create',
-                 id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
+               treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
       end
 
       it 'should save data to the database' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
-        params = { id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
+        params = { treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
         post :create, params.to_json, params.merge(format: 'json')
         expect(response).to have_http_status(200)
       end
@@ -43,7 +43,7 @@ describe Api::V1::TreatmentArmsController do
       it 'should respond with a success json message' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
-        params = { id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
+        params = { treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
         post :create, params.to_json, params.merge(format: 'json')
         expect(response.body).to include('Message has been processed successfully')
         expect(response).to have_http_status(200)
@@ -54,7 +54,7 @@ describe Api::V1::TreatmentArmsController do
       it 'should respond with a failure json message' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(false)
-        params = { id: 'null', stratum_id: '100', version: '2017-10-07' }
+        params = { treatment_arm_id: 'null', stratum_id: '100', version: '2017-10-07' }
         post :create, params.to_json, params.merge(format: 'json')
         expect(response.body).to include("The property '#/' did not contain a required property of 'name'")
         expect(response).to have_http_status(500)

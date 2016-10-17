@@ -15,7 +15,7 @@ module Api
           if @treatment_arm.nil?
             @treatment_arm = JSON.parse(request.raw_post)
             @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
-            @treatment_arm.merge!(treatment_arm_id: params[:id],
+            @treatment_arm.merge!(treatment_arm_id: params[:treatment_arm_id],
                                   stratum_id: params[:stratum_id],
                                   version: params[:version])
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
@@ -27,7 +27,7 @@ module Api
           elsif @treatment_arm.version != params[:version]
             update_clone
           else
-            raise "TreatmentArm with id: #{params[:id]}, stratum_id: #{params[:stratum_id]} and version: #{params[:version]} already exists in the DataBase. Ignoring"
+            render json: { message: "TreatmentArm with id: #{params[:treatment_arm_id]}, stratum_id: #{params[:stratum_id]} and version: #{params[:version]} already exists in the DataBase" }, status: 200
           end
         rescue => error
           standard_error_message(error)
@@ -107,7 +107,6 @@ module Api
         if params[:active].present?
           params[:is_active_flag] = params[:active] == 'true' ?  true : false
         end
-        params[:name] = params[:id]
         if attribute_params.present? || projection_params.present?
           ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
         else
@@ -123,7 +122,7 @@ module Api
       end
 
       def set_latest_treatment_arm
-        treatment_arms = TreatmentArm.where(treatment_arm_id: params[:id], stratum_id: params[:stratum_id])
+        treatment_arms = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id])
         @treatment_arm = treatment_arms.detect{|t| t.version == params[:version]}
         @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end

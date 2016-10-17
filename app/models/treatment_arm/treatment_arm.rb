@@ -67,9 +67,8 @@ class TreatmentArm
         end
        # logger.info('No Treatment Arms status to update')
       end
-    rescue Exception => error
-      p "#{e.message}"
-      #logger.warn("Unable to sync treatment_arm with cog #{e}")
+    rescue => error
+      logger.warn("Failed to connect to COG #{error}")
     end
   end
 
