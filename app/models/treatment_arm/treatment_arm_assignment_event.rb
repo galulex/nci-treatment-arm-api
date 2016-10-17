@@ -45,7 +45,7 @@ class TreatmentArmAssignmentEvent
     query
   end
 
-  def self.find_with_variant_stats(treatment_arm_id)
+  def self.find_with_variant_stats(treatment_arm_id, stratum_id)
     assignment_stats = { "snv_indels" => {}, "copy_number_variants" => {}, "gene_fusions" => {} }
     variant_stats = { "snv_indels" => {}, "copy_number_variants" => {}, "gene_fusions" => {} }
     variant_non_hotspot_stats = {}
@@ -53,7 +53,7 @@ class TreatmentArmAssignmentEvent
     assay_stats = {}
     assignment_assay_stats = {}
     reports = { "snv" => "snv_indels", "cnv" => "copy_number_variants", "gf" => "gene_fusions" }
-    treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({ "treatment_arm_id" => treatment_arm_id}, false).entries
+    treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({ "treatment_arm_id" => treatment_arm_id, "stratum_id" => stratum_id}, false).entries
     treatment_arm_assignments.each do |taa|
       reports.each do |report_name, stat_name|
         hash_merge(variant_stats[stat_name], taa.matched_treament_arm_for_variant_report(report_name))

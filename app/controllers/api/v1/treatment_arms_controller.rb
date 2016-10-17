@@ -91,11 +91,22 @@ module Api
         begin
           @assignment_event = JSON.parse(request.raw_post)
           @assignment_event.deep_transform_keys!(&:underscore).symbolize_keys!
-          @assignment_event.merge!(treatment_arm_id: params[:id],
+          @assignment_event.merge!(treatment_arm_id: params[:treatment_arm_id],
                                    stratum_id: params[:stratum_id],
                                    version: params[:version])
           Aws::Publisher.publish(assignment_event: @assignment_event)
           render json: { message: 'Message has been processed successfully' }, status: 200
+        rescue => error
+          standard_error_message(error)
+        end
+      end
+
+      def patients_on_treatment_arm
+        begin
+          unless params[:treatment_arm_id].nil?
+            treatment_arm_json = TreatmentArmAssignmentEvent.find_with_variant_stats(params[:treatment_arm_id], params[:stratum_id])
+            render json: treatment_arm_json
+          end
         rescue => error
           standard_error_message(error)
         end

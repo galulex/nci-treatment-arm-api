@@ -115,15 +115,24 @@ describe Api::V1::TreatmentArmsController do
     end
   end
 
+  describe 'GET #patients_on_treatment_arm' do
+    it 'should route to the correct controller' do
+      expect(:get => "api/v1/treatment_arms/patients_on_treatment_arm/APEC1621-A/12").to route_to(:controller => "api/v1/treatment_arms",
+                                                                                                  :action => "patients_on_treatment_arm",
+                                                                                                  :treatment_arm_id => "APEC1621-A",
+                                                                                                  :stratum_id => "12")
+    end
+  end
+
   describe 'POST #PatientAssignment' do
     context 'with valid data' do
       it 'Should route to the correct controller' do
         expect(post: 'api/v1/treatment_arms/EAY131-A/100/2016-10-07/assignment_event').to route_to(controller: 'api/v1/treatment_arms', action: 'assignment_event',
-               id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
+               treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2016-10-07')
       end
 
       it 'Should save data to the DataBase' do
-        params = { id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
+        params = { treatment_arm_id: 'EAY131-A', stratum_id: '100', version: '2017-10-07' }
         post :assignment_event, params.to_json, params.merge(format: 'json')
         expect(response).to_not be_nil
         expect(response).to have_http_status(200)
