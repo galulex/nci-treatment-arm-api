@@ -5,7 +5,7 @@ module Api
     class VersionsController < ApplicationController
       def version
         begin
-          render json: TreatmentArmRestfulApi::Application.VERSION
+          render json: TreatmentArmApi::Application.VERSION
         rescue => error
           standard_error_message(error)
         end

@@ -4,7 +4,7 @@ describe Api::V1::VersionsController do
   describe "GET #version" do
     it "Should return the API version" do
      get :version
-     expect(response.body).to eq(TreatmentArmRestfulApi::Application.VERSION)
+     expect(response.body).to eq(TreatmentArmApi::Application.VERSION)
      expect(response).to have_http_status(200)
     end
 
@@ -13,7 +13,7 @@ describe Api::V1::VersionsController do
     end
 
     it "should handle an error correctly" do
-      allow(TreatmentArmRestfulApi::Application).to receive(:VERSION).and_raise("this error")
+      allow(TreatmentArmApi::Application).to receive(:VERSION).and_raise("this error")
       get :version
       expect(response).to have_http_status(500)
     end

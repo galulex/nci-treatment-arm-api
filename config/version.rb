@@ -1,4 +1,4 @@
-module TreatmentArmRestfulApi
+module TreatmentArmApi
   class Application < Rails::Application
     attr_reader :VERSION
 
