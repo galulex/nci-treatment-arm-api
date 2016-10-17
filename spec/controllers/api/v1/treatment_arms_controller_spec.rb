@@ -117,10 +117,15 @@ describe Api::V1::TreatmentArmsController do
 
   describe 'GET #patients_on_treatment_arm' do
     it 'should route to the correct controller' do
-      expect(:get => "api/v1/treatment_arms/patients_on_treatment_arm/APEC1621-A/12").to route_to(:controller => "api/v1/treatment_arms",
-                                                                                                  :action => "patients_on_treatment_arm",
-                                                                                                  :treatment_arm_id => "APEC1621-A",
-                                                                                                  :stratum_id => "12")
+      expect(:get => "api/v1/treatment_arms/APEC1621-A/12/assignment_report").to route_to(:controller => "api/v1/treatment_arms",
+                                                                                          :action => "patients_on_treatment_arm",
+                                                                                          :treatment_arm_id => "APEC1621-A",
+                                                                                          :stratum_id => "12")
+    end
+
+    it "patient should handle errors correctly" do
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_raise("this error")
+      expect { get :patients_on_treatment_arm, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
     end
   end
 
