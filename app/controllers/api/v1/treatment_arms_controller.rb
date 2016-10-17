@@ -27,7 +27,7 @@ module Api
           elsif @treatment_arm.version != params[:version]
             update_clone
           else
-            render json: { message: "TreatmentArm with id: #{params[:treatment_arm_id]}, stratum_id: #{params[:stratum_id]} and version: #{params[:version]} already exists in the DataBase" }, status: 200
+            render json: { message: "TreatmentArm with id: #{params[:treatment_arm_id]}, stratum_id: #{params[:stratum_id]} and version: #{params[:version]} already exists in the DataBase" }, status: 400
           end
         rescue => error
           standard_error_message(error)
