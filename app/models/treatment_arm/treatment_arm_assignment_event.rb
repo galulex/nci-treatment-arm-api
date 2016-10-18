@@ -23,6 +23,8 @@ class TreatmentArmAssignmentEvent
   map_attr :variant_report
   map_attr :assignment_report
 
+  NOT_ENROLLED = "NOT_ENROLLED"
+
   def self.find_by(opts = {}, to_hash=true)
     query = {}
     query.merge!(build_scan_filter(opts))
@@ -89,9 +91,9 @@ class TreatmentArmAssignmentEvent
     if treatment_arm
       ta_non_hotspot_rules = treatment_arm.non_hotspot_rules
       ta_non_hotspot_rules.each do |ta_rule|
-        result[ta_rule["func_gene"]] = { "inclusion" => ta_rule["inclusion"] }
-        if non_hotspot_rules
-          non_hotspot_rules.each do |e_rule|
+        result[ta_rule["func_gene"]] = { "inclusion" => ta_rule["inclusion"], "count"=>0 }
+        if send(report_name)
+          send(report_name).each do |e_rule|
             if ta_rule["func_gene"] == e_rule["func_gene"] &&
               ta_rule["exon"] == e_rule["exon"] &&
               ta_rule["oncomine_variant_class"] == e_rule["oncomine_variant_class"] &&
@@ -114,8 +116,8 @@ class TreatmentArmAssignmentEvent
     if treatment_arm
       ta_assay_rules = treatment_arm.assay_rules
       ta_assay_rules.each do |ta_rule|
-        if assay_rules
-          assay_rules.each do |e_rule|
+        if send(report_name)
+          send(report_name).each do |e_rule|
             flag = false
             if report_name == "assignment_assay_rules"
               flag = true if ta_rule["gene"] == e_rule["gene"] &&
@@ -128,6 +130,8 @@ class TreatmentArmAssignmentEvent
             if flag
               if result[ta_rule["gene"]]
                 result[ta_rule["gene"]]["count"] += 1
+              elsif report_name == "assignment_assay_rules"  && !patient_enrolled?
+                result[ta_rule["gene"]] = { :count => 0 }
               else
                 result[ta_rule["gene"]] = { :count => 1 }
               end
@@ -206,6 +210,7 @@ class TreatmentArmAssignmentEvent
     result = {}
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["snv_indels"]
       assignment_report["patient"]["snv_indels"].each do |indel|
+        next unless patient_enrolled?
         next if indel["confirmed"] == false
         if result[indel["identifier"]]
           result[indel["identifier"]] += 1
@@ -237,6 +242,7 @@ class TreatmentArmAssignmentEvent
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["copy_number_variants"]
       assignment_report["patient"]["copy_number_variants"].each do |cnv|
         next if cnv["confirmed"] != true
+        next unless patient_enrolled?
         if result[cnv["identifier"]]
           result[cnv["identifier"]] += 1
         else
@@ -266,6 +272,7 @@ class TreatmentArmAssignmentEvent
     result = {}
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["gene_fusions"]
       assignment_report["patient"]["gene_fusions"].each do |fusion|
+        next unless patient_enrolled?
         next if fusion["confirmed"] != true
         if result[fusion["identifier"]]
           result[fusion["identifier"]] += 1
@@ -289,14 +296,23 @@ class TreatmentArmAssignmentEvent
   end
 
   def non_hotspot_rules_assignment
-    assignment_report["patient"]["snv_indels"].collect do |indel|
-      {
-        "func_gene" => indel["func_gene"],
-        "exon" => indel["exon"],
-        "oncomine_variant_class" => indel["oncomine_variant_class"],
-        "function" => indel["function"]
-      }
-    end if assignment_report && assignment_report["patient"]["snv_indels"]
+    result=[]
+    if assignment_report && assignment_report["patient"]["snv_indels"]
+      assignment_report["patient"]["snv_indels"].each do |indel|
+        next unless patient_enrolled?
+        result << {
+          "func_gene" => indel["func_gene"],
+          "exon" => indel["exon"],
+          "oncomine_variant_class" => indel["oncomine_variant_class"],
+          "function" => indel["function"]
+        }
+      end
+    end
+    result
+  end
+
+  def patient_enrolled?
+    event != NOT_ENROLLED
   end
 
   def self.hash_merge(hash1, hash2)
