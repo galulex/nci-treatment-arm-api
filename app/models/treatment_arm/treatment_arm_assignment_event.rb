@@ -211,7 +211,6 @@ class TreatmentArmAssignmentEvent
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["snv_indels"]
       assignment_report["patient"]["snv_indels"].each do |indel|
         next unless patient_enrolled?
-        next if indel["confirmed"] == false
         if result[indel["identifier"]]
           result[indel["identifier"]] += 1
         else
@@ -241,7 +240,6 @@ class TreatmentArmAssignmentEvent
     result = {}
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["copy_number_variants"]
       assignment_report["patient"]["copy_number_variants"].each do |cnv|
-        next if cnv["confirmed"] != true
         next unless patient_enrolled?
         if result[cnv["identifier"]]
           result[cnv["identifier"]] += 1
@@ -273,7 +271,6 @@ class TreatmentArmAssignmentEvent
     if assignment_report && assignment_report["patient"] && assignment_report["patient"]["gene_fusions"]
       assignment_report["patient"]["gene_fusions"].each do |fusion|
         next unless patient_enrolled?
-        next if fusion["confirmed"] != true
         if result[fusion["identifier"]]
           result[fusion["identifier"]] += 1
         else
