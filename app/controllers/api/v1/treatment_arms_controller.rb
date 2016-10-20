@@ -129,7 +129,7 @@ module Api
       def set_treatment_arm
         #set_treatment_arms
         #@treatment_arm = @treatment_arms.first
-        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version] )
+        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).entries
         error_message(Error.new('Resource Not Found')) if @ta.nil? || @ta.count == 0
       end
 
