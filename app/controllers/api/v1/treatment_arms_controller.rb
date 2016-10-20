@@ -64,7 +64,7 @@ module Api
           if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params || [])
           else
-            render json: @treatment_arm, serializer: ::TreatmentArmSerializer
+            render json: @ta# serializer: ::TreatmentArmSerializer
           end
         rescue => error
           standard_error_message(error)
@@ -127,9 +127,10 @@ module Api
       end
 
       def set_treatment_arm
-        set_treatment_arms
-        @treatment_arm = @treatment_arms.first
-        error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
+        #set_treatment_arms
+        #@treatment_arm = @treatment_arms.first
+        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version] )
+        error_message(Error.new('Resource Not Found')) if @ta.nil? || @ta.count == 0
       end
 
       def set_latest_treatment_arm
