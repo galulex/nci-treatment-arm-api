@@ -81,10 +81,10 @@ class TreatmentArm
              }
     treatment_arms = TreatmentArm.where(treatment_arm_id: treatment_arm_id, stratum_id: stratum_id)
     treatment_arms.each do |treatment_arm|
-      result[:current_patients] += treatment_arm.current_patients
-      result[:former_patients] += treatment_arm.former_patients
-      result[:not_enrolled_patients] += treatment_arm.not_enrolled_patients
-      result[:pending_patients] += treatment_arm.pending_patients
+      result[:current_patients] += treatment_arm.current_patients.to_i
+      result[:former_patients] += treatment_arm.former_patients.to_i
+      result[:not_enrolled_patients] += treatment_arm.not_enrolled_patients.to_i
+      result[:pending_patients] += treatment_arm.pending_patients.to_i
     end
     result
   end

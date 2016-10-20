@@ -33,13 +33,13 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def num_patients_assigned
-    num = object.pending_patients
+    num = object.pending_patients.to_i
     p "======== num pending_patient: #{num}"
-    num1 = object.former_patients
+    num1 = object.former_patients.to_s.to_i
     p "======== num former_patients: #{num1}"
-    num2 = object.not_enrolled_patients
+    num2 = object.not_enrolled_patients.to_s.to_i
     p "======== num not_enrolled_patients: #{num2}"
-    num3 = object.current_patients
+    num3 = object.current_patients.to_s.to_i
     p "======== num current_patients: #{num3}"
     # object.pending_patients + object.former_patients + object.not_enrolled_patients + object.current_patients
     num + num1 + num2 + num3
