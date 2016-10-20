@@ -8,8 +8,8 @@ class TreatmentArmSerializer < ActiveModel::Serializer
              :date_opened, :treatment_arm_drugs,
              :diseases, :exclusion_drugs, :status_log,
              :snv_indels, :non_hotspot_rules,
-             :copy_number_variants, :gene_fusions, :version_statistics,
-             :stratum_statistics
+             :copy_number_variants, :gene_fusions,
+             :version_statistics, :stratum_statistics
 
   def active
     object.is_active_flag == true ? true : false
@@ -34,13 +34,13 @@ class TreatmentArmSerializer < ActiveModel::Serializer
 
   def num_patients_assigned
     num = object.pending_patients
-    logger.error "======== num pending_patient: #{num}"
+    p "======== num pending_patient: #{num}"
     num1 = object.former_patients
-    logger.error "======== num former_patients: #{num1}"
+    p "======== num former_patients: #{num1}"
     num2 = object.not_enrolled_patients
-    logger.error "======== num not_enrolled_patients: #{num2}"
+    p "======== num not_enrolled_patients: #{num2}"
     num3 = object.current_patients
-    logger.error "======== num current_patients: #{num3}"
+    p "======== num current_patients: #{num3}"
     # object.pending_patients + object.former_patients + object.not_enrolled_patients + object.current_patients
     num + num1 + num2 + num3
   end
