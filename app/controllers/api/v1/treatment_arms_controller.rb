@@ -37,7 +37,6 @@ module Api
       # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
       def index
         begin
-
           if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arms, projection_params || [])
           else
@@ -65,7 +64,7 @@ module Api
           if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params || [])
           else
-            render json: @ta# serializer: ::TreatmentArmSerializer
+            render json: @treatment_arm
           end
         rescue => error
           standard_error_message(error)
@@ -118,8 +117,7 @@ module Api
       def set_treatment_arms
         if params[:active].present?
           params[:is_active_flag] = params[:active] == 'true' ?  true : false
-        end
-        if attribute_params.present? || projection_params.present?
+        elsif attribute_params.present? || projection_params.present?
           ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
         else
           ta_json = filter_query(TreatmentArm.all.entries)
@@ -128,8 +126,8 @@ module Api
       end
 
       def set_treatment_arm
-        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).first
-        error_message(Error.new('Resource Not Found')) if @ta.nil?
+        @treatment_arm = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).first
+        error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
       end
 
       def set_latest_treatment_arm
