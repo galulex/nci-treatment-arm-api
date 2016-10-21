@@ -1,5 +1,5 @@
 # Base image 
-FROM ruby:2.2.5
+FROM ruby:2.3.1
 
 MAINTAINER jeremy.pumphrey@nih.gov
 
@@ -22,5 +22,5 @@ ADD https://raw.githubusercontent.com/CBIIT/match-docker/master/docker-compose-e
 RUN chmod 755 docker-compose-env.sh && ls -alt $INSTALL_PATH
 
 # Default command 
-CMD ./docker-compose-env.sh && rails server --binding 0.0.0.0
-#CMD ["rails", "server", "--binding", "0.0.0.0"]
+#CMD ./docker-compose-env.sh && rails server --binding 0.0.0.0
+CMD ["rails", "server", "--binding", "0.0.0.0"]
