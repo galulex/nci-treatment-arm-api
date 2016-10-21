@@ -16,7 +16,7 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def total_patients_on_arm
-    0
+    object.current_patients.to_i + object.former_patients.to_i
   end
 
   def version_statistics

@@ -37,6 +37,7 @@ module Api
       # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
       def index
         begin
+
           if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arms, projection_params || [])
           else
@@ -127,10 +128,8 @@ module Api
       end
 
       def set_treatment_arm
-        #set_treatment_arms
-        #@treatment_arm = @treatment_arms.first
-        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).entries
-        error_message(Error.new('Resource Not Found')) if @ta.nil? || @ta.count == 0
+        @ta = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).first
+        error_message(Error.new('Resource Not Found')) if @ta.nil?
       end
 
       def set_latest_treatment_arm
@@ -188,14 +187,12 @@ module Api
       end
 
       def standard_error_message(error)
-        logger.error error.message
-        puts "#{error.backtrace}"
+        logger.error "#{error.message} :: #{error.backtrace}"
         render json: { message: error.message }, status: 500
       end
 
       def error_message(error)
-        logger.error error.message
-        puts "#{error.backtrace}"
+        logger.error "#{error.message} :: #{error.backtrace}"
         render json: { message: error.message }, status: 404
       end
     end
