@@ -117,7 +117,8 @@ module Api
       def set_treatment_arms
         if params[:active].present?
           params[:is_active_flag] = params[:active] == 'true' ?  true : false
-        elsif attribute_params.present? || projection_params.present?
+        end
+        if attribute_params.present? || projection_params.present?
           ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
         else
           ta_json = filter_query(TreatmentArm.all.entries)
