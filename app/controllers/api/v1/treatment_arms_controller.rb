@@ -116,7 +116,7 @@ module Api
 
       def set_treatment_arms
         if params[:active].present?
-          params[:is_active_flag] = params[:active] == 'true' ?  true : false
+          params[:is_active_flag] = params[:active] == 'true' ? true : false
         end
         if attribute_params.present? || projection_params.present?
           ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
@@ -133,7 +133,7 @@ module Api
 
       def set_latest_treatment_arm
         treatment_arms = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id])
-        @treatment_arm = treatment_arms.detect{|t| t.version == params[:version]}
+        @treatment_arm = treatment_arms.detect{ |t| t.version == params[:version] }
         @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end
 
