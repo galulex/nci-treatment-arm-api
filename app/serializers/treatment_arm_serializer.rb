@@ -29,7 +29,7 @@ class TreatmentArmSerializer < ActiveModel::Serializer
   end
 
   def stratum_statistics
-    TreatmentArm.stratum_stats(object.treatment_arm_id, object.stratum_id)
+    []#TreatmentArm.stratum_stats(object.treatment_arm_id, object.stratum_id)
   end
 
   def num_patients_assigned

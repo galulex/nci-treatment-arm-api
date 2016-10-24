@@ -29,7 +29,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  # config.logger = Logger.new('/dev/null')
+  config.logger = Logger.new('/dev/null')
 
   # Enable stdout logger
   # Set log level
