@@ -111,12 +111,6 @@ describe Api::V1::TreatmentArmsController do
              treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
     end
 
-    it 'should handle errors correctly' do
-      allow(TreatmentArm).to receive(:scan).and_raise('this error')
-      get :index, treatment_arm_id: 'APEC1621-A'
-      expect(response).to_not be_nil
-    end
-
     it 'should return list of all treatment arms' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :index, format: :json
@@ -148,14 +142,14 @@ describe Api::V1::TreatmentArmsController do
     end
 
     it 'should return 404 Not Found for a TA that is not present in the DB' do
-      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      allow(TreatmentArm).to receive(:scan).and_return([])
       get :show, treatment_arm_id: 'APEC1621', stratum_id: '11', version: '2016-20-05'
       expect(response).to_not be_nil
       expect(response).to have_http_status(404)
     end
 
     it 'should respond with a Resource Not Found message' do
-      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      allow(TreatmentArm).to receive(:scan).and_return([])
       get :show, treatment_arm_id: 'APEC1621-A', stratum_id: '11', version: '2016-20-05'
       expect(response.body).to include('Resource Not Found')
     end
@@ -164,12 +158,6 @@ describe Api::V1::TreatmentArmsController do
       allow(TreatmentArm).to receive(:scan).and_raise('this error')
       expect { get :show, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
     end
-
-    # it 'should raise the UrlGenerationError' do
-    #   allow(TreatmentArm).to receive(:scan)
-    #   get :index, treatment_arm_id: 'APEC1621-A'
-    #   expect(response).to have_http_status(500)
-    # end
   end
 
   describe 'POST #PatientAssignment' do

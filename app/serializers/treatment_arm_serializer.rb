@@ -11,15 +11,20 @@ class TreatmentArmSerializer < ActiveModel::Serializer
              :copy_number_variants, :gene_fusions,
              :version_statistics, :stratum_statistics
 
-  def active
-    object.is_active_flag == true ? true : false
-  end
-
   def total_patients_on_arm
     object.current_patients.to_i + object.former_patients.to_i
   end
 
   def version_statistics
+    {
+      current_patients: object.version_current_patients.to_i,
+      former_patients: object.version_former_patients.to_i,
+      not_enrolled_patients: object.version_not_enrolled_patients.to_i,
+      pending_patients: object.version_pending_patients.to_i
+    }
+  end
+
+  def stratum_statistics
     {
       current_patients: object.current_patients.to_i,
       former_patients: object.former_patients.to_i,
@@ -28,12 +33,8 @@ class TreatmentArmSerializer < ActiveModel::Serializer
     }
   end
 
-  def stratum_statistics
-    []#TreatmentArm.stratum_stats(object.treatment_arm_id, object.stratum_id)
-  end
-
   def num_patients_assigned
-    object.pending_patients.to_i + object.former_patients.to_i + object.not_enrolled_patients.to_i + object.current_patients.to_i
+    object.version_pending_patients.to_i + object.version_former_patients.to_i + object.version_not_enrolled_patients.to_i + object.version_current_patients.to_i
   end
 
   def treatment_arm_title

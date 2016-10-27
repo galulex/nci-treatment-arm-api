@@ -5,9 +5,11 @@ module Api
     class TreatmentArmsController < ApplicationController
       include HTTParty
       # before_action :authenticate, if: "Rails.env.production?"
+      before_action :params_to_boolean , only: ['index', 'show']
       before_action :set_treatment_arms, only: ['index']
       before_action :set_treatment_arm, only: ['show']
       before_action :set_latest_treatment_arm, only: ['create']
+
 
       # Checks if the TreatmentArm exists in the DB, if not Creates it
       def create
@@ -51,7 +53,7 @@ module Api
       def refresh
         begin
           TreatmentArm.async_cog_status_update
-          treatment_arms = TreatmentArm.where(is_active_flag: true).all
+          treatment_arms = TreatmentArm.where(active: true).all
           render json: treatment_arms.as_json
         rescue => error
           standard_error_message(error)
@@ -64,7 +66,7 @@ module Api
           if projection_params.present? || attribute_params.present?
             render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params || [])
           else
-            render json: @treatment_arm
+            render json: @treatment_arm, each_serializer: ::TreatmentArmSerializer
           end
         rescue => error
           standard_error_message(error)
@@ -116,23 +118,23 @@ module Api
 
       def set_treatment_arms
         if params[:active].present?
-          params[:is_active_flag] = params[:active] == 'true' ? true : false
+          params[:active] == 'true' ? true : false
         end
         if attribute_params.present? || projection_params.present?
-          ta_json = filter_query_by_attributes(TreatmentArm.all.entries)
+          ta_json = filter_query_by_attributes(TreatmentArm.scan({}))
         else
-          ta_json = filter_query(TreatmentArm.all.entries)
+          ta_json = filter_query(TreatmentArm.scan({}))
         end
         @treatment_arms = ta_json.sort{ |x, y| y.date_created <=> x.date_created }
       end
 
       def set_treatment_arm
-        @treatment_arm = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id], version: params[:version]).first
+        @treatment_arm = TreatmentArm.find_by(params[:treatment_arm_id], params[:stratum_id], params[:version], false).first
         error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
       end
 
       def set_latest_treatment_arm
-        treatment_arms = TreatmentArm.where(treatment_arm_id: params[:treatment_arm_id], stratum_id: params[:stratum_id])
+        treatment_arms = TreatmentArm.find_by(params[:treatment_arm_id], params[:stratum_id], nil, false)
         @treatment_arm = treatment_arms.detect{ |t| t.version == params[:version] }
         @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end
@@ -147,22 +149,16 @@ module Api
       end
 
       def projection_params
-        if params[:projection].is_a?(Array)
-          projection = params[:projection] || []
-          projection.map(&:to_sym)
-        end
+        params[:projection] || [] if params[:projection].is_a?(Array)
       end
 
       def attribute_params
-        if params[:attribute].is_a?(Array)
-          attribute = params[:attribute] || []
-          attribute.map(&:to_sym)
-        end
+        params[:attribute] || [] if params[:attribute].is_a?(Array)
       end
 
       def filter_query(query_result)
         return [] if query_result.nil?
-        [:treatment_arm_id, :stratum_id, :version, :is_active_flag].each do |key|
+        [:treatment_arm_id, :stratum_id, :version, :active].each do |key|
           unless params[key].nil?
             new_query_result = query_result.select { |t| t.send(key) == params[key] }
             query_result = new_query_result
@@ -193,6 +189,16 @@ module Api
       def error_message(error)
         logger.error "#{error.message} :: #{error.backtrace}"
         render json: { message: error.message }, status: 404
+      end
+
+      def params_to_boolean
+        params.each do |key, value|
+          if value == "true"
+            params[key]= true
+          elsif value == "false"
+            params[key]= false
+          end
+        end
       end
     end
   end

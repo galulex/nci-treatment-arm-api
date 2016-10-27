@@ -40,8 +40,11 @@ class TreatmentArmAssignmentEvent
     query = { scan_filter: {} }
     opts.each do |key, value|
       unless value.nil?
-        query[:scan_filter].merge!(key.to_s => { comparison_operator: 'EQ',
-                                                 attribute_value_list: [value] })
+        query[:scan_filter].merge!(key.to_s => {
+                                                 comparison_operator: 'EQ',
+                                                 attribute_value_list: [value]
+                                               }
+                                  )
       end
     end
     query
@@ -66,7 +69,8 @@ class TreatmentArmAssignmentEvent
       hash_merge(assay_stats, taa.matched_treament_arm_for_assay_rules('assay_rules'))
       hash_merge(assignment_assay_stats, taa.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
-    { patients_list: treatment_arm_assignments.collect(&:to_h),
+    {
+      patients_list: treatment_arm_assignments.collect(&:to_h),
       stats: {
                'variant_stats_by_identifier' => variant_stats,
                'assginment_stats_by_identifier' => assignment_stats,
@@ -79,7 +83,7 @@ class TreatmentArmAssignmentEvent
   end
 
   def treatment_arm
-    @treatment_arm ||= ::TreatmentArm.where(treatment_arm_id: treatment_arm_id, stratum_id: stratum_id, version: version).first
+    @treatment_arm ||= ::TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
   end
 
   def matched_treament_arm_for_non_hot_spot_rules(report_name)
@@ -309,8 +313,8 @@ class TreatmentArmAssignmentEvent
   end
 
   def self.hash_merge(hash1, hash2)
-    hash1.merge!(hash2) do |a,b,c|
-      b.merge!(c) do |x,y,z|
+    hash1.merge!(hash2) do |a, b, c|
+      b.merge!(c) do |x, y, z|
         if y.is_a?(Integer)
           y + z
         else

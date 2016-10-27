@@ -16,7 +16,7 @@ describe TreatmentArm do
 
   let(:treatment_arm) do
     ba = TreatmentArm.new
-    ba.is_active_flag= true
+    ba.active = true
     ba.name = "TestData"
     ba.version = "EAY13102"
     ba.description = "testDescription"
