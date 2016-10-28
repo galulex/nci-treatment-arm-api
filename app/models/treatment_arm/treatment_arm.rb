@@ -97,20 +97,24 @@ class TreatmentArm
 
   def self.async_cog_status_update
     begin
-      results = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
-      cog_arms_status = results.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys!
+      result = []
+      response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
+      cog_arms_status = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
       cog_arms_status[:treatment_arms].each do |cog_arm|
-        match_treatment_arm = TreatmentArm.where(treatment_arm_id: cog_arm['treatment_arm_id'],
-                                                 stratum_id: cog_arm['stratum_id']).first
+        match_treatment_arm = TreatmentArm.find_by(cog_arm['treatment_arm_id'], cog_arm['stratum_id'], nil, false).first
         unless match_treatment_arm.blank?
+          next if match_treatment_arm.active == false
           if match_treatment_arm.treatment_arm_status != 'CLOSED' && match_treatment_arm.treatment_arm_status != cog_arm['status']
-            Aws::Publisher.publish(cog_treatment_refresh: match_treatment_arm)
+            Aws::Publisher.publish(cog_treatment_refresh: match_treatment_arm.attributes_data)
+            match_treatment_arm.treatment_arm_status = cog_arm['status']
+            result << match_treatment_arm.attributes_data
           end
         end
-       # logger.info('No Treatment Arms status to update')
+       Rails.logger.info("No Treatment Arms status to update")
       end
+      result
     rescue => error
-      logger.warn("Failed to connect to COG #{error}")
+      Rails.logger.warn("Failed to connect to COG with error #{error}::#{error.backtrace}")
     end
   end
 

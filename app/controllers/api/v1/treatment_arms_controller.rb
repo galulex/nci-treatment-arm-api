@@ -52,9 +52,8 @@ module Api
       # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
       def refresh
         begin
-          TreatmentArm.async_cog_status_update
-          treatment_arms = TreatmentArm.where(active: true).all
-          render json: treatment_arms.as_json
+          response = TreatmentArm.async_cog_status_update
+          render json: response
         rescue => error
           standard_error_message(error)
         end
