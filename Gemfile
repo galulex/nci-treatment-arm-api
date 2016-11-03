@@ -23,6 +23,7 @@ gem 'aws-record'
 gem 'json-schema'
 gem 'aws-sdk', '~>2'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'nci_match_patient_models', :git => 'git://github.com/CBIIT/nci-match-lib.git', :branch => 'master'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
