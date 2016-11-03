@@ -1,0 +1,144 @@
+// This file is used for loading the TreatmentArm JSON into the DB (specific to the rake task)
+  {
+    "treatment_arm_id":"CukeTest-122-1-PENDING",
+    "name":"This is TA Sample",
+    "date_created":"2016-07-09",
+    "date_opened":"2016-09-08",
+    "version":"v1",
+    "stratum_id":"stratum122a",
+    "description":"TEST Treatment Arm used by Cucumber Tests",
+    "target_id":"113",
+    "target_name":"Crizotinib",
+    "active":"true",
+    "gene":"ALK",
+    "treatment_arm_status":"OPEN",
+    "study_id":"APEC1621",
+    "assay_rules":[
+      {
+        "type": "IHC",
+        "assay_result_status": "NEGATIVE",
+        "assay_variant": "EMPTY",
+        "gene": "PTEN",
+        "description":"This is an example description.",
+        "level_of_evidence":3.0
+      }
+    ],
+    "treatment_arm_drugs":[
+      {
+        "name":"Crizotinib",
+        "drug_id":"113"
+      }
+    ],
+    "snv_indels":[
+      {
+        "variant_type":"snp",
+        "gene":"NRAS",
+        "protein":"p.Q61H",
+        "arm_specific":false,
+        "chromosome":"chr22",
+        "position":"30035190",
+        "identifier":"COSM22189",
+        "ocp_reference":"TTC",
+        "ocp_alternative":"-",
+        "public_med_ids":[
+            "18827604",
+            "21917678",
+            "23181703"
+        ],
+        "level_of_evidence":3.0,
+        "inclusion":true
+      },
+      {
+        "variant_type":"del",
+        "gene":"TTCL",
+        "protein":"p.Q89",
+        "arm_specific":true,
+        "chromosome":"chr1",
+        "position":"70349258",
+        "identifier":"COSM757681",
+        "ocp_reference":"G",
+        "ocp_alternative":"C",
+        "public_med_ids":[
+            "18827604",
+            "21917678",
+            "23181703"
+        ],
+        "level_of_evidence":3.0,
+        "inclusion":false
+      }
+    ],
+    "non_hotspot_rules":[
+      {
+        "inclusion": true,
+        "description": "This is an example description.",
+        "public_med_ids": [
+           "18827604",
+           "21917678",
+           "23181703"
+        ],
+        "arm_specific": false,
+        "level_of_evidence": 3.0,
+        "func_gene": "EGFR",
+        "function": "missense",
+        "oncomine_variant_class": "deleterious",
+        "exon": "19"
+      }
+    ],
+    "copy_number_variants": [
+      {
+        "variant_type":"cnv",
+        "gene": "MET",
+        "identifier": "MET",
+        "protein": null,
+        "level_of_evidence": 2.0,
+        "chromosome": "chr1",
+        "position": "40361592",
+        "ocp_alternative": "<CNV>",
+        "ocp_reference": "C",
+        "public_med_ids": [
+          "18827604"
+        ],
+        "arm_specific": false,
+        "inclusion": false
+      }
+    ],
+    "gene_fusions": [
+      {
+        "variant_type":"fusion",
+        "gene": "MET",
+        "identifier": "MET-MET.M13M15",
+        "protein": null,
+        "level_of_evidence": 2.0,
+        "chromosome": "chr2",
+        "position": "154142875",
+        "ocp_alternative": "C[chr1:156844362[",
+        "ocp_reference": "C",
+        "public_med_ids": [
+          "18827604"
+        ],
+        "arm_specific": false,
+        "inclusion": false
+      }
+    ],
+    "diseases":[
+      {
+        "disease_code_type":"ICD-O",
+        "disease_code":"8200/0",
+        "disease_name":"Eccrine dermal cylindroma (C44._)\nTurban tumor (C44.4)\nCylindroma of skin (C44._)",
+        "exclusion":false
+      },
+      {
+        "disease_code_type":"ICD-O",
+        "disease_code":"8200/3",
+        "disease_name":"Adenoid cystic carcinoma\nCylindroma, NOS (except cylindroma of skin M-8200/0)",
+        "exclusion":false
+      }
+    ],
+    "exclusion_drugs":[
+      {
+        "name":"Doxorubicin Hydrochloride",
+        "drug_id":"10001"
+      }
+    ]
+  }
+
