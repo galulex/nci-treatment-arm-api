@@ -19,7 +19,7 @@
 # require "codeclimate-test-reporter"
 # CodeClimate::TestReporter.start
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start 'rails'
 require 'factory_girl_rails'
 require 'rails_helper'
 require 'rspec/active_model/mocks'
