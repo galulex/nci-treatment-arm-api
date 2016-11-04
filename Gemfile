@@ -49,7 +49,7 @@ group :development, :test do
   gem 'faker'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-
+  gem 'simplecov'
   # Codeclimate
   gem 'codeclimate-test-reporter', require: nil
 end
