@@ -16,9 +16,10 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
-
+# require "codeclimate-test-reporter"
+# CodeClimate::TestReporter.start
+require 'simplecov'
+SimpleCov.start
 require 'factory_girl_rails'
 require 'rails_helper'
 require 'rspec/active_model/mocks'
