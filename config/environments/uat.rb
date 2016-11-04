@@ -74,7 +74,7 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   # config.log_formatter = ::Logger::Formatter.new
   # Set log level
-  config.log_level = :INFO
+  config.log_level = :debug
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
   # config.log_tags = [ "Treatment-Arm-API", :subdomain, :uuid ]
