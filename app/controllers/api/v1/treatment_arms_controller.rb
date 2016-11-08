@@ -10,7 +10,6 @@ module Api
       before_action :set_treatment_arm, only: ['show']
       before_action :set_latest_treatment_arm, only: ['create']
 
-
       # Checks if the TreatmentArm exists in the DB, if not Creates it
       def create
         begin
@@ -29,7 +28,7 @@ module Api
           elsif @treatment_arm.version != params[:version]
             update_clone
           else
-            render json: { message: "TreatmentArm with id: #{params[:treatment_arm_id]}, stratum_id: #{params[:stratum_id]} and version: #{params[:version]} already exists in the DataBase" }, status: 400
+            render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
           end
         rescue => error
           standard_error_message(error)

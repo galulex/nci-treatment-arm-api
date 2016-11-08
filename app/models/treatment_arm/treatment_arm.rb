@@ -116,7 +116,12 @@ class TreatmentArm
       end
       result
     rescue => error
-      raise "Failed connecting to COG :: #{error}"
+      puts "Failed connecting to COG :: #{error}"
+      if Rails.env.uat?
+        puts "Switching to use mock COG for UAT..."
+        puts "Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}"
+        MockCogService.perform
+      end
     end
   end
 
