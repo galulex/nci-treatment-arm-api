@@ -97,4 +97,34 @@ describe TreatmentArmSerializer do
         }
       )
   }
+
+  let(:attributes) { FactoryGirl.attributes_for(treatment_arm) }
+
+  it { should have_key(:name) }
+  it { should have_key(:treatment_arm_id) }
+  it { should have_key(:stratum_id) }
+  it { should have_key(:treatment_arm_title) }
+  it { should have_key(:description) }
+  it { should have_key(:active) }
+  it { should have_key(:target_name) }
+  it { should have_key(:target_id) }
+  it { should have_key(:gene) }
+  it { should have_key(:treatment_arm_status) }
+  it { should have_key(:study_id) }
+  it { should have_key(:assay_rules) }
+  it { should have_key(:total_patients_on_arm) }
+  it { should have_key(:num_patients_assigned) }
+  it { should have_key(:treatment_arm_drugs) }
+  it { should have_key(:date_created) }
+  it { should have_key(:date_opened) }
+  it { should have_key(:diseases) }
+  it { should have_key(:exclusion_drugs) }
+  it { should have_key(:status_log) }
+  it { should have_key(:snv_indels) }
+  it { should have_key(:non_hotspot_rules) }
+  it { should have_key(:copy_number_variants) }
+  it { should have_key(:gene_fusions) }
+  it { should have_key(:version_statistics) }
+  it { should have_key(:stratum_statistics) }
+
 end
