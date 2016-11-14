@@ -4,6 +4,7 @@ require 'factory_girl_rails'
 describe Api::V1::TreatmentArmsController do
   before(:each) do
     setup_knock
+    @request.headers['Content-Type'] = 'application/json'
   end
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
@@ -18,16 +19,14 @@ describe Api::V1::TreatmentArmsController do
       it 'should save data to the database' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
-        params = { treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2017-10-07' }
-        post :create, params.to_json, params.merge(format: 'json')
+        post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response).to have_http_status(200)
       end
 
       it 'should respond with a success json message' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
-        params = { treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2017-10-07' }
-        post :create, params.to_json, params.merge(format: 'json')
+        post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response.body).to include('Message has been processed successfully')
         expect(response).to have_http_status(200)
       end
@@ -42,8 +41,7 @@ describe Api::V1::TreatmentArmsController do
       it 'should respond with a failure json message' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(false)
-        params = { treatment_arm_id: 'null', stratum_id: '100', version: '2017-10-07' }
-        post :create, params.to_json, params.merge(format: 'json')
+        post :create, params: { treatment_arm_id: 'null', stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response.body).to include("The property '#/' did not contain a required property of 'name'")
         expect(response).to have_http_status(500)
       end
@@ -120,15 +118,13 @@ describe Api::V1::TreatmentArmsController do
       end
 
       it 'should save data to the DataBase' do
-        params = { treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2017-10-07' }
-        post :assignment_event, params.to_json, params.merge(format: 'json')
+        post :assignment_event, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response).to_not be_nil
         expect(response).to have_http_status(200)
       end
 
       it 'should not raise error on successful assignment of the patient' do
-        params = { treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-20-02' }
-        post :assignment_event, params.to_json, params.merge(format: 'json')
+        post :assignment_event, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect { JSON.parse(response.body) }.to_not raise_error
       end
 
