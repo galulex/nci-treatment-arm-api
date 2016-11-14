@@ -3,6 +3,8 @@ FROM ruby:2.3.1
 
 MAINTAINER jeremy.pumphrey@nih.gov
 
+RUN apt-get update && apt-get install -y nodejs && rm -rf /var/lib/apt/lists/*
+
 ENV INSTALL_PATH /usr/app
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
