@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'factory_girl_rails'
+require 'aws-record'
 
 describe Api::V1::TreatmentArmsController do
   before(:each) do
@@ -14,6 +15,10 @@ describe Api::V1::TreatmentArmsController do
       it 'should route to the correct controller' do
         expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07').to route_to(controller: 'api/v1/treatment_arms', action: 'create',
                treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
+      end
+
+      it 'should include Aws::Record gem from the model' do
+        expect(TreatmentArm.include?(Aws::Record)).to be_truthy
       end
 
       it 'should save data to the database' do
@@ -61,6 +66,11 @@ describe Api::V1::TreatmentArmsController do
              treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
     end
 
+    it 'index call should return something' do
+      get :index, treatment_arm_id: "APEC1621-A"
+      expect(response).to have_http_status(200)
+    end
+
     it 'should return list of all treatment arms' do
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
       get :index, format: :json
@@ -82,6 +92,13 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to_not be_nil
       expect(response).to have_http_status(200)
       expect { JSON.parse(response.body) }.to_not raise_error
+    end
+
+    it "should return empty array when there are no TA's with id & stratum_id" do
+      allow(TreatmentArm).to receive(:scan).and_return([])
+      get :index, treatment_arm_id: 'random', stratum_id: 'random'
+      expect(response).to have_http_status(200)
+      expect(response.body).to eq("[]")
     end
 
     it 'should return all treatmentArms with id, stratum_id, version' do
@@ -107,6 +124,15 @@ describe Api::V1::TreatmentArmsController do
     it 'should raise the UrlGenerationError' do
       allow(TreatmentArm).to receive(:scan).and_raise('this error')
       expect { get :show, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
+    end
+
+    it 'should return a proper json with data' do
+      treatment_arm = TreatmentArm.new
+      treatment_arm.treatment_arm_id = 'APEC1621-A'
+      treatment_arm.stratum_id = '12'
+      treatment_arm.version = '2016-20-02'
+      treatment_arm.date_created = DateTime.current.getutc().to_s
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
     end
   end
 
