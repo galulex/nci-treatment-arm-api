@@ -8,8 +8,6 @@ services:
 language: ruby
 rvm:
   - 2.3.1
-# before_install:
-#before_script:
 script:
   - RAILS_ENV=test bundle exec rspec spec/
 after_success:
@@ -25,10 +23,8 @@ after_success:
     -i matchbox/nci-treatment-arm-api:latest
   #Trigger Travis bdd tests
   - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token $TRAVIS_TOKEN" -d "{\"request\":{\"message\":\"Triggered by nci-treatment-arm-api $TRAVIS_COMMIT\", \"branch\":\"master\", \"config\":{\"env\":{\"matrix\":[\"TRIGGER_REPO=nci-treatment-arm-api;CUC_TAG=@treatment_arm\"]}}}}" https://api.travis-ci.org/repo/CBIIT%2Fnci-uMatch-bddtests/requests
-#after_script:
 notifications:
-  slack:
-    secure: pGAQ+vsZJx/hnumGsPZf67J8nTFi3l4ERMV1KPmpaalNglezn5RGNQMUFTOjJVygW29j+EVxMAgYo+PUwgpCPj48nwDGlqDv1NMTR5/9Ek5Vt1o9ZDT1WcczNV6Fp3F1p0Rodwru0aF4mGUyyNIas7CYMb3b6GxcAQAp4WhzANJ8092oRVXWwnTjp/Lvk+aO2eM8z+5i8oc2QPw/dDtrh1TdqeWSzJeLTK9NXKGFMp5TxcENKSQ9PVhVYwsA44y/yYToEpNoGGiKKJ3Oi3ZwqAXUPQTUuXzcRvOp95SizYXsjkIj/MJ4q6v0lPxmQtVYHc4jFBPe4nyQEcfy/yA2X+juPYQJtvsFBIWxjHpfNltjfA7nvAMXx36uvwhIzB4c7hF3UYzTQIvVDB7iXSR+J9JsOqzImPYg5BCwu3w6hChIwI4IJbGFW57CtLOKpMFME2HfsAKJ0jlpQ2sDdDfpxLtNY7aKX/GkHWYyaiBu//L4Ss9m4BG9s22Bd0MqRLUgu/oU0+0AaiM3RfhaI9zcxt/KwuLs0zkJaf6yIrhAaWUP01pzFxFAcQeie8FxgJrCoYzgN3D4f7EiR+w1lM7nP52KjHzVyNSW3rqMdkQuLPNBNU62tt3LyisqE7zjP6ft+YhKoKGTkYDSvmN5nT78dB4+nf1ZV7A4xLWu1BCJ50c=
+  slack: clinicalbiomed:gRp5LqKElNOjUUMPLlq4qC1j
 addons:
   code_climate:
     repo_token: 265d803327b2e66971bf6df85cb05445913ec3164bd88d28d12de70added55bb
