@@ -10,6 +10,10 @@ describe Api::V1::TreatmentArmsController do
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
 
+  it 'has a valid factory' do
+    expect(treatment_arm).to be_truthy
+  end
+
   describe 'POST #treatment_arm' do
     context 'with valid data' do
       it 'should route to the correct controller' do

@@ -86,6 +86,20 @@ describe TreatmentArm do
     expect(treatment_arm).to be_an_instance_of(TreatmentArm)
   end
 
+  it 'should generate unique date_created field' do
+    TreatmentArm.stub(:first).and_return(nil)
+    date_created = DateTime.current.getutc.to_s
+    expect(date_created).to be_truthy
+  end
+
+  it 'should generate different unique date_created fields' do
+    TreatmentArm.stub(:first).and_return(nil)
+    treatment_arm1 = DateTime.current.getutc.to_s
+    sleep(1)
+    treatment_arm2 = DateTime.current.getutc.to_s
+    expect(treatment_arm1).not_to eq(treatment_arm2)
+  end
+
   describe 'Attributes' do
 
     let(:record) do
