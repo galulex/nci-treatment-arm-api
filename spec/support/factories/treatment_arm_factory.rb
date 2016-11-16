@@ -44,6 +44,7 @@ FactoryGirl.define do
         }
       ]
     exclusion_drugs []
+    status_log {}
     assay_rules []
     gene_fusions []
     non_hotspot_rules []
