@@ -15,6 +15,7 @@ Rails.application.routes.draw do
             get 'ping', to: 'ping#ping', as: 'ping'
           end
         end
+        match "*path", to: 'errors#render_not_found', via: :all
       end
     end
   end
