@@ -57,6 +57,29 @@ describe Api::V1::TreatmentArmsController do
     end
   end
 
+  describe 'Error Handling' do
+    context 'POST#TreatmentArm' do
+      it 'should handle malformed requests correctly' do
+        expect(post: 'api/v1/treatment_arms/APEC1621-A/100').to route_to(controller: 'api/v1/errors', action: 'render_not_found',
+               path: 'treatment_arms/APEC1621-A/100')
+      end
+    end
+
+    context 'GET#TreatmentArm' do
+      it 'should handle malformed requests correctly' do
+        expect(get: 'api/v1/treatment_arms/APEC1621-A').to route_to(controller: 'api/v1/errors', action: 'render_not_found',
+               path: 'treatment_arms/APEC1621-A')
+      end
+    end
+
+    context 'POST#PatientAssignment' do
+      it 'should handle malformed requests correctly' do
+        expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2015-08-06/12').to route_to(controller: 'api/v1/errors', action: 'render_not_found',
+               path: 'treatment_arms/APEC1621-A/100/2015-08-06/12')
+      end
+    end
+  end
+
   describe 'GET #treatment_arms' do
 
     it 'should route to the correct controller' do
@@ -70,7 +93,7 @@ describe Api::V1::TreatmentArmsController do
              treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
     end
 
-    it 'index call should return something' do
+    it 'should return something on the index call' do
       get :index, treatment_arm_id: "APEC1621-A"
       expect(response).to have_http_status(200)
     end
