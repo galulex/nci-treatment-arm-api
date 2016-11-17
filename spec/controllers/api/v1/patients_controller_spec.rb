@@ -35,11 +35,4 @@ describe Api::V1::PatientsController do
                :status_log => {},
                :current_step_number => 0
   end
-
-  describe "GET #patientsOnTreatmentArm" do
-    it "should route to the correct controller" do
-      expect(:get => "/api/v1/patient_ready_for_assignment").to route_to(:controller => "api/v1/patients",
-                                                                         :action => "queue_treatment_arm_assignment")
-    end
-  end
 end
