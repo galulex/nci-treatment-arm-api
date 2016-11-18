@@ -21,7 +21,7 @@ module Api
                                   version: params[:version])
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
               Aws::Publisher.publish(treatment_arm: @treatment_arm)
-              render json: { message: 'Message has been processed successfully' }, status: 200
+              render json: { message: 'Message has been processed successfully' }, status: 202
             else
               JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
             end

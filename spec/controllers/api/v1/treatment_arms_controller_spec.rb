@@ -29,7 +29,7 @@ describe Api::V1::TreatmentArmsController do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(202)
       end
 
       it 'should respond with a success json message' do
@@ -37,7 +37,7 @@ describe Api::V1::TreatmentArmsController do
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response.body).to include('Message has been processed successfully')
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(202)
       end
 
       it 'should raise the UrlGenerationError' do
