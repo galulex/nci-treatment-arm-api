@@ -173,7 +173,7 @@ describe Api::V1::TreatmentArmsController do
       it 'should save data to the DataBase' do
         post :assignment_event, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version}
         expect(response).to_not be_nil
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(202)
       end
 
       it 'should not raise error on successful assignment of the patient' do

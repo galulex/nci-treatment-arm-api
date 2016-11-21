@@ -77,7 +77,7 @@ module Api
           treatment_arm_hash = @treatment_arm.clone_attributes.merge!(clone_params)
           if JSON::Validator.validate(TreatmentArmValidator.schema, treatment_arm_hash)
             Aws::Publisher.publish(clone_treatment_arm: treatment_arm_hash)
-            render json: { message: 'Message has been processed successfully' }, status: 200
+            render json: { message: 'Message has been processed successfully' }, status: 202
           else
             JSON::Validator.validate!(TreatmentArmValidator.schema, treatment_arm_hash)
           end
@@ -95,7 +95,7 @@ module Api
                                    stratum_id: params[:stratum_id],
                                    version: params[:version])
           Aws::Publisher.publish(assignment_event: @assignment_event)
-          render json: { message: 'Message has been processed successfully' }, status: 200
+          render json: { message: 'Message has been processed successfully' }, status: 202
         rescue => error
           standard_error_message(error)
         end
