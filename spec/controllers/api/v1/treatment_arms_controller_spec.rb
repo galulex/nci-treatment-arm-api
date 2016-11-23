@@ -254,17 +254,4 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to_not be_nil
     end
   end
-
-  describe '#Projections' do
-    it 'should display only the projection parameters' do
-      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
-      uri = URI('http://127.0.0.1:10235/api/v1/treatment_arms?projection[]=treatment_arm_id')
-      response = Net::HTTP.get(uri)
-      expect(response.to_json).to include('[{\"treatment_arm_id\":\"APEC1621-A\"}]')
-
-      uri = URI('http://127.0.0.1:10235/api/v1/treatment_arms?projection[]=stratum_id')
-      response = Net::HTTP.get(uri)
-      expect(response.to_json).to include('[{\"stratum_id\":\"100\"}]')
-    end
-  end
 end
