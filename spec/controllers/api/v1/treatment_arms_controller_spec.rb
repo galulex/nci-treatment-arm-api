@@ -10,7 +10,28 @@ describe Api::V1::TreatmentArmsController do
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
 
-  it 'has a valid factory' do
+  let(:cog_arms) do
+    {
+      'treatmentArms': [
+        {
+          'treatment_arm_id': 'APEC1621-A',
+          'stratum_id': '12',
+          'status': 'SUSPENDED',
+          'status_date': '1441893204',
+          'treatment_arm_drugs': []
+        },
+        {
+          'treatment_arm_id': 'CukeTest-178',
+          'stratum_id': 'stratum178a',
+          'status': 'OPEN',
+          'status_date': '1441893204',
+          'treatment_arm_drugs': []
+        }
+      ]
+    }
+  end
+
+  it 'should have a valid TreatmentArm factory' do
     expect(treatment_arm).to be_truthy
   end
 
@@ -217,6 +238,20 @@ describe Api::V1::TreatmentArmsController do
       allow(TreatmentArmAssignmentEvent).to receive(:scan).and_raise('this error')
       get :patients_on_treatment_arm, treatment_arm_id: 'APEC1621-A', stratum_id: '100'
       expect(response).to have_http_status(500)
+    end
+  end
+
+  describe 'PUT#Cog_status' do
+    it 'should route to the correct controller action' do
+      expect(put: 'api/v1/treatment_arms/status').to route_to(controller: 'api/v1/treatment_arms', action: 'refresh')
+    end
+
+    it 'should get the latest treatmentArm status from COG' do
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      put :refresh
+      expect(response).to have_http_status(200)
+      expect(response).to_not be_nil
+
     end
   end
 end

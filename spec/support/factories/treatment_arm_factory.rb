@@ -1,7 +1,7 @@
 # require 'factory_girl'
 
 FactoryGirl.define do
-  factory :treatment_arm, :class => TreatmentArm do
+  factory :treatment_arm, class: TreatmentArm do
     name 'EAY131-test'
     treatment_arm_id 'APEC1621-A'
     version '2016-20-02'
@@ -59,7 +59,7 @@ FactoryGirl.define do
     version_current_patients 1
   end
 
-  factory :treatment_arm_assignment_event, :class => TreatmentArmAssignmentEvent do
+  factory :treatment_arm_assignment_event, class: TreatmentArmAssignmentEvent do
     assignment_date '2012-02-20'
     date_on_arm '2016-05-27'
     date_off_arm '2013-01-19'
