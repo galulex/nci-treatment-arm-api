@@ -8,31 +8,52 @@ describe Api::V1::PatientsController do
   end
 
   let(:patient_treatment_arm) do
-    stub_model TreatmentArmAssignmentEvent,
-               :id => "",
-               :treatment_arm_name_version => "",
-               :patient_sequence_number => "",
-               :concordance => "",
-               :current_patient_status => "",
-               :date_created => "",
-               :description => "",
-               :diseases => [],
-               :exclusion_criterias => [],
-               :exclusion_diseases => [],
-               :exclusion_drugs => [],
-               :gene => "",
-               :max_patients_allowed => 32,
-               :name => "",
-               :num_patients_assigned => 0,
-               :patient_assignments => [],
-               :pten_results => [],
-               :target_id => "",
-               :target_name => "",
-               :treatment_arm_drugs => [],
-               :treatment_arm_status => "",
-               :variant_report => [],
-               :version => "",
-               :status_log => {},
-               :current_step_number => 0
+    {
+      assignment_date: '2012-02-20',
+      date_on_arm: '2016-05-27',
+      date_off_arm: '2013-01-19',
+      patient_id: '200re',
+      treatment_arm_id: 'EAC123',
+      stratum_id: 'EAY131',
+      patient_status: 'PENDING_CONFIRMATION',
+      assignment_reason: '',
+      diseases: [
+        { 'drug_id': '1234' }
+      ],
+      version: '2012-02-20',
+      step_number: '0',
+      analysis_id: '1',
+      molecular_id: '2',
+      surgical_event_id: '3',
+      variant_report: {},
+      assignment_report: {},
+      event: 'EVENT_INIT'
+    }
+  end
+
+  describe 'GET #Patient for Assignment' do
+
+    it 'should handle the routes correctly' do
+      expect(get: '/api/v1/patient_ready_for_assignment').to route_to(controller: 'api/v1/errors', action: 'render_not_found', path: 'patient_ready_for_assignment')
+    end
+
+    it 'should return something on the index call' do
+      get :queue_treatment_arm_assignment
+      expect(response).to have_http_status(200)
+    end
+
+    it 'should not raise any error' do
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return([patient_treatment_arm])
+      get :queue_treatment_arm_assignment, format: :json
+      expect(response).to have_http_status(200)
+      expect { JSON.parse(response.body) }.to_not raise_error
+      expect(response).to_not be_nil
+    end
+
+    it 'Should put the message on to the queue' do
+      allow(Aws::Publisher).to receive(:publish).and_return('')
+      get :queue_treatment_arm_assignment
+      expect(response).to have_http_status(200)
+    end
   end
 end
