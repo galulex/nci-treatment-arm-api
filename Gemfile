@@ -36,7 +36,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 # AuthO
-gem 'knock', '~> 1.4.2'
+gem 'knock', '~> 2.0'
 gem 'auth0'
 gem 'httparty'
 

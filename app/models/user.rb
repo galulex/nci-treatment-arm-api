@@ -1,10 +1,8 @@
 class User
-  include Aws::Record
   include ActiveModel::SecurePassword
+  has_secure_password
 
-  string_attr :user_id
-  string_attr :password_digest
-
-  # has_secure_password
-
+  def self.from_token_payload payload
+    !payload.blank?
+  end
 end
