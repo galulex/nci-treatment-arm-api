@@ -140,8 +140,8 @@ module Api
       def clone_params
         body_params = JSON.parse(request.raw_post)
         body_params.deep_transform_keys!(&:underscore).symbolize_keys!
-        body_params[:new_version] = params[:version]
-        [:treatment_arm_id, :date_created, :version, :stratum_id].each { |k| body_params.delete(k) }
+        body_params[:version] = params[:version]
+        [:treatment_arm_id, :date_created, :stratum_id].each { |k| body_params.delete(k) }
         body_params[:stratum_id] = params[:stratum_id]
         body_params
       end
