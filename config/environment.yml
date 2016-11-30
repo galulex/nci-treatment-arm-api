@@ -1,28 +1,29 @@
-development:
-  aws_dynamo_endpoint: "http://localhost:8000"
+common: &defaults
   aws_region: "us-east-1"
-  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
   table_prefix: "ta"
+
+development:
+  <<: *defaults
+  aws_dynamo_endpoint: "http://localhost:8000"
+  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
   cog_url: "http://localhost:3000"
   cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
 test:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  table_prefix: "ta"
   cog_url: "http://pedmatch-int.nci.nih.gov:3000"
   cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
 uat:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  table_prefix: "ta"
   cog_url: ""
   mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
   cog_treatment_arms: "/treatmentArms"
@@ -30,10 +31,9 @@ uat:
   write_capacity_units: "30"
 
 production:
+  <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  aws_region: "us-east-1"
   queue_name: "treatment_arm_queue"
-  table_prefix: "ta"
   cog_url: " "
   cog_treatment_arms: "/treatmentArms"
   read_capacity_units: "30"
