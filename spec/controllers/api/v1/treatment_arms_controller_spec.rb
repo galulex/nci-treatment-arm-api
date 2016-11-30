@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'factory_girl_rails'
 require 'aws-record'
-require 'net/http'
 
 describe Api::V1::TreatmentArmsController do
   before(:each) do
