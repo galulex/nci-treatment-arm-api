@@ -183,6 +183,18 @@ describe Api::V1::TreatmentArmsController do
       treatment_arm.date_created = DateTime.current.getutc().to_s
       allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
     end
+
+    it 'should give all the active treatmentArms when active(true) parameter is passed' do
+      get :index, { active: true }
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+    end
+
+    it 'should give all the active treatmentArms when active(false) parameter is passed' do
+      get :index, { active: false }
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([])
+    end
   end
 
   describe 'POST #PatientAssignment' do
