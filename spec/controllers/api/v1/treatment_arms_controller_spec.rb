@@ -258,5 +258,23 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to have_http_status(200)
       allow(TreatmentArm).to receive(:scan).and_return([])
     end
+
+    it 'should return 404 for a Not Found TreatmentArm even when projection parameters are passed' do
+      get :show, { 'projection' => ['snv_indels'], treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id:treatment_arm.stratum_id, version: treatment_arm.version }
+      expect(response).to have_http_status(404)
+      allow(TreatmentArm).to receive(:scan).and_return([])
+    end
+
+    it 'should display only the projection parameters on a specific TreatmentArm' do
+      get :show, { 'projection' => ['snv_indels'], treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2015-08-06' }
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([])
+    end
+
+    it 'should display only the projection parameters & with non empty attribute parameters on a specific TreatmentArm' do
+      get :show, { 'projection' => ['snv_indels'], 'attribute' => ['diseases'], treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2015-08-06' }
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([])
+    end
   end
 end
