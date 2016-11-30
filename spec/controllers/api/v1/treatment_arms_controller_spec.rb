@@ -11,27 +11,6 @@ describe Api::V1::TreatmentArmsController do
 
   treatment_arm = FactoryGirl.build(:treatment_arm)
 
-  let(:cog_arms) do
-    {
-      'treatmentArms': [
-        {
-          'treatment_arm_id': 'APEC1621-A',
-          'stratum_id': '12',
-          'status': 'SUSPENDED',
-          'status_date': '1441893204',
-          'treatment_arm_drugs': []
-        },
-        {
-          'treatment_arm_id': 'CukeTest-178',
-          'stratum_id': 'stratum178a',
-          'status': 'OPEN',
-          'status_date': '1441893204',
-          'treatment_arm_drugs': []
-        }
-      ]
-    }
-  end
-
   it 'should have a valid TreatmentArm factory' do
     expect(treatment_arm).to be_truthy
   end
@@ -254,7 +233,7 @@ describe Api::V1::TreatmentArmsController do
     end
   end
 
-  describe 'PUT#Cog_status' do
+  describe 'PUT #Cog_status' do
     it 'should route to the correct controller action' do
       expect(put: 'api/v1/treatment_arms/status').to route_to(controller: 'api/v1/treatment_arms', action: 'refresh')
     end
@@ -264,6 +243,20 @@ describe Api::V1::TreatmentArmsController do
       put :refresh
       expect(response).to have_http_status(200)
       expect(response).to_not be_nil
+    end
+  end
+
+  describe 'GET #Projections' do
+    it 'should display only the projection parameters' do
+      get :index, { 'projection' => ['exclusion_drugs']}
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([])
+    end
+
+    it 'should display only the projection parameters & with non empty attribute parameters' do
+      get :index, { 'projection' => ['exclusion_drugs'], 'attribute' => ['snv_indels']}
+      expect(response).to have_http_status(200)
+      allow(TreatmentArm).to receive(:scan).and_return([])
     end
   end
 end
