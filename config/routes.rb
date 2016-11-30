@@ -19,19 +19,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  controller :patient do
-    namespace 'api' do
-      namespace 'v1' do
-        get 'patient_ready_for_assignment', to: 'patients#queue_treatment_arm_assignment'
-      end
-    end
-  end
-
-  controller :graph_data do
-    get 'patientStatusGraph' => :patient_status_count
-    get 'patientStatusGraph/:id' => :patient_status_count
-    get 'patientDiseaseGraph' => :patient_disease_data
-    get 'patientDiseaseGraph/:id' => :patient_disease_data
-  end
 end
