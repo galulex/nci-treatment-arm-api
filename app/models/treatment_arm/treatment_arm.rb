@@ -1,5 +1,6 @@
 
 require './lib/extensions/hash_extension'
+require 'base64'
 
 class TreatmentArm
   include Aws::Record
@@ -99,7 +100,8 @@ class TreatmentArm
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
-      response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
+      auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
+      response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
       cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
