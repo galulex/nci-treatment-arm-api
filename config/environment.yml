@@ -1,7 +1,7 @@
 common: &defaults
   aws_region: "us-east-1"
   table_prefix: "ta"
-  cog_treatment_arms: "/treatmentArms"
+  cog_treatment_arms: "/treatmentarms"
 
 development:
   <<: *defaults
