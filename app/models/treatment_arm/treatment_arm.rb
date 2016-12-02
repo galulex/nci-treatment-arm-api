@@ -1,6 +1,5 @@
 
 require './lib/extensions/hash_extension'
-require 'base64'
 
 class TreatmentArm
   include Aws::Record
