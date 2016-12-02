@@ -15,7 +15,7 @@ test:
   <<: *defaults
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   queue_name: "treatment_arm_queue"
-  cog_url: "http://pedmatch-int.nci.nih.gov:3000"
+  cog_url: "https://pedmatch-int.nci.nih.gov:3000"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
@@ -24,7 +24,7 @@ uat:
   aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
   queue_name: "treatment_arm_queue"
   cog_url: ""
-  mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
+  mock_cog_url: "https://pedmatch-uat.nci.nih.gov:3000"
   read_capacity_units: "30"
   write_capacity_units: "30"
 
