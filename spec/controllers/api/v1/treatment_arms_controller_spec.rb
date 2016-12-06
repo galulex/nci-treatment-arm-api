@@ -17,7 +17,7 @@ describe Api::V1::TreatmentArmsController do
   describe 'POST #treatment_arm' do
     context 'with valid data' do
       it 'should route to the correct controller' do
-        expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07').to route_to(controller: 'api/v1/treatment_arms', action: 'create',
+        expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'create',
                treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
       end
 
@@ -83,13 +83,13 @@ describe Api::V1::TreatmentArmsController do
   describe 'GET #treatment_arms' do
 
     it 'should route to the correct controller' do
-      expect(get: 'api/v1/treatment_arms').to route_to(controller: 'api/v1/treatment_arms', action: 'index')
-      expect(get: 'api/v1/treatment_arms/APEC1621-A/100').to route_to(controller: 'api/v1/treatment_arms', action: 'index',
+      expect(get: 'api/v1/treatment_arms').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'index')
+      expect(get: 'api/v1/treatment_arms/APEC1621-A/100').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'index',
              treatment_arm_id: 'APEC1621-A', stratum_id: '100')
     end
 
     it 'should retrieve a specific treatment arm' do
-      expect(get: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07').to route_to(controller: 'api/v1/treatment_arms', action: 'show',
+      expect(get: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'show',
              treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
     end
 
@@ -178,7 +178,7 @@ describe Api::V1::TreatmentArmsController do
   describe 'POST #PatientAssignment' do
     context 'with valid data' do
       it 'should route to the correct controller' do
-        expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07/assignment_event').to route_to(controller: 'api/v1/treatment_arms', action: 'assignment_event',
+        expect(post: 'api/v1/treatment_arms/APEC1621-A/100/2016-10-07/assignment_event').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'assignment_event',
                treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2016-10-07')
       end
 
@@ -202,7 +202,7 @@ describe Api::V1::TreatmentArmsController do
 
   describe 'GET #AssignmentReport' do
     it 'should route to the correct controller' do
-      expect(get: 'api/v1/treatment_arms/APEC1621-A/100/assignment_report').to route_to(controller: 'api/v1/treatment_arms', action: 'patients_on_treatment_arm',
+      expect(get: 'api/v1/treatment_arms/APEC1621-A/100/assignment_report').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'patients_on_treatment_arm',
              treatment_arm_id: 'APEC1621-A', stratum_id: '100')
     end
 
@@ -234,7 +234,7 @@ describe Api::V1::TreatmentArmsController do
 
   describe 'PUT #Cog_status' do
     it 'should route to the correct controller action' do
-      expect(put: 'api/v1/treatment_arms/status').to route_to(controller: 'api/v1/treatment_arms', action: 'refresh')
+      expect(put: 'api/v1/treatment_arms/status').to route_to('format' => 'json', controller: 'api/v1/treatment_arms', action: 'refresh')
     end
 
     it 'should get the latest treatmentArm status from COG' do

@@ -5,7 +5,18 @@ module Api
     class VersionsController < ApplicationController
       def version
         begin
-          render json: TreatmentArmApi::Application.VERSION
+          response = {
+                       :"version" => TreatmentArmApi::Application.VERSION,
+                       :"rails version" => Rails::VERSION::STRING,
+                       :"ruby version" => RUBY_VERSION,
+                       :"commit" => `git rev-parse HEAD`.tr("\n",""),
+                       :"author" => `git --no-pager show -s --format='%an <%ae>'`.tr("\n",""),
+                       :"timestamp" => `git log -1 --format=%cd`.tr("\n",""),
+                       :"environment" => Rails.env
+                     }
+          respond_to do |format|
+            format.json  { render json: response }
+          end
         rescue => error
           standard_error_message(error)
         end

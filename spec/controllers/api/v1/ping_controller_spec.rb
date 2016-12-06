@@ -9,7 +9,7 @@ describe Api::V1::PingController do
     end
 
     it 'should route to the correct controller' do
-      expect(get: '/api/v1/treatment_arms/ping' ).to route_to(controller: 'api/v1/ping', action: 'ping')
+      expect(get: '/api/v1/treatment_arms/ping' ).to route_to('format' => 'json', controller: 'api/v1/ping', action: 'ping')
     end
   end
 end
