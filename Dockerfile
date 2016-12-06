@@ -26,7 +26,7 @@ RUN pwd;ls -alt $INSTALL_PATH
 #Add a file with build number and date for /version to use
 RUN echo "TravisBuild#:" > $INSTALL_PATH/build_number.html && echo $buildnum >> $INSTALL_PATH/build_number.html
 RUN echo "Build Time:" >> $INSTALL_PATH/build_number.html && TZ=America/New_York date >> $INSTALL_PATH/build_number.html
-RUN echo "Docker:" >> $INSTALL_PATH/build_number.html && $dockerimage:$date" >> $INSTALL_PATH/build_number.html
+RUN echo "Docker:" >> $INSTALL_PATH/build_number.html && echo $dockerimage:$date >> $INSTALL_PATH/build_number.html
 RUN cat $INSTALL_PATH/build_number.html
 
 #Insert script to change localhost to docker-compose names
