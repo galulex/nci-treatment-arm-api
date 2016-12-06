@@ -24,7 +24,7 @@ RUN pwd;ls -alt $INSTALL_PATH
 
 #Add a file with build number and date for /version to use
 RUN echo Build#: $buildnum > $INSTALL_PATH/build_number.html
-RUN echo "Build Time: " && TZ=America/New_York date >> $INSTALL_PATH/build_number.html
+RUN echo "Build Time: " >> $INSTALL_PATH/build_number.html && TZ=America/New_York date >> $INSTALL_PATH/build_number.html
 RUN echo "Docker: $dockerimage:$date" >> $INSTALL_PATH/build_number.html
 RUN cat $INSTALL_PATH/build_number.html
 
