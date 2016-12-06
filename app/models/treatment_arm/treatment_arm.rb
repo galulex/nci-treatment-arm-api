@@ -1,6 +1,6 @@
 
 require './lib/extensions/hash_extension'
-
+# TreatmentArm Data Model
 class TreatmentArm
   include Aws::Record
   include Aws::Record::RecordClassMethods
