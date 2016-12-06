@@ -1,5 +1,6 @@
 # Base image 
 FROM ruby:2.3.1
+
 ARG buildnum=none
 ARG dockerimage=none
 ARG date=none
