@@ -27,8 +27,8 @@ uat:
   mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
   read_capacity_units: "30"
   write_capacity_units: "30"
-  cog_user_name: <%= ENV["COG_USERNAME="] %>
-  cog_pwd: <%= ENV["COG_PWD="] %>
+  cog_user_name: <%= ENV["COG_USERNAME"] %>
+  cog_pwd: <%= ENV["COG_PWD"] %>
 
 production:
   <<: *defaults
