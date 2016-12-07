@@ -25,8 +25,8 @@ script:
       --build-arg date=$DATE
       -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker run -it --rm -e "RAILS_ENV=test" $DOCKER_IMAGE:$DATE 
-      bundle exec rspec spec/
+  # - docker run -it --rm -e "RAILS_ENV=test" $DOCKER_IMAGE:$DATE 
+  #     bundle exec rspec spec/
 after_success:
   - bundle exec codeclimate-test-reporter
   - docker images
