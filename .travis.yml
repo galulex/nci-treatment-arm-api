@@ -8,14 +8,10 @@ services:
 language: ruby
 rvm:
   - 2.3.1
-# before_install:
-#   - echo %{author}
-#   - echo $author
-#   - echo $TRAVIS_BUILD_NUMBER
-#   - echo $TRAVIS_COMMIT
-#   - echo $TRAVIS_JOB_ID
-#   - echo $TRAVIS_BUILD_NUMBER
-#   - echo $TRAVIS_BUILD_NUMBER
+before_install:
+  - echo %{author}
+  - echo $author
+  - echo $AUTHOR
 script:
   - RAILS_ENV=test bundle exec rspec spec/
     #Build Docker image
@@ -24,9 +20,9 @@ script:
   - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER 
       --build-arg traviscommit=$TRAVIS_COMMIT
       --build-arg travisjobid=$TRAVIS_JOB_ID
-      --build-arg author1=$author
+      --build-arg author=%{author}
       --build-arg dockerimage=$DOCKER_IMAGE
-      --build-arg date1=$DATE
+      --build-arg date=$DATE
       -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push $DOCKER_IMAGE # Pushes both date and latest

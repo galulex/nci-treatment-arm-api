@@ -4,9 +4,9 @@ FROM ruby:2.3.1
 ARG buildnum=none
 ARG traviscommit=none
 ARG travisjobid=none
-ARG author1=none
+ARG author=none
 ARG dockerimage=none
-ARG date1=none
+ARG date=none
 
 MAINTAINER jeremy.pumphrey@nih.gov
 
@@ -30,8 +30,8 @@ RUN pwd;ls -alt $INSTALL_PATH
 RUN echo "TravisBuild#:" > $INSTALL_PATH/build_number.html 	&& echo $buildnum >> $INSTALL_PATH/build_number.html
 RUN echo "Commit#:" >> $INSTALL_PATH/build_number.html 		&& echo $traviscommit >> $INSTALL_PATH/build_number.html
 RUN echo "TravisJob#:" >> $INSTALL_PATH/build_number.html 	&& echo $travisjobid >> $INSTALL_PATH/build_number.html
-RUN echo "Author:" >> $INSTALL_PATH/build_number.html 		&& echo $author1 >> $INSTALL_PATH/build_number.html
-RUN echo "Build Time:" >> $INSTALL_PATH/build_number.html 	&& echo $date1 >> $INSTALL_PATH/build_number.html
+RUN echo "Author:" >> $INSTALL_PATH/build_number.html 		&& echo $author >> $INSTALL_PATH/build_number.html
+RUN echo "Build Time:" >> $INSTALL_PATH/build_number.html 	&& echo $date >> $INSTALL_PATH/build_number.html
 RUN echo "Docker:" >> $INSTALL_PATH/build_number.html 		&& echo $dockerimage:$date >> $INSTALL_PATH/build_number.html
 RUN cat $INSTALL_PATH/build_number.html
 
