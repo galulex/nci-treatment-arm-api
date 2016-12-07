@@ -27,18 +27,12 @@ RUN ruby -v; rails -v; bundler -v; gem -v
 RUN pwd;ls -alt $INSTALL_PATH
 
 #Add a file with build number and date for /version to use
-RUN echo "TravisBuild#:" > $INSTALL_PATH/build_number.html 	&& \ 
-	echo $buildnum >> $INSTALL_PATH/build_number.html	&& \ 
-	echo "Commit#:" >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo $traviscommit >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo "TravisJob#:" >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo $travisjobid >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo "Author:" >> $INSTALL_PATH/build_number.html	&& \ 
-	echo $author >> $INSTALL_PATH/build_number.html		&& \ 
-	echo "Build Time:" >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo $date >> $INSTALL_PATH/build_number.html		&& \ 
-	echo "Docker:" >> $INSTALL_PATH/build_number.html 	&& \ 
-	echo $dockerimage:$date >> $INSTALL_PATH/build_number.html
+RUN echo "TravisBuild=$buildnum" > $INSTALL_PATH/build_number.html 	&& \ 
+	echo "Commit=$traviscommit" >> $INSTALL_PATH/build_number.html 	&& \ 
+	echo "TravisJob=$travisjobid" >> $INSTALL_PATH/build_number.html && \ 
+	echo "Author=$author" >> $INSTALL_PATH/build_number.html	&& \ 
+	echo "BuildTime=$date" >> $INSTALL_PATH/build_number.html 	&& \ 
+	echo "Docker=$dockerimage:$date" >> $INSTALL_PATH/build_number.html
 RUN cat $INSTALL_PATH/build_number.html
 
 #Insert script to change localhost to docker-compose names
