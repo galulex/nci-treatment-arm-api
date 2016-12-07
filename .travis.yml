@@ -15,7 +15,7 @@ script:
   - export DOCKER_IMAGE="matchbox/nci-treatment-arm-api"
   - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER 
       --build-arg traviscommit=$TRAVIS_COMMIT
-      --build-arg travisjobid=$TRAVIS_JOB_ID author
+      --build-arg travisjobid=$TRAVIS_JOB_ID
       --build-arg author=$author
       --build-arg dockerimage=$DOCKER_IMAGE
       --build-arg date=$DATE
