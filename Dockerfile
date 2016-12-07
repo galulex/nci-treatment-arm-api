@@ -25,6 +25,9 @@ RUN pwd;ls -alt $INSTALL_PATH
 
 #Add a file with build number and date for /version to use
 RUN echo "TravisBuild#:" > $INSTALL_PATH/build_number.html && echo $buildnum >> $INSTALL_PATH/build_number.html
+RUN echo "Commit#:" >> $INSTALL_PATH/build_number.html && echo $traviscommit >> $INSTALL_PATH/build_number.html
+RUN echo "TravisJob#:" >> $INSTALL_PATH/build_number.html && echo $travisjobid >> $INSTALL_PATH/build_number.html
+RUN echo "Author:" >> $INSTALL_PATH/build_number.html && echo $author >> $INSTALL_PATH/build_number.html
 RUN echo "Build Time:" >> $INSTALL_PATH/build_number.html && TZ=America/New_York date >> $INSTALL_PATH/build_number.html
 RUN echo "Docker:" >> $INSTALL_PATH/build_number.html && echo $dockerimage:$date >> $INSTALL_PATH/build_number.html
 RUN cat $INSTALL_PATH/build_number.html
