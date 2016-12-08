@@ -15,12 +15,12 @@ before_install:
 script:
   - RAILS_ENV=test bundle exec rspec spec/
     #Build Docker image
-  - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER 
-      --build-arg traviscommit=$TRAVIS_COMMIT
-      --build-arg travisjobid=$TRAVIS_JOB_ID
-      # --build-arg author=$AUTHOR
-      --build-arg dockerimage=$DOCKER_IMAGE
-      --build-arg date=$DATE
+  - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER \  
+      --build-arg traviscommit=$TRAVIS_COMMIT \ 
+      --build-arg travisjobid=$TRAVIS_JOB_ID \ 
+      --build-arg author=$AUTHOR \ 
+      --build-arg dockerimage=$DOCKER_IMAGE \ 
+      --build-arg date=$DATE \ 
       -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   # - docker run -it --rm -e "RAILS_ENV=test" $DOCKER_IMAGE:$DATE 
