@@ -18,7 +18,7 @@ script:
   - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER 
       --build-arg traviscommit=$TRAVIS_COMMIT
       --build-arg travisjobid=$TRAVIS_JOB_ID
-      --build-arg author=$AUTHOR
+      # --build-arg author=$AUTHOR
       --build-arg dockerimage=$DOCKER_IMAGE
       --build-arg date=$DATE
       -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
