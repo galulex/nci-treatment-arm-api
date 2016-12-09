@@ -5,18 +5,23 @@ module Api
     class VersionsController < ApplicationController
       def version
         begin
-          response = {
-                       :"version" => TreatmentArmApi::Application.VERSION,
-                       :"rails version" => Rails::VERSION::STRING,
-                       :"ruby version" => RUBY_VERSION,
-                       :"commit" => `git rev-parse HEAD`.tr("\n",""),
-                       :"author" => `git --no-pager show -s --format='%an <%ae>'`.tr("\n",""),
-                       :"timestamp" => `git log -1 --format=%cd`.tr("\n",""),
-                       :"environment" => Rails.env
-                     }
-          respond_to do |format|
-            format.json  { render json: response }
+          document = File.open('build_number.html', 'r')
+          hash = Hash.new
+          document.each_line do |line|
+            str = line.to_s
+            arr = str.split('=', 2)
+            hash.store(arr[0], arr[1])
           end
+          @version = TreatmentArmApi::Application.VERSION
+          @rails_version = Rails::VERSION::STRING
+          @ruby_version = RUBY_VERSION
+          @running_on = hash['Commit'].present? ? hash['Commit'].tr("\n", "") : ""
+          @author = hash['Author'].present? ? hash['Author'].tr("\n", "") : ""
+          @travisbuild = hash['TravisBuild'].present? ? hash['TravisBuild'].tr("\n", "") : ""
+          @travisjob = hash['TravisJob'].present? ? hash['TravisJob'].tr("\n", "") : ""
+          @dockerinstance = hash['Docker'].present? ? hash['Docker'].tr("\n", "") : ""
+          @buildtime = hash['BuildTime'].present? ? hash['BuildTime'].tr("\n", "") : ""
+          @environment = Rails.env
         rescue => error
           standard_error_message(error)
         end

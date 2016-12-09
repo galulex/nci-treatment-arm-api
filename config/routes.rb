@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   controller :treatmentarm do
     namespace 'api' do
       namespace 'v1' do
-        resources :treatment_arms, except: %w(new update edit create show destroy), defaults: { format: 'json' } do
+        resources :treatment_arms, except: %w(new update edit create show destroy) do
           collection do
             post ':treatment_arm_id/:stratum_id/:version/assignment_event', to: 'treatment_arms#assignment_event'
             post ':treatment_arm_id/:stratum_id/:version', to: 'treatment_arms#create'
