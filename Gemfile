@@ -20,25 +20,25 @@ gem 'sass-rails'
 # gem 'bson_ext'
 gem 'rack-cors'
 
-gem 'aws-sdk-rails'
+gem 'aws-sdk-rails', '1.0.1'
 gem 'aws-record'
-gem 'json-schema'
-gem 'aws-sdk', '~>2'
-gem 'active_model_serializers', '~> 0.10.0'
-gem 'nci_match_patient_models', :git => 'git://github.com/CBIIT/nci-match-lib.git', :branch => 'master'
+gem 'json-schema', '2.7.0'
+gem 'aws-sdk', '2.6.34'
+gem 'active_model_serializers', '0.10.3'
+gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '2.6.1'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '0.4.2', group: :doc
 # AuthO
-gem 'knock', '~> 2.0'
+gem 'knock', '2.0'
 gem 'auth0'
-gem 'httparty'
+gem 'httparty', '0.14.0'
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 
@@ -48,7 +48,7 @@ group :development, :test do
   gem 'rspec-rails'
   # gem 'rspec-rails', '~> 3.0'
   gem 'rspec-activemodel-mocks'
-  gem 'factory_girl_rails', '~> 4.0'
+  gem 'factory_girl_rails', '4.5.0'
   gem 'faker'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
