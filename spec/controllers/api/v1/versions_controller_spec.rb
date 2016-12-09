@@ -9,7 +9,7 @@ describe Api::V1::VersionsController do
     # end
 
     it 'should route to the correct controller' do
-      expect(get: '/api/v1/treatment_arms/version' ).to route_to('format' => 'json', controller: 'api/v1/versions', action: 'version')
+      expect(get: '/api/v1/treatment_arms/version' ).to route_to(controller: 'api/v1/versions', action: 'version')
     end
 
     it 'should handle an error correctly' do
