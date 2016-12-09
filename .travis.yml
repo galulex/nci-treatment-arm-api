@@ -9,6 +9,7 @@ language: ruby
 rvm:
   - 2.3.1
 before_install:
+  #Set up Docker exports
   - export AUTHOR=`git --no-pager show -s --format='%an <%ae>'`
   - export DATE=`TZ=America/New_York date "+%m-%d-%y-%H%M"`
   - export DOCKER_IMAGE="matchbox/nci-treatment-arm-api"
@@ -18,19 +19,10 @@ before_install:
         echo "Author=$AUTHOR" >> build_number.html              &&
         echo "BuildTime=$DATE" >> build_number.html             &&
         echo "Docker=$DOCKER_IMAGE:$DATE" >> build_number.html
-  - ls -alt
   - cat ./build_number.html
-
 script:
   - RAILS_ENV=test bundle exec rspec spec/
     #Build Docker image
-  # - docker build --build-arg buildnum=$TRAVIS_BUILD_NUMBER
-  #     --build-arg traviscommit=$TRAVIS_COMMIT
-  #     --build-arg travisjobid=$TRAVIS_JOB_ID
-  #     --build-arg author="$AUTHOR"
-  #     --build-arg dockerimage=$DOCKER_IMAGE
-  #     --build-arg date=$DATE
-  #     -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker build -t $DOCKER_IMAGE:$DATE -t $DOCKER_IMAGE:latest .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   # - docker run -it --rm -e "RAILS_ENV=test" $DOCKER_IMAGE:$DATE 
