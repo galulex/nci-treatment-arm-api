@@ -247,13 +247,13 @@ describe Api::V1::TreatmentArmsController do
 
   describe 'GET #Projections' do
     it 'should display only the projection parameters' do
-      get :index, { 'projection' => ['exclusion_drugs']}
+      get :index, { 'projection' => ['exclusion_drugs'] }
       expect(response).to have_http_status(200)
       allow(TreatmentArm).to receive(:scan).and_return([])
     end
 
     it 'should display only the projection parameters & with non empty attribute parameters' do
-      get :index, { 'projection' => ['exclusion_drugs'], 'attribute' => ['snv_indels']}
+      get :index, { 'projection' => ['exclusion_drugs'], 'attribute' => ['snv_indels'] }
       expect(response).to have_http_status(200)
       allow(TreatmentArm).to receive(:scan).and_return([])
     end

@@ -99,6 +99,7 @@ class TreatmentArm
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
+      Rails.logger.info("***** Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
       Rails.logger.info "================ DEBUGGING_TA_STATUS auth nil: #{auth.nil?}"
       response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
@@ -108,10 +109,10 @@ class TreatmentArm
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         cog_arms[:treatment_arms].each do |cog_arm|
-          if cog_arm['stratum_id'] == treatment_arm.stratum_id &&
-            cog_arm['treatment_arm_id'] == treatment_arm.treatment_arm_id &&
-            treatment_arm.treatment_arm_status != 'CLOSED' &&
-            treatment_arm.treatment_arm_status != cog_arm['status']
+          if cog_arm['treatment_arm_id'] == treatment_arm.treatment_arm_id &&
+             cog_arm['stratum_id'] == treatment_arm.stratum_id
+             treatment_arm.treatment_arm_status != 'CLOSED' &&
+             treatment_arm.treatment_arm_status != cog_arm['status']
             Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
             treatment_arm.treatment_arm_status = cog_arm['status']
           end
