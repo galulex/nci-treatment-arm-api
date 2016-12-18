@@ -243,6 +243,14 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to have_http_status(200)
       expect(response).to_not be_nil
     end
+
+    it 'should get the latest treatmentArm status from Mock COG if COG is down on UAT' do
+      Rails.env = "uat"
+      allow(TreatmentArm).to receive(:scan).and_return([treatment_arm])
+      put :refresh
+      expect(response).to have_http_status(500)
+      expect(response).to_not be_nil
+    end
   end
 
   describe 'GET #Projections' do
