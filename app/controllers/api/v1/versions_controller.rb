@@ -18,7 +18,7 @@ module Api
           @running_on = hash['Commit'].present? ? hash['Commit'].tr('\n', '') : ''
           @author = hash['Author'].present? ? hash['Author'].tr('\n', '') : ''
           @travisbuild = hash['TravisBuild'].present? ? hash['TravisBuild'].tr('\n', '') : ''
-          @travisjob = hash['TravisJob'].present? ? hash['TravisJob'].tr('\n', '') : ''
+          @travisjob = hash['TravisBuildID'].present? ? hash['TravisBuildID'].tr('\n', '') : ''
           @dockerinstance = hash['Docker'].present? ? hash['Docker'].tr('\n', '') : ''
           @buildtime = hash['BuildTime'].present? ? hash['BuildTime'].tr('\n', '') : ''
           @environment = Rails.env
