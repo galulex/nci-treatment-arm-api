@@ -20,6 +20,7 @@ before_install:
         echo "BuildTime=$DATE" >> build_number.html             &&
         echo "Docker=$DOCKER_IMAGE:$DATE" >> build_number.html
   - cat ./build_number.html
+  - echo "TRAVIS BUILD ID = $TRAVIS_BUILD_ID"
 script:
   - RAILS_ENV=test bundle exec rspec spec/
     #Build Docker image
