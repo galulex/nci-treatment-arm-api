@@ -4,7 +4,7 @@ module Api
   module V1
     class TreatmentArmsController < ApplicationController
       include HTTParty
-      #before_action :authenticate_user
+      before_action :authenticate_user
       before_action :params_to_boolean, only: %w(index show)
       before_action :set_treatment_arms, only: ['index']
       before_action :set_treatment_arm, only: ['show']
