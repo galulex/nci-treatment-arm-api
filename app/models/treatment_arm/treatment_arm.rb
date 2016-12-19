@@ -46,7 +46,7 @@ class TreatmentArm
   def self.find_by(id=nil, stratum_id=nil, version=nil, to_hash=true)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    if append_and?( !id.nil?, !stratum_id.nil?, !version.nil? )
+    if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
       query.merge!(conditional_operator: 'AND')
     end
     if to_hash
@@ -57,15 +57,15 @@ class TreatmentArm
   end
 
   def self.build_scan_filter(id=nil, stratum_id=nil, version=nil)
-    query = {:scan_filter => {}}
+    query = { scan_filter: {} }
     unless id.nil?
-      query[:scan_filter].merge!("treatment_arm_id" => {:comparison_operator => "EQ", :attribute_value_list => [id]})
+      query[:scan_filter].merge!('treatment_arm_id' => { comparison_operator: 'EQ', attribute_value_list: [id] })
     end
     unless stratum_id.nil?
-      query[:scan_filter].merge!("stratum_id" => {:comparison_operator => "EQ", :attribute_value_list => [stratum_id]})
+      query[:scan_filter].merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [stratum_id] })
     end
     unless version.nil?
-      query[:scan_filter].merge!("version" => {:comparison_operator => "EQ", :attribute_value_list => [version]})
+      query[:scan_filter].merge!('version' => { comparison_operator: 'EQ', attribute_value_list: [version] })
     end
     query
   end
@@ -138,14 +138,14 @@ class TreatmentArm
   end
 
   def snv_identifiers
-    snv_indels.collect{|indel| { indel["identifier"] => indel["inclusion"] }}.compact
+    snv_indels.collect { |indel| { indel['identifier'] => indel['inclusion'] } }.compact
   end
 
   def cnv_identifiers
-    copy_number_variants.collect{|cnv| { cnv["identifier"] => cnv["inclusion"] }}
+    copy_number_variants.collect { |cnv| { cnv['identifier'] => cnv['inclusion'] } }
   end
 
   def gf_identifiers
-    gene_fusions.collect{|fusion| { fusion["identifier"] => fusion["inclusion"] }}
+    gene_fusions.collect { |fusion| { fusion['identifier'] => fusion['inclusion'] } }
   end
 end
