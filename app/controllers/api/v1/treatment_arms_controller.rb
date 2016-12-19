@@ -4,8 +4,8 @@ module Api
   module V1
     class TreatmentArmsController < ApplicationController
       include HTTParty
-      # before_action :authenticate, if: "Rails.env.production?"
-      before_action :params_to_boolean , only: ['index', 'show']
+      #before_action :authenticate_user
+      before_action :params_to_boolean, only: %w(index show)
       before_action :set_treatment_arms, only: ['index']
       before_action :set_treatment_arm, only: ['show']
       before_action :set_latest_treatment_arm, only: ['create']
@@ -123,7 +123,7 @@ module Api
         else
           ta_json = filter_query(TreatmentArm.scan({}))
         end
-        @treatment_arms = ta_json.sort{ |x, y| y.date_created <=> x.date_created }
+        @treatment_arms = ta_json.sort { |x, y| y.date_created <=> x.date_created }
       end
 
       def set_treatment_arm
@@ -133,8 +133,8 @@ module Api
 
       def set_latest_treatment_arm
         treatment_arms = TreatmentArm.find_by(params[:treatment_arm_id], params[:stratum_id], nil, false)
-        @treatment_arm = treatment_arms.detect{ |t| t.version == params[:version] }
-        @treatment_arm = treatment_arms.sort{ |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
+        @treatment_arm = treatment_arms.detect { |t| t.version == params[:version] }
+        @treatment_arm = treatment_arms.sort { |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
       end
 
       def clone_params
@@ -191,10 +191,10 @@ module Api
 
       def params_to_boolean
         params.each do |key, value|
-          if value == "true"
-            params[key]= true
-          elsif value == "false"
-            params[key]= false
+          if value == 'true'
+            params[key] = true
+          elsif value == 'false'
+            params[key] = false
           end
         end
       end
