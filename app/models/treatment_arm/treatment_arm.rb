@@ -113,8 +113,8 @@ class TreatmentArm
              cog_arm['stratum_id'] == treatment_arm.stratum_id
              treatment_arm.treatment_arm_status != 'CLOSED' &&
              treatment_arm.treatment_arm_status != cog_arm['status']
-            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
-            treatment_arm.treatment_arm_status = cog_arm['status']
+             Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
+             treatment_arm.treatment_arm_status = cog_arm['status']
           end
         end
         result << treatment_arm
@@ -123,13 +123,13 @@ class TreatmentArm
       result
     rescue => error
       Rails.logger.info "Failed connecting to COG :: #{error}"
-      Rails.logger.info "======== Returning the Active TreatmentArms present in the DataBase ========"
+      Rails.logger.info '======== Returning the Active TreatmentArms present in the DataBase ========'
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         result << treatment_arm
       end
       if Rails.env.uat?
-        Rails.logger.info "Switching to use mock COG for UAT..."
+        Rails.logger.info 'Switching to use mock COG for UAT...'
         Rails.logger.info "Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}"
         MockCogService.perform
       end
