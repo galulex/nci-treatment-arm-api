@@ -1,4 +1,4 @@
-# This is a sample TreatmentArm JSON File for uploading into the ecosystem
+#!/bin/sh
 
 curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json"  -d '{
   "header": {
@@ -77,4 +77,4 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
       "drug_class": "ALK inhibitor",
       "target": "ALK"
     }
-  ] }' http://localhost:10235/api/v1/treatment_arms/APEC1621-A/100/2015-08-06
+  ] }' http://localhost:10235/api/v1/treatment_arms/APEC1621-A/100/2015-08-06   # This is a sample TreatmentArm JSON File for uploading into the ecosystem
