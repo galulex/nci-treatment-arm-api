@@ -314,8 +314,8 @@ class TreatmentArmAssignmentEvent
   end
 
   def self.hash_merge(hash1, hash2)
-    hash1.merge!(hash2) do |a, b, c|
-      b.merge!(c) do |x, y, z|
+    hash1.merge!(hash2) do |_a, b, c|
+      b.merge!(c) do |_x, y, z|
         if y.is_a?(Integer)
           y + z
         else

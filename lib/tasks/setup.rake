@@ -28,7 +28,7 @@ namespace :setup do
   end
 
   desc 'Loads json into specified table'
-  task :load_data, [:table_name, :file] => :before do | t, args |
+  task :load_data, [:table_name, :file] => :before do | _t, args |
     model = "#{args.table_name.camelize}".constantize
     data = File.read(args.file)
     data = JSON.parse(data).deep_symbolize_keys!
