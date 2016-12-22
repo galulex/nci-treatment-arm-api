@@ -57,6 +57,7 @@ end
 group :test do
   gem "simplecov"
   gem "codeclimate-test-reporter", "~> 1.0.0"
+  gem 'codacy-coverage',  require: false
 end
 
 # Use ActiveModel has_secure_password
