@@ -1,9 +1,9 @@
 module TreatmentArmApi
   class Application < Rails::Application
-    attr_reader :VERSION
+    attr_reader :version
 
-    def VERSION
-      @VERSION ||= "0.0.9"
+    def version
+      @version ||= "0.0.9"
     end
   end
 end

@@ -12,7 +12,7 @@ describe Api::V1::VersionsController do
     end
 
     it 'should handle an error correctly' do
-      allow(TreatmentArmApi::Application).to receive(:VERSION).and_raise('this error')
+      allow(TreatmentArmApi::Application).to receive(:version).and_raise('this error')
       get :version
       expect(response).to have_http_status(500)
     end
