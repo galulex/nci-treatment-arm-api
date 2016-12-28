@@ -1,39 +1,33 @@
 common: &defaults
-  aws_region: "us-east-1"
-  table_prefix: "ta"
-  cog_treatment_arms: "/treatmentarms"
+  aws_region: 'us-east-1'
+  table_prefix: 'ta'
+  cog_treatment_arms: '/treatmentarms'
+  read_capacity_units: '30'
+  write_capacity_units: '30'
 
 development:
   <<: *defaults
-  aws_dynamo_endpoint: "http://localhost:8000"
-  queue_name: <%= ENV["TA_QUEUE_NAME"] %>
-  cog_url: "http://localhost:3000"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
+  aws_dynamo_endpoint: 'http://localhost:8000'
+  queue_name: <%= ENV['TA_QUEUE_NAME'] %>
+  cog_url: 'http://localhost:3000'
 
 test:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: "http://pedmatch-int.nci.nih.gov:3000"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: 'http://pedmatch-int.nci.nih.gov:3000'
 
 uat:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: "https://qa-cogws.cogmembers.org/pmws"
-  mock_cog_url: "http://pedmatch-uat.nci.nih.gov:3000"
-  read_capacity_units: "30"
-  write_capacity_units: "30"
-  cog_user_name: <%= ENV["COG_USERNAME"] %>
-  cog_pwd: <%= ENV["COG_PWD"] %>
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: 'https://qa-cogws.cogmembers.org/pmws'
+  mock_cog_url: 'http://pedmatch-uat.nci.nih.gov:3000'
+  cog_user_name: <%= ENV['COG_USERNAME'] %>
+  cog_pwd: <%= ENV['COG_PWD'] %>
 
 production:
   <<: *defaults
-  aws_dynamo_endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-  queue_name: "treatment_arm_queue"
-  cog_url: ""
-  read_capacity_units: "30"
-  write_capacity_units: "30"
+  aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
+  queue_name: 'treatment_arm_queue'
+  cog_url: ''
