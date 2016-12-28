@@ -1,11 +1,9 @@
-
 require './lib/extensions/hash_extension'
 # TreatmentArm Data Model
 class TreatmentArm
   include Aws::Record
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
-
   include ActiveModel::Serializers::JSON
   include ModelSerializer
 

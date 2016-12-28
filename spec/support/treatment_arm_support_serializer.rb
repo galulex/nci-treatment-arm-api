@@ -23,7 +23,7 @@ module SerializerExampleGroup
 
   RSpec.configure do |config|
     config.include self,
-      :type => :serializer,
-      :example_group => { :file_path => %r(spec/serializers) }
+      type: :serializer,
+      example_group: { file_path: %r(spec/serializers) }
   end
 end
