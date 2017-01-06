@@ -20,12 +20,16 @@ module Api
                                   stratum_id: params[:stratum_id],
                                   version: params[:version])
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
+              Rails.logger.info('===== TreatmentArm Validation passed =====')
+              Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
               Aws::Publisher.publish(treatment_arm: @treatment_arm)
               render json: { message: 'Message has been processed successfully' }, status: 202
             else
+              Rails.logger.info('===== TreatmentArm Validation failed =====')
               JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
             end
           elsif @treatment_arm.version != params[:version]
+            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with different version '#{params[:version]}') onto the queue =====")
             update_clone
           else
             render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
