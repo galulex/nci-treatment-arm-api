@@ -41,7 +41,7 @@ class TreatmentArm
   integer_attr :not_enrolled_patients
   integer_attr :pending_patients
 
-  def self.find_by(id=nil, stratum_id=nil, version=nil, to_hash=true)
+  def self.find_by(id = nil, stratum_id = nil, version = nil, to_hash = true)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
     if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
@@ -54,7 +54,7 @@ class TreatmentArm
     end
   end
 
-  def self.build_scan_filter(id=nil, stratum_id=nil, version=nil)
+  def self.build_scan_filter(id = nil, stratum_id = nil, version = nil)
     query = { scan_filter: {} }
     unless id.nil?
       query[:scan_filter].merge!('treatment_arm_id' => { comparison_operator: 'EQ', attribute_value_list: [id] })
@@ -68,7 +68,7 @@ class TreatmentArm
     query
   end
 
-  def self.append_and?(a=false, b=false, c=false)
+  def self.append_and?(a = false, b = false, c = false)
     (a && (b || c)) || (b && (c || a)) || (c && (a || b))
   end
 
@@ -99,26 +99,26 @@ class TreatmentArm
       treatment_arms = TreatmentArm.scan({})
       Rails.logger.info("***** Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
-      Rails.logger.info "================ DEBUGGING_TA_STATUS auth nil: #{auth.nil?}"
+      Rails.logger.info("================ DEBUGGING_TA_STATUS auth nil: #{auth.nil?}")
       response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
-      Rails.logger.info "========= DEBUGGING_TA_STATUS response from cog nil?: #{response.nil?}"
+      Rails.logger.info("========= DEBUGGING_TA_STATUS response from cog nil?: #{response.nil?}")
       cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
-      Rails.logger.info "========= DEBUGGING_TA_STATUS parsed response: #{cog_arms}"
+      Rails.logger.info("========= DEBUGGING_TA_STATUS parsed response: #{cog_arms}")
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         cog_arms[:treatment_arms].each do |cog_arm|
           if cog_check_condition(cog_arm, treatment_arm)
-             Rails.logger.info("===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====")
-             Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
-             treatment_arm.treatment_arm_status = cog_arm['status']
+            Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
+            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
+            treatment_arm.treatment_arm_status = cog_arm['status']
           end
         end
         result << treatment_arm
       end
-      Rails.logger.info "========= DEBUGGING_TA_STATUS returning results: #{result}"
+      Rails.logger.info("========= DEBUGGING_TA_STATUS returning results: #{result}")
       result
     rescue => error
-      Rails.logger.info "Failed connecting to COG :: #{error}"
+      Rails.logger.info("Failed connecting to COG :: #{error}")
       if Rails.env.uat?
         Rails.logger.info('Switching to use mock COG for UAT...')
         Rails.logger.info("Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}")
