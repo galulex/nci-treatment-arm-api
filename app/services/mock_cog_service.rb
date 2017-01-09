@@ -6,24 +6,27 @@ class MockCogService
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
   def self.perform
-    Rails.logger.info 'Mock COG service is Triggered to get the Latest TreatmentArm status'
-    result = []
-    treatment_arms = TreatmentArm.scan({})
-    response = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
-    cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
-    treatment_arms.each do |treatment_arm|
-      next if treatment_arm.active == false
-      cog_arms[:treatment_arms].each do |cog_arm|
-        if cog_arm['treatment_arm_id'] == treatment_arm.treatment_arm_id &&
-           cog_arm['stratum_id'] == treatment_arm.stratum_id &&
-           treatment_arm.treatment_arm_status != 'CLOSED' &&
-           treatment_arm.treatment_arm_status != cog_arm['status']
-          Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
-          treatment_arm.treatment_arm_status = cog_arm['status']
+    begin
+      Rails.logger.info('Mock COG service is Triggered to get the Latest TreatmentArm status')
+      result = []
+      treatment_arms = TreatmentArm.scan({})
+      response = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
+      cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
+      treatment_arms.each do |treatment_arm|
+        next if treatment_arm.active == false
+        cog_arms[:treatment_arms].each do |cog_arm|
+          if TreatmentArm.cog_check_condition(cog_arm, treatment_arm)
+            Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
+            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
+            treatment_arm.treatment_arm_status = cog_arm['status']
+          end
         end
+        result << treatment_arm
       end
-      result << treatment_arm
+      result
+    rescue => error
+      Rails.logger.info("Failed Connecting to Mock COG with Error :: #{error}")
     end
-    result
   end
 end
+

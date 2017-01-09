@@ -121,10 +121,9 @@ class TreatmentArm
       Rails.logger.info("Failed connecting to COG :: #{error}")
       if Rails.env.uat?
         Rails.logger.info('Switching to use mock COG for UAT...')
-        Rails.logger.info("Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}")
+        Rails.logger.info("Connecting to Mock cog at #{Rails.configuration.environment.fetch('mock_cog_url')}")
         MockCogService.perform
       end
-      result
     end
   end
 
