@@ -193,93 +193,93 @@ class TreatmentArmAssignmentEvent
   end
 
   def snv_count_by_patient
-    result = {}
+    @result = {}
     if variant_report && variant_report['snv_indels']
       variant_report['snv_indels'].each do |indel|
         next if indel['confirmed'] != true
-        if result[indel['identifier']]
-          result[indel['identifier']] += 1
-        else
-          result[indel['identifier']] = 1
-        end
+        snv_check_condition(indel)
       end
     end
-    result
+    @result
   end
 
   def assignment_snv_count_by_patient
-    result = {}
+    @result = {}
     if assignment_report && assignment_report['patient'] && assignment_report['patient']['snv_indels']
       assignment_report['patient']['snv_indels'].each do |indel|
         next unless patient_enrolled?
-        if result[indel['identifier']]
-          result[indel['identifier']] += 1
-        else
-          result[indel['identifier']] = 1
-        end
+        snv_check_condition(indel)
       end
     end
-    result
+    @result
+  end
+
+  def snv_check_condition(indel)
+    if @result[indel['identifier']]
+      @result[indel['identifier']] += 1
+    else
+      @result[indel['identifier']] = 1
+    end
   end
 
   def cnv_count_by_patient
-    result = {}
+    @result = {}
     if variant_report && variant_report['copy_number_variants']
       variant_report['copy_number_variants'].each do |cnv|
         next if cnv['confirmed'] != true
-        if result[cnv['identifier']]
-          result[cnv['identifier']] += 1
-        else
-          result[cnv['identifier']] = 1
-        end
+        cnv_check_condition(cnv)
       end
     end
-    result
+    @result
   end
 
   def assignment_cnv_count_by_patient
-    result = {}
+    @result = {}
     if assignment_report && assignment_report['patient'] && assignment_report['patient']['copy_number_variants']
       assignment_report['patient']['copy_number_variants'].each do |cnv|
         next unless patient_enrolled?
-        if result[cnv['identifier']]
-          result[cnv['identifier']] += 1
-        else
-          result[cnv['identifier']] = 1
-        end
+        cnv_check_condition(cnv)
       end
     end
-    result
+    @result
+  end
+
+  def cnv_check_condition(cnv)
+    if @result[cnv['identifier']]
+      @result[cnv['identifier']] += 1
+    else
+      @result[cnv['identifier']] = 1
+    end
   end
 
   def gf_count_by_patient
-    result = {}
+    @result = {}
     if variant_report && variant_report['gene_fusions']
       variant_report['gene_fusions'].each do |fusion|
         next if fusion['confirmed'] != true
-        if result[fusion['identifier']]
-          result[fusion['identifier']] += 1
-        else
-          result[fusion['identifier']] = 1
-        end
+        gf_check_condition(fusion)
       end
     end
-    result
+    @result
   end
 
   def assignment_gf_count_by_patient
-    result = {}
+    @result = {}
     if assignment_report && assignment_report['patient'] && assignment_report['patient']['gene_fusions']
       assignment_report['patient']['gene_fusions'].each do |fusion|
         next unless patient_enrolled?
-        if result[fusion['identifier']]
-          result[fusion['identifier']] += 1
-        else
-          result[fusion['identifier']] = 1
-        end
+        gf_check_condition(fusion)
       end
     end
-    result
+    @result
+  end
+
+  def gf_check_condition(fusion)
+    if @result[fusion['identifier']]
+      @result[fusion['identifier']] += 1
+    else
+      @result[fusion['identifier']] = 1
+    end
   end
 
   def non_hotspot_rules
