@@ -7,7 +7,7 @@ class MockCogService
 
   def self.perform
     begin
-      Rails.logger.info('Mock COG service is Triggered to get the Latest TreatmentArm status')
+      Rails.logger.info('===== Mock COG service is Triggered to get the Latest TreatmentArm status =====')
       result = []
       treatment_arms = TreatmentArm.scan({})
       response = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))

@@ -99,11 +99,11 @@ class TreatmentArm
       treatment_arms = TreatmentArm.scan({})
       Rails.logger.info("***** Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
-      Rails.logger.info("================ DEBUGGING_TA_STATUS auth nil: #{auth.nil?}")
+      Rails.logger.info("===== DEBUGGING_TA_STATUS auth nil: #{auth.nil?} =====")
       response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
-      Rails.logger.info("========= DEBUGGING_TA_STATUS response from cog nil?: #{response.nil?}")
+      Rails.logger.info("===== DEBUGGING_TA_STATUS response from cog nil?: #{response.nil?} =====")
       cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
-      Rails.logger.info("========= DEBUGGING_TA_STATUS parsed response: #{cog_arms}")
+      Rails.logger.info("===== DEBUGGING_TA_STATUS parsed response: #{cog_arms}")
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         cog_arms[:treatment_arms].each do |cog_arm|
@@ -115,13 +115,13 @@ class TreatmentArm
         end
         result << treatment_arm
       end
-      Rails.logger.info("========= DEBUGGING_TA_STATUS returning results: #{result}")
+      Rails.logger.info("===== DEBUGGING_TA_STATUS returning results: #{result}")
       result
     rescue => error
       Rails.logger.info("Failed connecting to COG :: #{error}")
       if Rails.env.uat?
-        Rails.logger.info('Switching to use mock COG for UAT...')
-        Rails.logger.info("Connecting to Mock cog at #{Rails.configuration.environment.fetch('mock_cog_url')}")
+        Rails.logger.info('===== Switching to use mock COG for UAT... =====')
+        Rails.logger.info("===== Connecting to Mock cog at #{Rails.configuration.environment.fetch('mock_cog_url')} =====")
         MockCogService.perform
       end
     end
