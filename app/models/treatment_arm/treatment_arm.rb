@@ -107,10 +107,8 @@ class TreatmentArm
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         cog_arms[:treatment_arms].each do |cog_arm|
-          if cog_arm['treatment_arm_id'] == treatment_arm.treatment_arm_id &&
-             cog_arm['stratum_id'] == treatment_arm.stratum_id
-             treatment_arm.treatment_arm_status != 'CLOSED' &&
-             treatment_arm.treatment_arm_status != cog_arm['status']
+          if cog_check_condition(cog_arm, treatment_arm)
+             Rails.logger.info("===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====")
              Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
              treatment_arm.treatment_arm_status = cog_arm['status']
           end
@@ -122,12 +120,19 @@ class TreatmentArm
     rescue => error
       Rails.logger.info "Failed connecting to COG :: #{error}"
       if Rails.env.uat?
-        Rails.logger.info 'Switching to use mock COG for UAT...'
-        Rails.logger.info "Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}"
+        Rails.logger.info('Switching to use mock COG for UAT...')
+        Rails.logger.info("Connecting to Mock cog : #{Rails.configuration.environment.fetch('mock_cog_url')}")
         MockCogService.perform
       end
       result
     end
+  end
+
+  def self.cog_check_condition(cog_arm, treatment_arm)
+    true if cog_arm['treatment_arm_id'] == treatment_arm.treatment_arm_id &&
+            cog_arm['stratum_id'] == treatment_arm.stratum_id &&
+            treatment_arm.treatment_arm_status != 'CLOSED' &&
+            treatment_arm.treatment_arm_status != cog_arm['status']
   end
 
   def snv_identifiers
