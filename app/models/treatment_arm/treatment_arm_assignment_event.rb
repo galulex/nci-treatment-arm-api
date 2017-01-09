@@ -60,15 +60,15 @@ class TreatmentArmAssignmentEvent
     assignment_assay_stats = {}
     reports = { 'snv' => 'snv_indels', 'cnv' => 'copy_number_variants', 'gf' => 'gene_fusions' }
     treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({ 'treatment_arm_id' => treatment_arm_id, 'stratum_id' => stratum_id }, false).entries
-    treatment_arm_assignments.each do |taa|
+    treatment_arm_assignments.each do |assignment|
       reports.each do |report_name, stat_name|
-        hash_merge(variant_stats[stat_name], taa.matched_treament_arm_for_variant_report(report_name))
-        hash_merge(assignment_stats[stat_name], taa.matched_treament_arm_for_variant_report(report_name, 'assignment'))
+        hash_merge(variant_stats[stat_name], assignment.matched_treament_arm_for_variant_report(report_name))
+        hash_merge(assignment_stats[stat_name], assignment.matched_treament_arm_for_variant_report(report_name, 'assignment'))
       end
-      hash_merge(variant_non_hotspot_stats, taa.matched_treament_arm_for_non_hot_spot_rules('non_hotspot_rules'))
-      hash_merge(assignment_non_hotspot_stats, taa.matched_treament_arm_for_non_hot_spot_rules('non_hotspot_rules_assignment'))
-      hash_merge(assay_stats, taa.matched_treament_arm_for_assay_rules('assay_rules'))
-      hash_merge(assignment_assay_stats, taa.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
+      hash_merge(variant_non_hotspot_stats, assignment.matched_treament_arm_for_non_hot_spot_rules('non_hotspot_rules'))
+      hash_merge(assignment_non_hotspot_stats, assignment.matched_treament_arm_for_non_hot_spot_rules('non_hotspot_rules_assignment'))
+      hash_merge(assay_stats, assignment.matched_treament_arm_for_assay_rules('assay_rules'))
+      hash_merge(assignment_assay_stats, assignment.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
     {
       patients_list: treatment_arm_assignments.collect(&:to_h),
@@ -84,7 +84,7 @@ class TreatmentArmAssignmentEvent
   end
 
   def treatment_arm
-    @treatment_arm ||= ::TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
+    @treatment_arm ||= TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
   end
 
   def matched_treament_arm_for_non_hot_spot_rules(report_name)
