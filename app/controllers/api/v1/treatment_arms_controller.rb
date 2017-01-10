@@ -29,7 +29,7 @@ module Api
               JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
             end
           elsif @treatment_arm.version != params[:version]
-            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with different version '#{params[:version]}') onto the queue =====")
+            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
             update_clone
           else
             render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
@@ -42,7 +42,7 @@ module Api
       # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
       def index
         begin
-          if projection_params.present? || attribute_params.present?
+          if check_params
             render json: TreatmentArm.serialized_hash(@treatment_arms, projection_params || [])
           else
             render json: @treatment_arms, each_serializer: ::TreatmentArmSerializer
@@ -62,10 +62,14 @@ module Api
         end
       end
 
+      def check_params
+        true if projection_params.present? || attribute_params.present?
+      end
+
       # This retrieves a Specific TreatmentArm
       def show
         begin
-          if projection_params.present? || attribute_params.present?
+          if check_params
             render json: TreatmentArm.serialized_hash(@treatment_arm, projection_params || [])
           else
             render json: @treatment_arm, each_serializer: ::TreatmentArmSerializer
