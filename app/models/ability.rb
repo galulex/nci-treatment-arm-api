@@ -20,3 +20,6 @@ class Ability
     @methods ||= []
   end
 end
+
+
+NciMatchRoles::System.instance_eval { def get_methods; :manage; end }
