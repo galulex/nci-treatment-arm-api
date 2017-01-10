@@ -205,7 +205,7 @@ class TreatmentArmAssignmentEvent
 
   def assignment_snv_count_by_patient
     @result = {}
-    if assignment_report && assignment_report['patient'] && assignment_report['patient']['snv_indels']
+    if check_assignment_report && assignment_report['patient']['snv_indels']
       assignment_report['patient']['snv_indels'].each do |indel|
         next unless patient_enrolled?
         snv_check_condition(indel)
@@ -235,13 +235,17 @@ class TreatmentArmAssignmentEvent
 
   def assignment_cnv_count_by_patient
     @result = {}
-    if assignment_report && assignment_report['patient'] && assignment_report['patient']['copy_number_variants']
+    if check_assignment_report && assignment_report['patient']['copy_number_variants']
       assignment_report['patient']['copy_number_variants'].each do |cnv|
         next unless patient_enrolled?
         cnv_check_condition(cnv)
       end
     end
     @result
+  end
+
+  def check_assignment_report
+    true if assignment_report && assignment_report['patient']
   end
 
   def cnv_check_condition(cnv)
@@ -265,7 +269,7 @@ class TreatmentArmAssignmentEvent
 
   def assignment_gf_count_by_patient
     @result = {}
-    if assignment_report && assignment_report['patient'] && assignment_report['patient']['gene_fusions']
+    if check_assignment_report && assignment_report['patient']['gene_fusions']
       assignment_report['patient']['gene_fusions'].each do |fusion|
         next unless patient_enrolled?
         gf_check_condition(fusion)
