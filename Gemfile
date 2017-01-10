@@ -26,6 +26,7 @@ gem 'json-schema', '2.7.0'
 gem 'aws-sdk', '2.6.34'
 gem 'active_model_serializers', '0.10.3'
 gem 'nci_match_patient_models', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
+gem 'nci_match_roles', git: 'git://github.com/CBIIT/nci-match-lib.git', branch: 'master'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
@@ -36,6 +37,7 @@ gem 'jbuilder', '2.6.1'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '0.4.2', group: :doc
 # AuthO
+gem 'cancan'
 gem 'knock', '2.0'
 gem 'auth0'
 gem 'httparty', '0.14.0'
@@ -55,8 +57,8 @@ group :development, :test do
 end
 
 group :test do
-  gem "simplecov"
-  gem "codeclimate-test-reporter", "~> 1.0.0"
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'codacy-coverage',  require: false
 end
 
