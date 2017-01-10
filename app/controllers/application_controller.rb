@@ -6,14 +6,15 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   rescue_from Aws::DynamoDB::Errors::ValidationException, with: :resource_not_found_exception
   rescue_from Seahorse::Client::NetworkingError, with: :no_db_connection_exception
-  rescue_from ActionController::RoutingError, with: lambda { |exception| render_error(:bad_request, exception) }
+  rescue_from ActionController::RoutingError, with: -> (exception) { render_error(:bad_request, exception) }
+  rescue_from CanCan::AccessDenied, with: -> (exception) { render_error(:unauthorized, exception) }
 
   protected
 
   def render_error(status, exception)
     logger.error status.to_s +  " " + exception.to_s
-    respond_to do |format|
-      format.all { head status }
+    respond_to do | format |
+      format.all { render json: { error: exception.to_s }, status: status }
     end
   end
 
