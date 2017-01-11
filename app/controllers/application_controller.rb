@@ -25,4 +25,14 @@ class ApplicationController < ActionController::Base
   def no_db_connection_exception
     render json: { message: "Database is not ACTIVE" }, status: 502
   end
+
+  def standard_error_message(error)
+    logger.error "#{error.message} :: #{error.backtrace}"
+    render json: { message: error.message }, status: 500
+  end
+
+  def error_message(error)
+    logger.error "#{error.message} :: #{error.backtrace}"
+    render json: { message: error.message }, status: 404
+  end
 end

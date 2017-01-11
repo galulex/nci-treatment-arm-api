@@ -189,16 +189,6 @@ module Api
         query_result || []
       end
 
-      def standard_error_message(error)
-        logger.error "#{error.message} :: #{error.backtrace}"
-        render json: { message: error.message }, status: 500
-      end
-
-      def error_message(error)
-        logger.error "#{error.message} :: #{error.backtrace}"
-        render json: { message: error.message }, status: 404
-      end
-
       def params_to_boolean
         params.each do |key, value|
           if value == 'true'
