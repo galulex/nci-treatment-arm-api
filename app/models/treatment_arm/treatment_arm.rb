@@ -97,7 +97,8 @@ class TreatmentArm
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
-      Rails.logger.info("***** Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} *****")
+      Rails.logger.info("===== Getting the Latest TreatmentArm statuses from COG =====")
+      Rails.logger.info("===== Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} =====")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
       Rails.logger.info("===== DEBUGGING_TA_STATUS auth nil: #{auth.nil?} =====")
       response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
@@ -109,6 +110,7 @@ class TreatmentArm
         cog_arms[:treatment_arms].each do |cog_arm|
           if cog_check_condition(cog_arm, treatment_arm)
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
+            Rails.logger.info("===== Sending TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') onto the queue  =====")
             Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
             treatment_arm.treatment_arm_status = cog_arm['status']
           end
