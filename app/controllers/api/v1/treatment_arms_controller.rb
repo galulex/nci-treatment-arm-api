@@ -6,7 +6,7 @@ module Api
       include HTTParty
 
       before_action :authenticate_user
-      load_and_authorize_resource
+      load_and_authorize_resource only: [:create, :assignment_event, :refresh]
       before_action :params_to_boolean, only: %w(index show)
       before_action :set_treatment_arms, only: ['index']
       before_action :set_treatment_arm, only: ['show']

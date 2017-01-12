@@ -21,5 +21,5 @@ class Ability
   end
 end
 
-
 NciMatchRoles::System.instance_eval { def get_methods; :manage; end }
+NciMatchRoles::Admin.instance_eval { def get_methods; :manage; end }
