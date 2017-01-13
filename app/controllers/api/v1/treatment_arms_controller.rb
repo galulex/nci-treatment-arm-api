@@ -31,7 +31,6 @@ module Api
               JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
             end
           elsif @treatment_arm.version != params[:version]
-            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
             update_clone
           else
             render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
@@ -65,6 +64,8 @@ module Api
       end
 
       def check_params
+        Rails.logger.info("===== Projection Params : #{projection_params} =====")
+        Rails.logger.info("===== Attribute Params : #{attribute_params} =====")
         true if projection_params.present? || attribute_params.present?
       end
 
@@ -86,6 +87,8 @@ module Api
         begin
           treatment_arm_hash = @treatment_arm.clone_attributes.merge!(clone_params)
           if JSON::Validator.validate(TreatmentArmValidator.schema, treatment_arm_hash)
+            Rails.logger.info('===== TreatmentArm Validation passed =====')
+            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
             Aws::Publisher.publish(clone_treatment_arm: treatment_arm_hash)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
