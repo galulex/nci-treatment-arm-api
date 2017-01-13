@@ -92,6 +92,7 @@ module Api
             Aws::Publisher.publish(clone_treatment_arm: treatment_arm_hash)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
+            Rails.logger.info('===== TreatmentArm Validation failed =====')
             JSON::Validator.validate!(TreatmentArmValidator.schema, treatment_arm_hash)
           end
         rescue => error
@@ -107,6 +108,8 @@ module Api
           @assignment_event.merge!(treatment_arm_id: params[:treatment_arm_id],
                                    stratum_id: params[:stratum_id],
                                    version: params[:version])
+          Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') received a Patient Assignment =====")
+          Rails.logger.info("===== Sending the Patient Assignment onto the queue =====")
           Aws::Publisher.publish(assignment_event: @assignment_event)
           render json: { message: 'Message has been processed successfully' }, status: 202
         rescue => error
