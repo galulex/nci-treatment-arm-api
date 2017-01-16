@@ -20,11 +20,7 @@ describe TreatmentArm do
   end
 
   it 'should be the correct class type for the variables' do
-    stub_client.stub_responses(:describe_table,
-                                {
-                                  table: { table_status: 'ACTIVE' }
-                                }
-                              )
+    stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm.configure_client(client: stub_client)
     expect(treatment_arm.name).to be_kind_of(String)
     expect(treatment_arm.treatment_arm_id).to be_kind_of(String)
