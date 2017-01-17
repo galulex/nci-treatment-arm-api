@@ -14,4 +14,3 @@ This repository contains RESTful services for the treatment arm ecosystem.
 * Server listens at port 10235
 * To Upload a sample TreatmentArm from command line, run `./data/upload_TA.sh`
 
-
