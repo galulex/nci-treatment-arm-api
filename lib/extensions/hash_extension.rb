@@ -7,10 +7,10 @@ class Hash
   end
 
   def delete_keys(*keys)
-    _dup = dup
+    kdup = dup
     keys.flatten.each do |k|
-      _dup.delete(k)
+      kdup.delete(k)
     end
-    _dup
+    kdup
   end
 end
