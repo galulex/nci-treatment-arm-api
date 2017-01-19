@@ -1,31 +1,29 @@
 # Versions Controller
 # gets triggered when GET '/api/v1/treatment_arms/version'
-module Api
-  module V1
-    class VersionsController < ApplicationController
-      def version
-        begin
-          document = File.open('build_number.html', 'r')
-          hash = Hash.new
+module Api::V1
+  class VersionsController < ApplicationController
+    def version
+      begin
+        File.open('build_number.html', 'r') do |document|
+          @hash = {}
           document.each_line do |line|
-            str = line.to_s
-            arr = str.split('=', 2)
-            hash.store(arr[0], arr[1])
+            arr = line.split('=', 2)
+            @hash.store(arr[0], arr[1])
           end
           document.close
-          @version = TreatmentArmApi::Application.version
-          @rails_version = Rails::VERSION::STRING
-          @ruby_version = RUBY_VERSION
-          @running_on = hash['Commit'].present? ? hash['Commit'] : ''
-          @author = hash['Author'].present? ? hash['Author'] : ''
-          @travisbuild = hash['TravisBuild'].present? ? hash['TravisBuild'] : ''
-          @travisjob = hash['TravisBuildID'].present? ? hash['TravisBuildID'] : ''
-          @dockerinstance = hash['Docker'].present? ? hash['Docker'] : ''
-          @buildtime = hash['BuildTime'].present? ? hash['BuildTime'] : ''
-          @environment = Rails.env
-        rescue => error
-          standard_error_message(error)
         end
+        @version = TreatmentArmApi::Application.version
+        @rails_version = Rails::VERSION::STRING
+        @ruby_version = RUBY_VERSION
+        @running_on = @hash['Commit'].present? ? @hash['Commit'] : ''
+        @author = @hash['Author'].present? ? @hash['Author'] : ''
+        @travisbuild = @hash['TravisBuild'].present? ? @hash['TravisBuild'] : ''
+        @travisjob = @hash['TravisBuildID'].present? ? @hash['TravisBuildID'] : ''
+        @dockerinstance = @hash['Docker'].present? ? @hash['Docker'] : ''
+        @buildtime = @hash['BuildTime'].present? ? @hash['BuildTime'] : ''
+        @environment = Rails.env
+      rescue => error
+        standard_error_message(error)
       end
     end
   end
