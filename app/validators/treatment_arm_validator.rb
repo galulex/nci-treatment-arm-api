@@ -154,7 +154,7 @@ module TreatmentArmValidator
           },
           'status_log' => { 'type' => 'object',
             'properties' => {
-              'id' => { 'type' => 'num43ber' },
+              'id' => { 'type' => 'number' },
               'treatment_arm_status' => { '$ref' => '#/definitions/treatment_arm_status' }
             }
           }
