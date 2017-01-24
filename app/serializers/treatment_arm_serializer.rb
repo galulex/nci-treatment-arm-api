@@ -12,7 +12,7 @@ class TreatmentArmSerializer < ActiveModel::Serializer
              :version_statistics, :stratum_statistics
 
   def total_patients_on_arm
-    object.current_patients.to_i + object.former_patients.to_i
+    object.version_current_patients.to_i + object.version_former_patients.to_i
   end
 
   def version_statistics

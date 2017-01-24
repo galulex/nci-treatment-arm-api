@@ -61,7 +61,6 @@ describe TreatmentArmSerializer do
   it { should include(treatment_arm_status: 'OPEN') }
   it { should include(study_id: 'APEC1621') }
   it { should include(assay_rules: []) }
-  it { should include(total_patients_on_arm: 2) }
   it { should include(date_created: '2020-10-05') }
   it { should include(date_opened: '2016-10-05') }
   it { should include(treatment_arm_drugs: [
