@@ -10,6 +10,7 @@ class TreatmentArmAssignmentEvent
   datetime_attr :assignment_date, range_key: true
   string_attr :treatment_arm_id
   string_attr :treatment_arm_status
+  string_attr :patient_status_reason
   datetime_attr :date_on_arm
   datetime_attr :date_off_arm
   string_attr :stratum_id
