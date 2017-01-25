@@ -8,5 +8,4 @@ module ModelSerializer
   def attributes
     instance_values
   end
-
 end

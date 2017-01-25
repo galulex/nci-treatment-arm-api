@@ -10,7 +10,7 @@ module SerializerExampleGroup
       end
     end
 
-    def build_serializable(attributes={})
+    def build_serializable(attributes = {})
       serializable_class.new(attributes).tap do |obj|
         obj.stub(:read_attribute_for_serialization) { |name| attributes[name] }
       end

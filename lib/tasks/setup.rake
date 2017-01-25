@@ -1,21 +1,20 @@
 
 namespace :setup do
-
-  task :before => :environment do
+  task before: :environment do
     add_env_variables(Rails.root.join('config', 'environment.yml'))
     add_env_variables(Rails.root.join('config', 'secrets.yml'))
   end
 
   desc 'List all the table names in environment DB'
-  task :list_tables => :before do
+  task list_tables: :before do
     puts list_tables
   end
 
-  table_names = %W(assignment event patient shipment variant variant_report specimen treatment_arm treatment_arm_assignment_event)
+  table_names = %w(assignment event patient shipment variant variant_report specimen treatment_arm treatment_arm_assignment_event)
 
   desc 'Deletes a table'
-  task :delete_table => :before do
-    args = list_tables;puts args
+  task delete_table: :before do
+    args = list_tables; puts args
     STDOUT.puts "\n Which table would you like to delete?"
     table_name = STDIN.gets.chomp
     if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
@@ -28,19 +27,19 @@ namespace :setup do
   end
 
   desc 'Loads json into specified table'
-  task :load_data, [:table_name, :file] => :before do | _t, args |
+  task :load_data, [:table_name, :file] => :before do |_t, args|
     model = "#{args.table_name.camelize}".constantize
     data = File.read(args.file)
     data = JSON.parse(data).deep_symbolize_keys!
     model.new(data).save!
-    puts "********************************************************"
-    puts "TreatmentArm has been successfully saved to the Database"
-    puts "********************************************************"
+    puts '********************************************************'
+    puts 'TreatmentArm has been successfully saved to the Database'
+    puts '********************************************************'
   end
 
   desc 'Clears the table data'
-  task :clear_table => :before do
-    args = list_tables;puts args
+  task clear_table: :before do
+    args = list_tables; puts args
     STDOUT.puts "\n Which table would you like to clear the data?"
     table_name = STDIN.gets.chomp
     if %w(treatment_arm treatment_arm_assignment_event).include?(table_name)
@@ -53,7 +52,7 @@ namespace :setup do
   end
 
   desc "Creates all the tables if doesn't exists"
-  task :create_table => :before do
+  task create_table: :before do
     missing_tables = table_names - list_tables
     missing_tables.each do |table_name|
       puts "#{table_name} table is missing. Creating it..."
@@ -66,13 +65,13 @@ namespace :setup do
   end
 
   desc 'Create queue for project'
-  task :queue => :before do
+  task queue: :before do
     Aws::SQS::Client.new(access_key_id: ENV['aws_access_key_id'],
                          secret_access_key: ENV['aws_secret_access_key'],
                          region: Rails.configuration.environment.fetch('aws_region').create_queue(queue_name: Rails.configuration.environment.fetch('queue_name')))
   end
 
-  task :all => [:queue]
+  task all: [:queue]
 
   def add_env_variables(env_file)
     if File.exists?(env_file)
@@ -97,7 +96,7 @@ namespace :setup do
   end
 
   def create_table(model_class)
-    unless model_class.table_exists?
+    if !model_class.table_exists?
       migration = Aws::Record::TableMigration.new(model_class, client: get_client(Aws::DynamoDB::Client))
       migration.create!(
         provisioned_throughput:
@@ -108,7 +107,7 @@ namespace :setup do
       )
       migration.wait_until_available
       puts "#{model_class.table_name} table has been created successfully"
-      puts "_____________________________________________________________"
+      puts '_____________________________________________________________'
     else
       puts "#{model_class.table_name} table already exists....skipping"
     end
