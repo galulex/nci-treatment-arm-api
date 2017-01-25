@@ -9,6 +9,7 @@ class TreatmentArmAssignmentEvent
   string_attr :patient_id, hash_key: true
   datetime_attr :assignment_date, range_key: true
   string_attr :treatment_arm_id
+  string_attr :treatment_arm_status
   datetime_attr :date_on_arm
   datetime_attr :date_off_arm
   string_attr :stratum_id
@@ -70,8 +71,11 @@ class TreatmentArmAssignmentEvent
       hash_merge(assay_stats, assignment.matched_treament_arm_for_assay_rules('assay_rules'))
       hash_merge(assignment_assay_stats, assignment.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
+    treatment_arm_assignments.each do |assignment|
+      @xyz = assignment.to_h if assignment.treatment_arm_status != 'SUSPENDED'
+    end
     {
-      patients_list: treatment_arm_assignments.collect(&:to_h),
+      patients_list: @xyz,
       stats: {
                'variant_stats_by_identifier' => variant_stats,
                'assginment_stats_by_identifier' => assignment_stats,
