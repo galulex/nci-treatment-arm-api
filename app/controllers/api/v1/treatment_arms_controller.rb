@@ -120,7 +120,7 @@ module Api::V1
       begin
         unless params[:treatment_arm_id].nil?
           Rails.logger.info("===== Displaying the Patient statistics for the TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}') =====")
-          treatment_arm_json = TreatmentArmAssignmentEvent.find_with_variant_stats(params[:treatment_arm_id], params[:stratum_id]) || []
+          treatment_arm_json = TreatmentArmAssignmentEvent.find_with_variant_stats(params[:treatment_arm_id], params[:stratum_id], params[:treatment_arm_status]) || []
           render json: treatment_arm_json
         end
       rescue => error

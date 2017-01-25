@@ -52,7 +52,7 @@ class TreatmentArmAssignmentEvent
     query
   end
 
-  def self.find_with_variant_stats(treatment_arm_id, stratum_id)
+  def self.find_with_variant_stats(treatment_arm_id, stratum_id, status)
     assignment_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_non_hotspot_stats = {}
@@ -60,7 +60,7 @@ class TreatmentArmAssignmentEvent
     assay_stats = {}
     assignment_assay_stats = {}
     reports = { 'snv' => 'snv_indels', 'cnv' => 'copy_number_variants', 'gf' => 'gene_fusions' }
-    treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({ 'treatment_arm_id' => treatment_arm_id, 'stratum_id' => stratum_id }, false).entries
+    treatment_arm_assignments = TreatmentArmAssignmentEvent.find_by({ 'treatment_arm_id' => treatment_arm_id, 'stratum_id' => stratum_id, 'treatment_arm_status' => status }, false).entries
     treatment_arm_assignments.each do |assignment|
       reports.each do |report_name, stat_name|
         hash_merge(variant_stats[stat_name], assignment.matched_treament_arm_for_variant_report(report_name))
@@ -71,11 +71,8 @@ class TreatmentArmAssignmentEvent
       hash_merge(assay_stats, assignment.matched_treament_arm_for_assay_rules('assay_rules'))
       hash_merge(assignment_assay_stats, assignment.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
-    treatment_arm_assignments.each do |assignment|
-      @xyz = assignment.to_h if assignment.treatment_arm_status != 'SUSPENDED'
-    end
     {
-      patients_list: @xyz,
+      patients_list: treatment_arm_assignments.collect(&:to_h),
       stats: {
                'variant_stats_by_identifier' => variant_stats,
                'assginment_stats_by_identifier' => assignment_stats,
