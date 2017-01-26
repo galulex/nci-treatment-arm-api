@@ -45,25 +45,25 @@ class TreatmentArm
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
     if append_and?(!id.nil?, !stratum_id.nil?, !version.nil?)
-      query.merge!(conditional_operator: 'AND')
+      query[:conditional_operator] = 'AND'
     end
     if to_hash
-      self.scan(query).collect(&:to_h)
+      scan(query).collect(&:to_h)
     else
-      self.scan(query).entries
+      scan(query).entries
     end
   end
 
   def self.build_scan_filter(id = nil, stratum_id = nil, version = nil)
     query = { scan_filter: {} }
     unless id.nil?
-      query[:scan_filter].merge!('treatment_arm_id' => { comparison_operator: 'EQ', attribute_value_list: [id] })
+      query[:scan_filter]['treatment_arm_id'] = { comparison_operator: 'EQ', attribute_value_list: [id] }
     end
     unless stratum_id.nil?
-      query[:scan_filter].merge!('stratum_id' => { comparison_operator: 'EQ', attribute_value_list: [stratum_id] })
+      query[:scan_filter]['stratum_id'] = { comparison_operator: 'EQ', attribute_value_list: [stratum_id] }
     end
     unless version.nil?
-      query[:scan_filter].merge!('version' => { comparison_operator: 'EQ', attribute_value_list: [version] })
+      query[:scan_filter]['version'] = { comparison_operator: 'EQ', attribute_value_list: [version] }
     end
     query
   end
@@ -93,7 +93,7 @@ class TreatmentArm
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
-      Rails.logger.info("===== Getting the Latest TreatmentArm statuses from COG =====")
+      Rails.logger.info('===== Getting the Latest TreatmentArm statuses from COG =====')
       Rails.logger.info("===== Connecting to COG at #{Rails.configuration.environment.fetch('cog_url')} =====")
       auth = { username: Rails.configuration.environment.fetch('cog_user_name'), password: Rails.configuration.environment.fetch('cog_pwd') } if Rails.env.uat?
       Rails.logger.info("===== DEBUGGING_TA_STATUS auth nil: #{auth.nil?} =====")
@@ -106,7 +106,7 @@ class TreatmentArm
         cog_arms[:treatment_arms].each do |cog_arm|
           if cog_check_condition(cog_arm, treatment_arm)
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
-            Rails.logger.info("===== Sending TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') onto the queue  =====")
+            Rails.logger.info("===== Sending TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') onto the queue to save to the DataBase  =====")
             Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
             treatment_arm.treatment_arm_status = cog_arm['status']
           end
