@@ -28,14 +28,14 @@ class TreatmentArmAssignmentEvent
 
   NOT_ENROLLED = 'NOT_ENROLLED'.freeze
 
-  def self.find_by(opts = {}, to_hash=true)
+  def self.find_by(opts = {}, to_hash = true)
     query = {}
     query.merge!(build_scan_filter(opts))
-    query.merge!(conditional_operator: 'AND') if query[:scan_filter].length >= 2
+    query[:conditional_operator] = 'AND' if query[:scan_filter].length >= 2
     if to_hash
-      self.scan(query).collect(&:to_h)
+      scan(query).collect(&:to_h)
     else
-      self.scan(query)
+      scan(query)
     end
   end
 
@@ -43,11 +43,7 @@ class TreatmentArmAssignmentEvent
     query = { scan_filter: {} }
     opts.each do |key, value|
       unless value.nil?
-        query[:scan_filter].merge!(key.to_s => {
-                                                 comparison_operator: 'EQ',
-                                                 attribute_value_list: [value]
-                                               }
-                                  )
+        query[:scan_filter].merge!(key.to_s => { comparison_operator: 'EQ', attribute_value_list: [value] })
       end
     end
     query
@@ -72,17 +68,19 @@ class TreatmentArmAssignmentEvent
       hash_merge(assay_stats, assignment.matched_treament_arm_for_assay_rules('assay_rules'))
       hash_merge(assignment_assay_stats, assignment.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
-    {
-      patients_list: treatment_arm_assignments.collect(&:to_h),
-      stats: {
-               'variant_stats_by_identifier' => variant_stats,
-               'assginment_stats_by_identifier' => assignment_stats,
-               'variant_non_hotspot_stats' => variant_non_hotspot_stats,
-               'assignment_non_hotspot_stats' => assignment_non_hotspot_stats,
-               'assay_stats' => assay_stats,
-               'non_sequencing_assay_stats' => assignment_assay_stats
-             }
-    } if treatment_arm_assignments.present?
+    if treatment_arm_assignments.present?
+      {
+        patients_list: treatment_arm_assignments.collect(&:to_h),
+        stats: {
+                 'variant_stats_by_identifier' => variant_stats,
+                 'assginment_stats_by_identifier' => assignment_stats,
+                 'variant_non_hotspot_stats' => variant_non_hotspot_stats,
+                 'assignment_non_hotspot_stats' => assignment_non_hotspot_stats,
+                 'assay_stats' => assay_stats,
+                 'non_sequencing_assay_stats' => assignment_assay_stats
+               }
+      }
+    end
   end
 
   def treatment_arm
@@ -147,12 +145,14 @@ class TreatmentArmAssignmentEvent
   end
 
   def assay_rules
-    assignment_report['patient']['assay_results'].collect do |rule|
-      {
-        'gene' => rule['gene'],
-        'status' => rule['status']
-      }
-    end if assignment_report && assignment_report['patient']['assay_results']
+    if assignment_report && assignment_report['patient']['assay_results']
+      assignment_report['patient']['assay_results'].collect do |rule|
+        {
+          'gene' => rule['gene'],
+          'status' => rule['status']
+        }
+      end
+    end
   end
 
   def assignment_assay_rules
@@ -171,7 +171,7 @@ class TreatmentArmAssignmentEvent
     result
   end
 
-  def matched_treament_arm_for_variant_report(report_name, report_suffix=nil)
+  def matched_treament_arm_for_variant_report(report_name, report_suffix = nil)
     result = {}
     if treatment_arm
       identifiers = treatment_arm.send("#{report_name}_identifiers")
@@ -289,14 +289,16 @@ class TreatmentArmAssignmentEvent
   end
 
   def non_hotspot_rules
-    variant_report['snv_indels'].collect do |indel|
-      {
-        'func_gene' => indel['func_gene'],
-        'exon' => indel['exon'],
-        'oncomine_variant_class' => indel['oncomine_variant_class'],
-        'function' => indel['function']
-      }
-    end if variant_report && variant_report['snv_indels']
+    if variant_report && variant_report['snv_indels']
+      variant_report['snv_indels'].collect do |indel|
+        {
+          'func_gene' => indel['func_gene'],
+          'exon' => indel['exon'],
+          'oncomine_variant_class' => indel['oncomine_variant_class'],
+          'function' => indel['function']
+        }
+      end
+    end
   end
 
   def non_hotspot_rules_assignment
