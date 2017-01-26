@@ -4,8 +4,8 @@ module Api::V1
   class TreatmentArmsController < ApplicationController
     include HTTParty
 
-    #before_action :authenticate_user
-    #load_and_authorize_resource only: [:create, :assignment_event, :refresh]
+    before_action :authenticate_user
+    load_and_authorize_resource only: [:create, :assignment_event, :refresh]
     before_action :params_to_boolean, only: %w(index show)
     before_action :set_treatment_arms, only: ['index']
     before_action :set_treatment_arm, only: ['show']
@@ -85,7 +85,7 @@ module Api::V1
     def update_clone
       begin
         treatment_arm = @treatment_arm.attributes_data.merge!(clone_params).compact
-        treatment_arm_hash = treatment_arm.symbolize_keys.tap {|ta| ta.delete(:status_log) }
+        treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }
         clone_treatment_arm = treatment_arm_hash.merge(status_log: { Time.now.to_i.to_s => treatment_arm_hash[:treatment_arm_status] })
         if JSON::Validator.validate(TreatmentArmValidator.schema, clone_treatment_arm)
           Rails.logger.info('===== TreatmentArm Validation passed =====')
