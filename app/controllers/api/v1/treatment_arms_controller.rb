@@ -84,7 +84,7 @@ module Api::V1
     # This creates TreatmentArm into the Database with the new version
     def update_clone
       begin
-        treatment_arm_hash = @treatment_arm.clone_attributes.merge!(clone_params).compact
+        treatment_arm_hash = @treatment_arm.attributes_data.merge!(clone_params).compact
         if JSON::Validator.validate(TreatmentArmValidator.schema, treatment_arm_hash)
           Rails.logger.info('===== TreatmentArm Validation passed =====')
           Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")

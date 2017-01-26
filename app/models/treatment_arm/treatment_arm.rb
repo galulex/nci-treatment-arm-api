@@ -72,10 +72,6 @@ class TreatmentArm
     (a && (b || c)) || (b && (c || a)) || (c && (a || b))
   end
 
-  def clone_attributes
-    attributes_data.merge!(date_created: nil)
-  end
-
   def attributes_data
     attributes.as_json['data']['data']
   end
