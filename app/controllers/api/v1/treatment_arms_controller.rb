@@ -21,12 +21,12 @@ module Api::V1
                                 stratum_id: params[:stratum_id],
                                 version: params[:version])
           if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
-            Rails.logger.info('===== TreatmentArm Validation passed =====')
+            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
             Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
             Aws::Publisher.publish(treatment_arm: @treatment_arm)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
-            Rails.logger.info('===== TreatmentArm Validation failed =====')
+            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
             JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
           end
         elsif @treatment_arm.version != params[:version]
@@ -88,12 +88,12 @@ module Api::V1
         treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }
         clone_treatment_arm = treatment_arm_hash.merge(status_log: { Time.now.to_i.to_s => treatment_arm_hash[:treatment_arm_status] })
         if JSON::Validator.validate(TreatmentArmValidator.schema, clone_treatment_arm)
-          Rails.logger.info('===== TreatmentArm Validation passed =====')
+          Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
           Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
           Aws::Publisher.publish(clone_treatment_arm: clone_treatment_arm)
           render json: { message: 'Message has been processed successfully' }, status: 202
         else
-          Rails.logger.info('===== TreatmentArm Validation failed =====')
+          Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
           JSON::Validator.validate!(TreatmentArmValidator.schema, clone_treatment_arm)
         end
       rescue => error
