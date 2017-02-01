@@ -122,12 +122,13 @@ module TreatmentArmValidator
           }
         },
         'type' => 'object',
-        'required' => ['name', 'version', 'treatment_arm_id', 'stratum_id', 'treatment_arm_drugs', 'study_id'],
+        'required' => ['name', 'version', 'treatment_arm_id', 'stratum_id', 'treatment_arm_drugs', 'study_id', 'date_created'],
         'properties' => {
           'name' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
           'study_id' => { 'type' => 'string', 'not' => { 'type' => 'null' }, 'enum' => ['APEC1621'], 'required' => ['enum'] },
           'active' => { 'type' => 'boolean', 'not' => { 'type' => 'null' } },
           'treatment_arm_id' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
+          'date_created' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
           'version' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
           'stratum_id' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
           'treatment_arm_drugs' => { 'type' => 'array', 'not' => { 'type' => 'null' }, 'minItems' => 1, 'uniqueItems' => 'drug_id', 'items' => { '$ref' => '#/definitions/drug' } },
