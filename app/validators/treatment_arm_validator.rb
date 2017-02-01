@@ -11,7 +11,7 @@ module TreatmentArmValidator
             'required' => ['name', 'drug_id'],
             'properties' => {
               'drug_id' => { 'type' => 'string', 'minLength' => 1 },
-              'name' => { 'type' => 'string','minLength' => 1  }
+              'name' => { 'type' => 'string', 'minLength' => 1  }
             }
           },
           'treatment_arm_status' => {
@@ -33,12 +33,10 @@ module TreatmentArmValidator
             'type' => 'object',
             'required' => ['type', 'assay_result_status', 'gene', 'assay_variant', 'level_of_evidence'],
             'properties' => {
-              'type' => { 'type' => 'string' },
               'assay_result_status' => { 'type' => 'string', 'enum' => %w(POSITIVE NEGATIVE INDETERMINATE
                                                                           PRE_PRESENT PRE_NEGATIVE PRE_INDETERMINATE)
                                                },
               'gene' => { 'type' => 'string' },
-              'assay_variant' => { 'type' => 'string', 'enum' => %w(PRESENT NEGATIVE EMPTY) },
               'level_of_evidence' => { 'type' => 'number', 'minimum' => 0, 'maximum' => 100, 'exclusiveMinimum' => true }
             }
           },
