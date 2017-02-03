@@ -68,6 +68,13 @@ class TreatmentArmAssignmentEvent
       hash_merge(assay_stats, assignment.matched_treament_arm_for_assay_rules('assay_rules'))
       hash_merge(assignment_assay_stats, assignment.matched_treament_arm_for_assay_rules('assignment_assay_rules'))
     end
+
+    treatment_arm_assignments.each do |assignment|
+      if %w(PREVIOUSLY_ON_ARM PREVIOUSLY_ON_ARM_OFF_STUDY NOT_ENROLLED_ON_ARM NOT_ENROLLED_ON_ARM_OFF_STUDY).include?(assignment.patient_status)
+        assignment.assignment_reason = assignment.patient_status_reason
+      end
+    end
+
     if treatment_arm_assignments.present?
       {
         patients_list: treatment_arm_assignments.collect(&:to_h),
