@@ -68,7 +68,7 @@ module TreatmentArmValidator
               'public_med_ids' => { 'anyOf' => [{ 'type' => 'array' }, { 'type' => 'null' }] },
               'func_gene' => { 'type' => 'string' },
               'arm_specific' => { 'type' => 'boolean' },
-              'level_of_evidence' => { 'type' => 'number', 'minimum' => 0, 'maximum' => 100, 'exclusiveMinimum' => true },
+              'level_of_evidence' => { 'anyOf' => [{ 'type' => 'number' }, { 'type' => 'null' }], 'minimum' => 0, 'maximum' => 100, 'exclusiveMinimum' => true },
               'function' => { 'type' => 'string' },
               'exon' => { 'type' => 'string' }
             }
