@@ -29,7 +29,7 @@ module Api::V1
             Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
             JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
           end
-        elsif @treatment_arm.version != params[:version]
+        elsif @treatment_arm.version != params[:version] && fail_safe(@treatment_arm.date_created)
           update_clone
         else
           render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
@@ -37,6 +37,12 @@ module Api::V1
       rescue => error
         standard_error_message(error)
       end
+    end
+
+    def fail_safe(date_created)
+      updated_treatment_arm = JSON.parse(request.raw_post)
+      raise "The date created cannot be the same as previous TreatmentArm's date created" if date_created == updated_treatment_arm['date_created']
+      true if date_created != updated_treatment_arm['date_created']
     end
 
     # This shows a list of all the TreatmentArms present in the Database & also lists all the versions of a TreatmentArm
