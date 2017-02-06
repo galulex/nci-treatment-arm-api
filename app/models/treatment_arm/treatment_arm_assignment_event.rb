@@ -50,6 +50,7 @@ class TreatmentArmAssignmentEvent
   end
 
   def self.find_with_variant_stats(treatment_arm_id, stratum_id, status)
+    @treatment_arm ||= TreatmentArm.find_by(treatment_arm_id, stratum_id, nil, false).first
     assignment_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_non_hotspot_stats = {}
@@ -90,13 +91,9 @@ class TreatmentArmAssignmentEvent
     end
   end
 
-  def treatment_arm
-    @treatment_arm ||= TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
-  end
-
   def matched_treament_arm_for_non_hot_spot_rules(report_name)
     result = {}
-    if treatment_arm
+    if @treatment_arm
       ta_non_hotspot_rules = treatment_arm.non_hotspot_rules
       ta_non_hotspot_rules.each do |ta_rule|
         result[ta_rule['func_gene']] = { 'inclusion' => ta_rule['inclusion'], 'count' => 0 }
@@ -121,7 +118,7 @@ class TreatmentArmAssignmentEvent
 
   def matched_treament_arm_for_assay_rules(report_name)
     result = {}
-    if treatment_arm
+    if @treatment_arm
       ta_assay_rules = treatment_arm.assay_rules
       ta_assay_rules.each do |ta_rule|
         if send(report_name)
@@ -180,7 +177,7 @@ class TreatmentArmAssignmentEvent
 
   def matched_treament_arm_for_variant_report(report_name, report_suffix = nil)
     result = {}
-    if treatment_arm
+    if @treatment_arm
       identifiers = treatment_arm.send("#{report_name}_identifiers")
       if report_suffix
         identifiers_by_count = send("#{report_suffix}_#{report_name}_count_by_patient")
