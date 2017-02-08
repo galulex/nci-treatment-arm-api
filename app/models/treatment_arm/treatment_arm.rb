@@ -137,10 +137,10 @@ class TreatmentArm
   end
 
   def cnv_identifiers
-    copy_number_variants.collect { |cnv| { cnv['identifier'] => cnv['inclusion'] } }
+    copy_number_variants.collect { |cnv| { cnv['identifier'] => cnv['inclusion'] } }.compact
   end
 
   def gf_identifiers
-    gene_fusions.collect { |fusion| { fusion['identifier'] => fusion['inclusion'] } }
+    gene_fusions.collect { |fusion| { fusion['identifier'] => fusion['inclusion'] } }.compact
   end
 end
