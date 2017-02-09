@@ -51,7 +51,7 @@ describe Api::V1::TreatmentArmsController do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(false)
         post :create, params: { treatment_arm_id: 'null', stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
-        expect(response.body).to include("{\"message\":\"The property '#/snv_indels/0/level_of_evidence' of type String did not match the following type: number\"}")
+        expect(response.body).to include("The property '#/' did not contain a required property of 'name'")
         expect(response).to have_http_status(500)
       end
     end
