@@ -151,12 +151,15 @@ module Api::V1
     end
 
     def set_treatment_arm
-      @treatment_arm = TreatmentArm.find_by(params[:treatment_arm_id], params[:stratum_id], params[:version], false).first
+      @treatment_arm_id = params[:treatment_arm_id]
+      @stratum_id = params[:stratum_id]
+      @version = params[:version]
+      @treatment_arm = TreatmentArm.find_by(@treatment_arm_id, @stratum_id, @version, false).first
       error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
     end
 
     def set_latest_treatment_arm
-      treatment_arms = TreatmentArm.find_by(params[:treatment_arm_id], params[:stratum_id], nil, false)
+      treatment_arms = TreatmentArm.find_by(@treatment_arm_id, @stratum_id, nil, false)
       @treatment_arm = treatment_arms.detect { |t| t.version == params[:version] }
       @treatment_arm = treatment_arms.sort { |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
     end
