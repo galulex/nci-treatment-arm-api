@@ -68,12 +68,6 @@ module Api::V1
       end
     end
 
-    def check_params
-      Rails.logger.info("===== Projection Params : #{projection_params} =====")
-      Rails.logger.info("===== Attribute Params : #{attribute_params} =====")
-      true if projection_params.present? || attribute_params.present?
-    end
-
     # This retrieves a Specific TreatmentArm
     def show
       begin
@@ -85,6 +79,10 @@ module Api::V1
       rescue => error
         standard_error_message(error)
       end
+    end
+
+    def check_params
+      true if projection_params.present? || attribute_params.present?
     end
 
     # This creates TreatmentArm into the Database with the new version
@@ -127,7 +125,6 @@ module Api::V1
     def patients_on_treatment_arm
       begin
         unless params[:treatment_arm_id].nil?
-          Rails.logger.info("===== Displaying the Patient statistics for the TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}') =====")
           treatment_arm_json = TreatmentArmAssignmentEvent.find_with_variant_stats(params[:treatment_arm_id], params[:stratum_id], params[:treatment_arm_status]) || []
           render json: treatment_arm_json
         end
@@ -139,9 +136,7 @@ module Api::V1
     private
 
     def set_treatment_arms
-      if params[:active].present?
-        params[:active] == 'true' ? true : false
-      end
+      params[:active] == 'true' ? true : false if params[:active].present?
       if attribute_params.present? || projection_params.present?
         ta_json = filter_query_by_attributes(TreatmentArm.scan({}))
       else
