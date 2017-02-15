@@ -44,7 +44,7 @@ class TreatmentArm
   def self.find_by(id = nil, stratum_id = nil, version = nil, to_hash = true)
     query = {}
     query.merge!(build_scan_filter(id, stratum_id, version))
-    query[:conditional_operator] = 'AND'
+    query[:conditional_operator] = 'AND' if query[:scan_filter].length >= 2
     if to_hash
       scan(query).collect(&:to_h)
     else

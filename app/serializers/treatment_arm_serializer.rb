@@ -1,4 +1,4 @@
-# This gets rendered for displaying all the TreatmentArms
+# This gets rendered for displaying a TreatmentArm
 class TreatmentArmSerializer < ActiveModel::Serializer
   attributes :treatment_arm_id, :treatment_arm_title, :name,
              :active, :date_created, :version, :stratum_id,
