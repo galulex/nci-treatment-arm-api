@@ -51,7 +51,7 @@ class TreatmentArmAssignmentEvent
   end
 
   def self.find_with_variant_stats(treatment_arm_id, stratum_id, status)
-    @@treatment_arm ||= TreatmentArm.find_by(treatment_arm_id, stratum_id, nil, false).first
+    @@treatment_arm ||= TreatmentArm.find_treatment_arm(treatment_arm_id, stratum_id).first
     assignment_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_stats = { 'snv_indels' => {}, 'copy_number_variants' => {}, 'gene_fusions' => {} }
     variant_non_hotspot_stats = {}

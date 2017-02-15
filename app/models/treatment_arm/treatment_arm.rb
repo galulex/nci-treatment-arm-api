@@ -137,4 +137,20 @@ class TreatmentArm
   def gf_identifiers
     gene_fusions.collect { |fusion| { fusion['identifier'] => fusion['inclusion'] } }.compact
   end
+
+  def self.find_treatment_arm(treatment_arm_id, stratum_id)
+    treatment_arms = self.query(
+      key_condition_expression: "#T = :t",
+      filter_expression: "contains(#S, :s)",
+      expression_attribute_names: {
+        "#T" => "treatment_arm_id",
+        "#S" => "stratum_id"
+      },
+      expression_attribute_values: {
+        ":t" => treatment_arm_id,
+        ":s" => stratum_id
+      }
+    )
+    treatment_arms
+  end
 end
