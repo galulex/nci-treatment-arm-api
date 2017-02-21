@@ -20,9 +20,13 @@ common: &default_settings
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
+  agent_enabled: true
+  NEW_RELIC_AGENT_ENABLED: true
 
   # Logging level for log/newrelic_agent.log
   log_level: info
+
+  NEW_RELIC_HIGH_SECURITY: true
 
 
 # Environment-specific settings are in this section.
@@ -36,19 +40,31 @@ development:
   # Do not use for production or load testing.
   developer_mode: true
   monitor_mode: false
+  NEW_RELIC_MONITOR_MODE: true
 
 test:
   <<: *default_settings
   app_name: TreatmentArm API (Test)
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: true
+  RAILS_ENV: test
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
 
 uat:
   <<: *default_settings
   app_name: TreatmentArm API (UAT)
   monitor_mode: true
+  RAILS_ENV: uat
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
+
 
 production:
   <<: *default_settings
   app_name: TreatmentArm API (Production)
   monitor_mode: true
+  RAILS_ENV: production
+  NEW_RELIC_HIGH_SECURITY: true
+  high_security: true
+
