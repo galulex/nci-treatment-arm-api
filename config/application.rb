@@ -23,6 +23,10 @@ module TreatmentArmApi
     config.logger = Logger.new(STDOUT)
     config.logger.formatter = Proc.new { |severity, datetime, _progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
 
+    config.after_initialize do
+      config.logger.extend ActiveSupport::Logger.broadcast(SlackLogger.logger)
+    end
+
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
         origins '*'

@@ -24,6 +24,7 @@ gem 'aws-sdk-rails', '1.0.1'
 gem 'json-schema', '2.7.0'
 gem 'nci_match_roles', git: 'git://github.com/CBIIT/nci_match_roles.git', branch: :master
 gem 'rack-cors'
+gem 'slack-logger'
 
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
