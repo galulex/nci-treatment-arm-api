@@ -25,9 +25,38 @@ SlackLogger.setup do |config|
   # Note: slack-ruby-client is imported with this gem and is recommended
   #
   ## Default:
-  config.client = Slack::Web::Client.new(:token => Rails.application.secrets.slack_api_token)
+  config.client = Slack::Web::Client.new(token: Rails.application.secrets.slack_api_token)
 
+  ## Slack Format
+  #  ------------
+  #
+  # The format of the message you would like to appear on slack.  By default it is set to:
+  # Proc.new { |severity, datetime, _progname, msg |
+  #   {
+  #           channel: SlackLogger.channel,
+  #           attachments: [{
+  #                             pretext: msg.to_s,
+  #                             ts: "#{datetime}",
+  #                             fields: [
+  #                                 {
+  #                                     title: "Project",
+  #                                     value: "#{Rails.application.class.parent_name}",
+  #                                     short: true
+  #                                 },
+  #                                 {
+  #                                     title: "Environment",
+  #                                     value: "#{Rails.env}",
+  #                                     short: true
+  #                                 }
+  #                             ],
+  #                             color: "#F35A00"
+  #                         }].to_json,
+  #           as_user: true}
+  # }
+  # Please use a Proc if you would like to set format to something else
+  # Example: SlackLogger::Formatter.new.format = -> {}
 
+  config.logger.formatter = SlackLogger::Formatter.new.format
   ## Slack Channel
   #  -------------
   #
