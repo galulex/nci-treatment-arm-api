@@ -11,5 +11,9 @@ describe Ability, type: :model do
     it 'should allow System to manage all' do
       expect(Ability.new(roles: ['SYSTEM']).can?(:manage, :all)).to eq(true)
     end
+
+    it 'Should allow admin to manage all' do
+      expect(Ability.new({ roles: ['ADMIN'] }).can?(:manage, :all)).to eq(true)
+    end
   end
 end
