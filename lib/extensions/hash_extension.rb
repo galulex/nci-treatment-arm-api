@@ -5,12 +5,4 @@ class Hash
     end
     self
   end
-
-  def delete_keys(*keys)
-    kdup = dup
-    keys.flatten.each do |k|
-      kdup.delete(k)
-    end
-    kdup
-  end
 end
