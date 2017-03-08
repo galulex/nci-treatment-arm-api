@@ -80,6 +80,7 @@
         "arm_specific": false,
         "level_of_evidence": 3.0,
         "func_gene": "EGFR",
+        "domain": "400-500",
         "function": "missense",
         "oncomine_variant_class": "deleterious",
         "exon": "19"
