@@ -25,7 +25,7 @@ describe Api::V1::TreatmentArmsController do
         expect(TreatmentArm.include?(Aws::Record)).to be_truthy
       end
 
-      it 'should save data to the database' do
+      it 'should put a TreatmentArm onto the queue' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
@@ -150,6 +150,18 @@ describe Api::V1::TreatmentArmsController do
     it 'should raise the UrlGenerationError' do
       allow(TreatmentArm).to receive(:scan).and_raise('this error')
       expect { get :show, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
+    end
+
+    it 'should handle errors correctly on index call' do
+      allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+      get :index, treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: 'v1'
+      expect(response).to have_http_status(500)
+    end
+
+    it 'should handle errors correctly on show call' do
+      allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+      get :show, treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: 'v1', name: 'sample'
+      expect(response).to have_http_status(500)
     end
 
     it 'should return a proper json with data' do
