@@ -156,7 +156,7 @@ module Api::V1
     def set_latest_treatment_arm
       treatment_arm_id = params[:treatment_arm_id]
       stratum_id = params[:stratum_id]
-      treatment_arms = TreatmentArm.find_by(treatment_arm_id, stratum_id, nil, false)
+      treatment_arms = TreatmentArm.find_treatment_arm(treatment_arm_id, stratum_id)
       @treatment_arm = treatment_arms.detect { |t| t.version == params[:version] }
       @treatment_arm = treatment_arms.sort { |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
     end
