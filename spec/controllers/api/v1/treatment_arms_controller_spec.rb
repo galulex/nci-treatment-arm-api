@@ -47,9 +47,9 @@ describe Api::V1::TreatmentArmsController do
         expect { post :create, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
       end
 
-      it 'should remove the trailing spaces in the JSON' do
-        expect(TreatmentArm.remove_trailing_spaces(treatment_arm_with_trailing_spaces.to_h)).to eq(treatment_arm_without_trailing_spaces.to_h)
-      end
+      # it 'should remove the trailing spaces in the JSON' do
+      #   expect(TreatmentArm.remove_trailing_spaces(treatment_arm_with_trailing_spaces.to_h)).to eq(treatment_arm_without_trailing_spaces.to_h)
+      # end
     end
 
     context 'With Invalid Data' do
