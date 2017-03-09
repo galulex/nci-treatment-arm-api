@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   def render_error(status, exception)
     logger.error status.to_s +  " " + exception.to_s
     respond_to do |format|
-      format.all { head status, :message => exception.message}
+      format.all { head status, message: exception.message}
     end
   end
 
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def no_db_connection_exception
-    render json: { message: "Database is not ACTIVE" }, status: 502
+    render json: { message: 'Database is not ACTIVE' }, status: 502
   end
 
   def standard_error_message(error)
