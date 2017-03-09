@@ -27,8 +27,12 @@ module Api::V1
             Aws::Publisher.publish(treatment_arm: @treatment_arm)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
-            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
-            JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
+            begin
+              JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
+              Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
+            rescue => e
+              render json: { message: e.message }, status: 412
+            end
           end
         elsif @treatment_arm.version != params[:version] && fail_safe(@treatment_arm.date_created)
           update_clone
@@ -98,8 +102,12 @@ module Api::V1
           Aws::Publisher.publish(clone_treatment_arm: clone_treatment_arm)
           render json: { message: 'Message has been processed successfully' }, status: 202
         else
-          Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
-          JSON::Validator.validate!(TreatmentArmValidator.schema, clone_treatment_arm)
+          begin
+            JSON::Validator.validate!(TreatmentArmValidator.schema, clone_treatment_arm)
+            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
+          rescue => e
+            render json: { message: e.message }, status: 412
+          end
         end
       rescue => error
         standard_error_message(error)
