@@ -153,4 +153,25 @@ class TreatmentArm
     )
     treatment_arms
   end
+
+  def self.remove_trailing_spaces(treatment_arm)
+    return nil if treatment_arm.blank?
+    treatment_arm.each_value do |value|
+      if value.is_a?(Array)
+        value.each do |val|
+          val.each_value do |_v|
+            next if _v.class == TrueClass || _v.class == FalseClass || _v.class == Float || _v.class == NilClass
+            if _v.is_a?(Array)
+              _v.collect!(&:squish)
+            else
+              _v.strip!
+            end
+          end
+        end
+      else
+        value.strip!
+      end
+    end
+    treatment_arm
+  end
 end

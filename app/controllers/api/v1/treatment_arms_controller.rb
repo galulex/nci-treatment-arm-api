@@ -16,6 +16,7 @@ module Api::V1
       begin
         if @treatment_arm.nil?
           @treatment_arm = JSON.parse(request.raw_post)
+          TreatmentArm.remove_trailing_spaces(@treatment_arm)
           @treatment_arm.deep_transform_keys!(&:underscore).symbolize_keys!
           @treatment_arm.merge!(treatment_arm_id: params[:treatment_arm_id],
                                 stratum_id: params[:stratum_id],
