@@ -58,7 +58,7 @@ describe Api::V1::TreatmentArmsController do
         allow(JSON::Validator).to receive(:validate).and_return(false)
         post :create, params: { treatment_arm_id: 'null', stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
         expect(response.body).to include("The property '#/' did not contain a required property of 'name'")
-        expect(response).to have_http_status(500)
+        expect(response).to have_http_status(412)
       end
     end
   end
