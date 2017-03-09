@@ -59,6 +59,88 @@ FactoryGirl.define do
     version_current_patients 1
   end
 
+  factory :treatment_arm_without_trailing_spaces, class: TreatmentArm do
+    name 'EAY131-test'
+    treatment_arm_id 'APEC1621-A'
+    version '2016-20-02'
+    stratum_id '12'
+    date_created '2020-10-05'
+    description 'This is the sample Description'
+    target_id 'HDFD'
+    date_opened '2015-10-07'
+    study_id 'APEC1621'
+    target_name 'OtherHen'
+    gene 'GENE'
+    treatment_arm_drugs [{
+        'drug_id': '113',
+        'name': 'a'}]
+    snv_indels [
+        {
+          'position': '30035190',
+          'ocp_alternative': '-',
+          'gene': 'NRAS',
+          'protein': 'p.Q61H',
+          'level_of_evidence': 3.0,
+          'ocp_reference': 'TTC',
+          'variant_type': 'snp',
+          'chromosome': 'chr22',
+          'arm_specific': false,
+          'identifier': 'COSM22189',
+          'public_med_ids': ['18827604', '21917678', '23181703'],
+          'inclusion': true
+         }
+       ]
+    diseases [
+        {
+          'disease_code': '8200/0',
+          'disease_code_type': 'ICD-O',
+          'exclusion': false,
+          'disease_name': 'Eccrine dermal cylindroma (C44._)\nTurban tumor (C44.4)\nCylindroma of skin (C44._)'
+        }
+      ]
+  end
+
+  factory :treatment_arm_with_trailing_spaces, class: TreatmentArm do
+    name ' EAY131-test'
+    treatment_arm_id ' APEC1621-A'
+    version '2016-20-02 '
+    stratum_id '12'
+    date_created ' 2020-10-05'
+    description ' This is the sample Description'
+    target_id ' HDFD'
+    date_opened '2015-10-07 '
+    study_id 'APEC1621'
+    target_name 'OtherHen'
+    gene 'GENE'
+    treatment_arm_drugs [{
+        'drug_id': ' 113',
+        'name': ' a'}]
+    snv_indels [
+        {
+          'position': ' 30035190',
+          'ocp_alternative': '-',
+          'gene': ' NRAS',
+          'protein': ' p.Q61H',
+          'level_of_evidence': 3.0,
+          'ocp_reference': 'TTC',
+          'variant_type': 'snp',
+          'chromosome': 'chr22',
+          'arm_specific': false,
+          'identifier': 'COSM22189',
+          'public_med_ids': ['18827604', '21917678', '23181703'],
+          'inclusion': true
+         }
+       ]
+    diseases [
+        {
+          'disease_code': ' 8200/0',
+          'disease_code_type': 'ICD-O ',
+          'exclusion': false,
+          'disease_name': ' Eccrine dermal cylindroma (C44._)\nTurban tumor (C44.4)\nCylindroma of skin (C44._)'
+        }
+      ]
+  end
+
   factory :treatment_arm_assignment_event, class: TreatmentArmAssignmentEvent do
     assignment_date '2012-02-20'
     date_on_arm '2016-05-27'
