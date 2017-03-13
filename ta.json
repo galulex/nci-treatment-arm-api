@@ -78,9 +78,10 @@
            "23181703"
         ],
         "arm_specific": false,
+        "domain_name": "iSH2",
+        "domain_range": "400-500",
         "level_of_evidence": 3.0,
         "func_gene": "EGFR",
-        "domain": "400-500",
         "function": "missense",
         "oncomine_variant_class": "deleterious",
         "exon": "19"
@@ -143,4 +144,3 @@
       }
     ]
   }
-
