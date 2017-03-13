@@ -154,30 +154,30 @@ class TreatmentArm
     treatment_arms
   end
 
-  # def self.remove_trailing_spaces(treatment_arm)
-  #   Rails.logger.info('===== Stripping off the Trailing Spaces in the JSON if there are any =====')
-  #   return nil if treatment_arm.blank?
-  #   treatment_arm.each_value do |value|
-  #     next if check_condition(value)
-  #     if value.is_a?(Array)
-  #       value.each do |val|
-  #         val.each_value do |_v|
-  #           next if check_condition(_v)
-  #           if _v.is_a?(Array)
-  #             _v.collect!(&:squish)
-  #           else
-  #             _v.strip!
-  #           end
-  #         end
-  #       end
-  #     else
-  #       value.strip!
-  #     end
-  #   end
-  #   treatment_arm
-  # end
+  def self.remove_trailing_spaces(treatment_arm)
+    Rails.logger.info('===== Stripping off the Trailing Spaces in the JSON if there are any =====')
+    return nil if treatment_arm.blank?
+    treatment_arm.each_value do |value|
+      next if check_condition(value)
+      if value.is_a?(Array)
+        value.each do |val|
+          val.each_value do |_v|
+            next if check_condition(_v)
+            if _v.is_a?(Array)
+              _v.collect!(&:squish)
+            else
+              _v.strip!
+            end
+          end
+        end
+      else
+        value.strip!
+      end
+    end
+    treatment_arm
+  end
 
-  # def self.check_condition(v)
-  #   true if v.class == TrueClass || v.class == FalseClass || v.class == Float || v.class == NilClass || v.class == Fixnum
-  # end
+  def self.check_condition(v)
+    true if v.class == TrueClass || v.class == FalseClass || v.class == Float || v.class == NilClass || v.class == Fixnum
+  end
 end
