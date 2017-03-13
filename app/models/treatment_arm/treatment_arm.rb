@@ -161,12 +161,12 @@ class TreatmentArm
       next if check_condition(value)
       if value.is_a?(Array)
         value.each do |val|
-          val.each_value do |_v|
-            next if check_condition(_v)
-            if _v.is_a?(Array)
-              _v.collect!(&:squish)
+          val.each_value do |v|
+            next if check_condition(v)
+            if v.is_a?(Array)
+              v.collect!(&:squish)
             else
-              _v.strip!
+              v.strip!
             end
           end
         end
