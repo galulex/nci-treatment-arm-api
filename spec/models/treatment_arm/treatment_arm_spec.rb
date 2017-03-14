@@ -19,6 +19,12 @@ describe TreatmentArm do
     expect(treatment_arm).to be_truthy
   end
 
+  it 'should find the appropriate treatment arm' do
+    allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+    ta = TreatmentArm.find_by(treatment_arm.treatment_arm_id, treatment_arm.stratum_id, treatment_arm.version, true)
+    expect(ta).to eq(treatment_arm.to_h)
+  end
+
   it 'should be the correct class type for the variables' do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm.configure_client(client: stub_client)

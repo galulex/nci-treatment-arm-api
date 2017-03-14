@@ -46,7 +46,7 @@ class TreatmentArm
     query.merge!(build_scan_filter(id, stratum_id, version))
     query[:conditional_operator] = 'AND' if query[:scan_filter].length >= 2
     if to_hash
-      scan(query).collect(&:to_h)
+      scan(query).to_h
     else
       scan(query).entries
     end
