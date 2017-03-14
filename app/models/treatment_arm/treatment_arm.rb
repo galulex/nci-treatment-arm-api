@@ -178,6 +178,7 @@ class TreatmentArm
   end
 
   def self.check_condition(v)
-    true if v.class == TrueClass || v.class == FalseClass || v.class == Float || v.class == NilClass || v.class == Fixnum
+    true if v.class == TrueClass || v.class == FalseClass || v.class == Float ||
+            v.class == NilClass || v.class == Fixnum || v.class == Hash
   end
 end

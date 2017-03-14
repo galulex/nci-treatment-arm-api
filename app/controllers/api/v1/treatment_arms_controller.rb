@@ -96,14 +96,15 @@ module Api::V1
         treatment_arm = @treatment_arm.attributes_data.merge!(clone_params).compact
         treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }
         clone_treatment_arm = treatment_arm_hash.merge(status_log: { Time.now.to_i.to_s => treatment_arm_hash[:treatment_arm_status] })
-        if JSON::Validator.validate(TreatmentArmValidator.schema, clone_treatment_arm)
+        new_treatment_arm = TreatmentArm.remove_trailing_spaces(clone_treatment_arm)
+        if JSON::Validator.validate(TreatmentArmValidator.schema, new_treatment_arm)
           Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
           Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
-          Aws::Publisher.publish(clone_treatment_arm: clone_treatment_arm)
+          Aws::Publisher.publish(clone_treatment_arm: new_treatment_arm)
           render json: { message: 'Message has been processed successfully' }, status: 202
         else
           begin
-            JSON::Validator.validate!(TreatmentArmValidator.schema, clone_treatment_arm)
+            JSON::Validator.validate!(TreatmentArmValidator.schema, new_treatment_arm)
             Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
           rescue => e
             render json: { message: e.message }, status: 412
@@ -163,8 +164,7 @@ module Api::V1
     end
 
     def set_latest_treatment_arm
-      treatment_arm_id = params[:treatment_arm_id]
-      stratum_id = params[:stratum_id]
+      treatment_arm_id, stratum_id = params[:treatment_arm_id], params[:stratum_id]
       treatment_arms = TreatmentArm.find_treatment_arm(treatment_arm_id, stratum_id)
       @treatment_arm = treatment_arms.detect { |t| t.version == params[:version] }
       @treatment_arm = treatment_arms.sort { |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
@@ -173,9 +173,8 @@ module Api::V1
     def clone_params
       body_params = JSON.parse(request.raw_post)
       body_params.deep_transform_keys!(&:underscore).symbolize_keys!
-      body_params[:version] = params[:version]
       [:treatment_arm_id, :stratum_id].each { |k| body_params.delete(k) }
-      body_params[:stratum_id] = params[:stratum_id]
+      body_params[:stratum_id], body_params[:version] = params[:stratum_id], params[:version]
       body_params
     end
 
