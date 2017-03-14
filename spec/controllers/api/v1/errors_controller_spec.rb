@@ -10,5 +10,15 @@ describe Api::V1::ErrorsController do
     it 'should raise the UrlGenerationError' do
       expect { get :render_not_found, treatment_arm_id: 'APEC1621-A' }.to raise_error(ActionController::UrlGenerationError)
     end
+
+    it 'should raise the UrlGenerationError JSON' do
+      header = {'ACCEPT' => 'application/json'}
+      expect { get :render_not_found, treatment_arm_id: 'APEC1621-A', headers: header}.to raise_error(ActionController::UrlGenerationError)
+    end
+
+    it 'should raise the UrlGenerationError, any other format' do
+      header = {'ACCEPT' => 'text/html'}
+      expect { get :render_not_found, treatment_arm_id: 'APEC1621-A', headers: header}.to raise_error(ActionController::UrlGenerationError)
+    end
   end
 end
