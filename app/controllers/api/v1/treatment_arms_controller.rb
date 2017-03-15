@@ -21,20 +21,25 @@ module Api::V1
           @treatment_arm.merge!(treatment_arm_id: params[:treatment_arm_id],
                                 stratum_id: params[:stratum_id],
                                 version: params[:version])
-          if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
-            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
-            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
-            Aws::Publisher.publish(treatment_arm: @treatment_arm)
-            render json: { message: 'Message has been processed successfully' }, status: 202
-          else
-            begin
-              JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
-              Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
-            rescue => e
-              render json: { message: e.message }, status: 412
+          validate_domain = TreatmentArm.validate_domain_range(@treatment_arm[:non_hotspot_rules], nil)
+          if validate_domain
+            if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
+              Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
+              Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
+              Aws::Publisher.publish(treatment_arm: @treatment_arm)
+              render json: { message: 'Message has been processed successfully' }, status: 202
+            else
+              begin
+                JSON::Validator.validate!(TreatmentArmValidator.schema, @treatment_arm)
+                Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
+              rescue => error
+                render json: { message: error.message }, status: 412
+              end
             end
+          else
+            render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y [x < y & x, y > 0]'" }, status: 412
           end
-        elsif @treatment_arm.version != params[:version]   
+        elsif @treatment_arm.version != params[:version]
           update_clone
         else
           render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
@@ -91,18 +96,23 @@ module Api::V1
         treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }
         clone_treatment_arm = treatment_arm_hash.merge(status_log: { Time.now.to_i.to_s => treatment_arm_hash[:treatment_arm_status] })
         new_treatment_arm = TreatmentArm.remove_trailing_spaces(clone_treatment_arm)
-        if JSON::Validator.validate(TreatmentArmValidator.schema, new_treatment_arm)
-          Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
-          Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
-          Aws::Publisher.publish(clone_treatment_arm: new_treatment_arm)
-          render json: { message: 'Message has been processed successfully' }, status: 202
-        else
-          begin
-            JSON::Validator.validate!(TreatmentArmValidator.schema, new_treatment_arm)
-            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
-          rescue => e
-            render json: { message: e.message }, status: 412
+        check_domain = TreatmentArm.validate_domain_range(clone_treatment_arm[:non_hotspot_rules], nil)
+        if check_domain
+          if JSON::Validator.validate(TreatmentArmValidator.schema, new_treatment_arm)
+            Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
+            Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
+            Aws::Publisher.publish(clone_treatment_arm: new_treatment_arm)
+            render json: { message: 'Message has been processed successfully' }, status: 202
+          else
+            begin
+              JSON::Validator.validate!(TreatmentArmValidator.schema, new_treatment_arm)
+              Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation failed =====")
+            rescue => e
+              render json: { message: e.message }, status: 412
+            end
           end
+        else
+          render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y [x < y & x, y > 0]'" }, status: 412
         end
       rescue => error
         standard_error_message(error)
