@@ -126,18 +126,6 @@ class TreatmentArm
             treatment_arm.treatment_arm_status != cog_arm['status']
   end
 
-  def snv_identifiers
-    snv_indels.collect { |indel| { indel['identifier'] => indel['inclusion'] } }.compact
-  end
-
-  def cnv_identifiers
-    copy_number_variants.collect { |cnv| { cnv['identifier'] => cnv['inclusion'] } }.compact
-  end
-
-  def gf_identifiers
-    gene_fusions.collect { |fusion| { fusion['identifier'] => fusion['inclusion'] } }.compact
-  end
-
   def self.find_treatment_arm(treatment_arm_id, stratum_id)
     treatment_arms = self.query(
       key_condition_expression: "#T = :t",
