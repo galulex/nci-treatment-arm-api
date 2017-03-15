@@ -176,8 +176,9 @@ class TreatmentArm
     return true if rules.blank?
     rules.each do |nhr|
       domain = nhr['domain']
-      array = domain.split('-')
-      if check_range(array)
+      arr = domain.split('-')
+      if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
+         arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
         Rails.logger.info('===== The Domain range in the non_hotspot_rules is in the correct format =====')
         is_valid_domain = true
       else
@@ -185,10 +186,5 @@ class TreatmentArm
       end
     end
     is_valid_domain
-  end
-
-  def self.check_range(arr)
-    true if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
-            arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
   end
 end
