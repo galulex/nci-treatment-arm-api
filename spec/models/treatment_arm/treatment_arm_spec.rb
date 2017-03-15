@@ -25,6 +25,13 @@ describe TreatmentArm do
     expect(ta).to eq(treatment_arm.to_h)
   end
 
+  it 'should validate the Domain range in the TreatmentArm JSON' do
+    correct_rules = [{ 'domain' => '100-200', 'level_of_evidence' => 1.0, 'inclusion' => true }]
+    incorrect_rules = [{ 'domain'=> '200-100', 'level_of_evidence' => 1.0, 'inclusion' => true }]
+    expect(TreatmentArm.validate_domain_range(correct_rules, nil)).to eq(true)
+    expect(TreatmentArm.validate_domain_range(incorrect_rules, nil)).to eq(false)
+  end
+
   it 'should be the correct class type for the variables' do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm.configure_client(client: stub_client)
