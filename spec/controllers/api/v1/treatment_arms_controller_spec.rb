@@ -50,6 +50,15 @@ describe Api::V1::TreatmentArmsController do
       it 'should remove the trailing spaces in the JSON' do
         expect(TreatmentArm.remove_trailing_spaces(treatment_arm_with_trailing_spaces.to_h)).to eq(treatment_arm_without_trailing_spaces.to_h)
       end
+
+      it 'should throw Bad Request(400) when the same post request is hit with the same parameters' do
+        allow(TreatmentArm).to receive(:find_by).and_return(treatment_arm)
+        expect(treatment_arm).to_not be_nil
+        post :create, treatment_arm_id: 'APEC1621-A', stratum_id: '12', version: 'v1', name: treatment_arm.name,
+                      treatment_arm_drugs: treatment_arm.treatment_arm_drugs, study_id: treatment_arm.study_id, date_created: treatment_arm.date_created
+        expect(response.body).to include('message')
+        expect(response).to have_http_status(400)
+      end
     end
 
     context 'With Invalid Data' do
