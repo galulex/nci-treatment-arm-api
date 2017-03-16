@@ -247,6 +247,46 @@ describe Api::V1::TreatmentArmsController do
       get :patients_on_treatment_arm, treatment_arm_id: 'APEC1621-A', stratum_id: '100'
       expect(response).to have_http_status(500)
     end
+
+    it 'should assign patient status reason to assignment reason for some patient statuses' do
+      allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
+
+      treatment_arm_assignment1 = TreatmentArmAssignmentEvent.new
+      treatment_arm_assignment1.treatment_arm_id_stratum_id = 'APEC1621-A_100'
+      treatment_arm_assignment1.treatment_arm_id = 'APEC1621-A'
+      treatment_arm_assignment1.stratum_id = '100'
+      treatment_arm_assignment1.assignment_date = '2015-08-06'
+      treatment_arm_assignment1.patient_status_reason = 'Doctor approved that he can never be on a TreatmentArm'
+      treatment_arm_assignment1.assignment_reason = 'Blah Blah'
+      treatment_arm_assignment1.patient_status = 'PREVIOUSLY_ON_ARM'
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return([treatment_arm_assignment1])
+      allow(TreatmentArmAssignmentEvent).to receive(:save).and_return(true)
+
+      treatment_arm_assignment2 = TreatmentArmAssignmentEvent.new
+      treatment_arm_assignment2.treatment_arm_id_stratum_id = 'APEC1621-A_100'
+      treatment_arm_assignment1.treatment_arm_id = 'APEC1621-A'
+      treatment_arm_assignment1.stratum_id = '100'
+      treatment_arm_assignment2.assignment_date = '2015-08-07'
+      treatment_arm_assignment2.patient_status_reason = 'Doctor approved that he can never be on a TreatmentArm'
+      treatment_arm_assignment2.assignment_reason = 'Blah Blah'
+      treatment_arm_assignment2.patient_status = 'NOT_ENROLLED_ON_ARM'
+      allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return([treatment_arm_assignment2])
+      allow(TreatmentArmAssignmentEvent).to receive(:save).and_return(true)
+
+      allow(TreatmentArmAssignmentEvent).to receive(:find_by).and_return([treatment_arm_assignment1, treatment_arm_assignment2])
+
+      TreatmentArmAssignmentEvent.find_with_variant_stats('APEC1621-A', '100', 'OPEN')
+
+      expect(treatment_arm_assignment1.assignment_reason).to eq(treatment_arm_assignment1.patient_status_reason)
+      expect(treatment_arm_assignment2.assignment_reason).to eq(treatment_arm_assignment2.patient_status_reason)
+
+      get :patients_on_treatment_arm, treatment_arm_id: treatment_arm_assignment1.treatment_arm_id, stratum_id: treatment_arm_assignment1.stratum_id
+      expect(response).to have_http_status(200)
+      expect{ JSON.parse(response.body) }.to_not raise_error
+      expect(response.body).to_not be_nil
+      expect(response.body).to include('patients_list')
+      expect(response.body).to be_kind_of(String)
+    end
   end
 
   describe 'PUT #Cog_status' do
