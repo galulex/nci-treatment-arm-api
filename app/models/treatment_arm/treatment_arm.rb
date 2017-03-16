@@ -175,6 +175,7 @@ class TreatmentArm
   def self.validate_domain_range(rules, is_valid_domain=nil)
     return true if rules.blank?
     rules.each do |nhr|
+      return true if nhr['domain'].nil?
       domain = nhr['domain']
       arr = domain.split('-')
       if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
