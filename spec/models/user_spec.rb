@@ -9,7 +9,7 @@ describe User, type: :model do
   end
 
   it 'responds to from_token_payload' do
-    expect(User.from_token_payload({ email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub' })).to be_truthy
-    expect(User.from_token_payload({ email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub' })).to eq({ email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub' })
+    expect(User.from_token_payload(email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub')).to be_truthy
+    expect(User.from_token_payload(email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub')).to eq(email: 'test@nih.gov', roles: 'SuperUSER', sub: 'random-sub')
   end
 end

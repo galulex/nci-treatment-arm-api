@@ -128,15 +128,15 @@ class TreatmentArm
 
   def self.find_treatment_arm(treatment_arm_id, stratum_id)
     treatment_arms = self.query(
-      key_condition_expression: "#T = :t",
-      filter_expression: "contains(#S, :s)",
+      key_condition_expression: '#T = :t',
+      filter_expression: 'contains(#S, :s)',
       expression_attribute_names: {
-        "#T" => "treatment_arm_id",
-        "#S" => "stratum_id"
+        '#T' => 'treatment_arm_id',
+        '#S' => 'stratum_id'
       },
       expression_attribute_values: {
-        ":t" => treatment_arm_id,
-        ":s" => stratum_id
+        ':t' => treatment_arm_id,
+        ':s' => stratum_id
       }
     )
     treatment_arms
@@ -172,12 +172,11 @@ class TreatmentArm
   end
 
   # Validates the Domain Range field in the Non Hotspot Rules to be of the form ("x-y [x < y & x, y > 0]")
-  def self.validate_domain_range(rules, is_valid_domain=nil)
+  def self.validate_domain_range(rules, is_valid_domain = nil)
     return true if rules.blank?
     rules.each do |nhr|
       return true if nhr['domain'].nil?
-      domain = nhr['domain']
-      arr = domain.split('-')
+      arr = nhr['domain'].split('-')
       if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
          arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
         Rails.logger.info('===== The Domain range in the non_hotspot_rules is in the correct format =====')
