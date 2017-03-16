@@ -19,6 +19,14 @@ describe TreatmentArmAssignmentEvent do
     expect(treatment_arm_assignment).to be_truthy
   end
 
+  it 'should find the appropriate assignment event' do
+    allow(TreatmentArmAssignmentEvent).to receive(:scan).and_return(treatment_arm_assignment)
+    assignment = TreatmentArmAssignmentEvent.find_by({ treatment_arm_id: treatment_arm_assignment.treatment_arm_id,
+                                                       stratum_id: treatment_arm_assignment.stratum_id,
+                                                       patient_id: treatment_arm_assignment.patient_id }, true)
+    expect(assignment).to eq(treatment_arm_assignment.to_h)
+  end
+
   it 'should be the correct class type for the variables' do
     stub_client.stub_responses(:describe_table, table: { table_status: 'ACTIVE' })
     treatment_arm_assignment.configure_client(client: stub_client)
