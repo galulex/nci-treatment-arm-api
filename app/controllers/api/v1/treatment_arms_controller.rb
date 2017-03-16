@@ -40,7 +40,7 @@ module Api::V1
             render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y [x < y & x, y > 0]'" }, status: 412
           end
         elsif @treatment_arm.version != params[:version]
-          update_clone
+          update
         else
           render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
         end
@@ -65,7 +65,7 @@ module Api::V1
     # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
     def refresh
       begin
-        response = TreatmentArm.async_cog_status_update
+        response = TreatmentArm.get_updated_status_from_cog
         render json: response
       rescue => error
         standard_error_message(error)
@@ -90,7 +90,7 @@ module Api::V1
     end
 
     # This creates TreatmentArm into the Database with the new version
-    def update_clone
+    def update
       begin
         treatment_arm = @treatment_arm.attributes_data.merge!(clone_params).compact
         treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }

@@ -83,7 +83,8 @@ class TreatmentArm
     end
   end
 
-  def self.async_cog_status_update
+  # Calls COG and returns the Latest TreatmentArm status
+  def self.get_updated_status_from_cog
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
