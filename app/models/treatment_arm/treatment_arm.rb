@@ -172,20 +172,21 @@ class TreatmentArm
             v.class == NilClass || v.class == Fixnum || v.class == Hash
   end
 
-  # Validates the Domain Range field in the Non Hotspot Rules to be of the form ("x-y [x < y & x, y > 0]")
-  def self.validate_domain_range(rules, is_valid_domain = nil)
+  # Validates the Domain Range field in the Non Hotspot Rules to be of the form ("x-y" [x < y & x, y > 0])
+  def self.validate_domain_range(rules)
     return true if rules.blank?
+    @result = []
     rules.each do |nhr|
       return true if nhr['domain'].nil?
       arr = nhr['domain'].split('-')
       if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
          arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
         Rails.logger.info('===== The Domain range in the non_hotspot_rules is in the correct format =====')
-        is_valid_domain = true
+        @result.push(true)
       else
-        is_valid_domain = false
+        @result.push(false)
       end
     end
-    is_valid_domain
+    true unless @result.include?(false)
   end
 end

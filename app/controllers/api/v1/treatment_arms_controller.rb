@@ -21,7 +21,7 @@ module Api::V1
           @treatment_arm.merge!(treatment_arm_id: params[:treatment_arm_id],
                                 stratum_id: params[:stratum_id],
                                 version: params[:version])
-          validate_domain = TreatmentArm.validate_domain_range(@treatment_arm[:non_hotspot_rules], nil)
+          validate_domain = TreatmentArm.validate_domain_range(@treatment_arm[:non_hotspot_rules])
           if validate_domain
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
               Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
@@ -96,7 +96,7 @@ module Api::V1
         treatment_arm_hash = treatment_arm.symbolize_keys.tap { |ta| ta.delete(:status_log) }
         clone_treatment_arm = treatment_arm_hash.merge(status_log: { Time.now.to_i.to_s => treatment_arm_hash[:treatment_arm_status] })
         new_treatment_arm = TreatmentArm.remove_trailing_spaces(clone_treatment_arm)
-        check_domain = TreatmentArm.validate_domain_range(clone_treatment_arm[:non_hotspot_rules], nil)
+        check_domain = TreatmentArm.validate_domain_range(clone_treatment_arm[:non_hotspot_rules])
         if check_domain
           if JSON::Validator.validate(TreatmentArmValidator.schema, new_treatment_arm)
             Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
