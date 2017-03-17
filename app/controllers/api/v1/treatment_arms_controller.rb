@@ -37,7 +37,7 @@ module Api::V1
               end
             end
           else
-            render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y [x < y & x, y > 0]'" }, status: 412
+            render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y' [x < y & x, y > 0]" }, status: 412
           end
         elsif @treatment_arm.version != params[:version]
           update
@@ -112,7 +112,7 @@ module Api::V1
             end
           end
         else
-          render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y [x < y & x, y > 0]'" }, status: 412
+          render json: { message: "The Domain Range in the Non Hotspot Rules should be of the form 'x-y' [x < y & x, y > 0]" }, status: 412
         end
       rescue => error
         standard_error_message(error)

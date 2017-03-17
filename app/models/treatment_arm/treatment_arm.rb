@@ -177,11 +177,12 @@ class TreatmentArm
     return true if rules.blank?
     @result = []
     rules.each do |nhr|
-      return true if nhr['domain'].nil?
-      arr = nhr['domain'].split('-')
+      arr = nhr['domain'].split('-') unless nhr['domain'].nil?
       if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
          arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
         Rails.logger.info('===== The Domain range in the non_hotspot_rules is in the correct format =====')
+        @result.push(true)
+      elsif arr.nil?
         @result.push(true)
       else
         @result.push(false)

@@ -28,8 +28,10 @@ describe TreatmentArm do
   it 'should validate the Domain range in the TreatmentArm JSON' do
     correct_rules = [{ 'domain' => '100-200', 'level_of_evidence' => 1.0, 'inclusion' => true }]
     incorrect_rules = [{ 'domain'=> '200-100', 'level_of_evidence' => 1.0, 'inclusion' => true }]
+    correct_rules1 = [{ 'level_of_evidence' => 1.0, 'inclusion' => true }]
     expect(TreatmentArm.validate_domain_range(correct_rules)).to eq(true)
     expect(TreatmentArm.validate_domain_range(incorrect_rules)).to eq(nil)
+    expect(TreatmentArm.validate_domain_range(correct_rules1)).to eq(true)
   end
 
   it 'should be the correct class type for the variables' do
