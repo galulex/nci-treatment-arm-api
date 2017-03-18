@@ -164,7 +164,7 @@ module Api::V1
       stratum_id = params[:stratum_id]
       version = params[:version]
       @treatment_arm = TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
-      error_message(Error.new('Resource Not Found')) if @treatment_arm.nil?
+      render_error_with_message(404, Error.new('Resource Not Found')) if @treatment_arm.nil?
     end
 
     def set_latest_treatment_arm
