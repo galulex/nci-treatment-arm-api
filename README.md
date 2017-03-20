@@ -1,7 +1,7 @@
 nci-treatment-arm-api
 =======================
 [![Build Status](https://travis-ci.org/CBIIT/nci-treatment-arm-api.svg?branch=master)](https://travis-ci.org/CBIIT/nci-treatment-arm-api)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9b8f1eee12bd4476af29d4f7442ba2e7)](https://www.codacy.com/app/FNLCR/nci-treatment-arm-api?utm_source=github.com&u    tm_medium=referral&utm_content=CBIIT/nci-treatment-arm-api&utm_campaign=badger)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9b8f1eee12bd4476af29d4f7442ba2e7)](https://www.codacy.com/app/FNLCR/nci-treatment-arm-api?utm_source=github.com&utm_medium=referral&utm_content=CBIIT/nci-treatment-arm-api&utm_campaign=badger)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9b8f1eee12bd4476af29d4f7442ba2e7)](https://www.codacy.com/app/FNLCR/nci-treatment-arm-api?utm_source=github.com&utm_medium=referral&utm_content=CBIIT/nci-treatment-arm-api&utm_campaign=Badge_Coverage)
 
 This repository contains RESTful services for the treatment arm ecosystem.
