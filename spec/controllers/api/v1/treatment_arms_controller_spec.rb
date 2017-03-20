@@ -357,7 +357,7 @@ describe Api::V1::TreatmentArmsController do
       allow(HTTParty::Response).to receive(:new).and_return(HTTParty::Response)
       allow(HTTParty::Request).to receive(:perform).and_return(HTTParty::Response)
       allow(HTTParty::Response).to receive(:code).and_return(200)
-      expect(MockCogService.perform).to be_truthy
+      expect(MockCogService.perform(treatment_arm)).to be_truthy
     end
 
     it 'should raise exception when unable to connect to Mock COG' do
@@ -365,7 +365,7 @@ describe Api::V1::TreatmentArmsController do
       allow(HTTParty::Response).to receive(:new).and_return(HTTParty::Response)
       allow(HTTParty::Request).to receive(:perform).and_return(HTTParty::Response)
       allow(HTTParty::Response).to receive(:code).and_return(500)
-      allow(MockCogService.perform).to receive(:scan).and_raise('this error')
+      allow(MockCogService.perform(treatment_arm)).to receive(:scan).and_raise('this error')
     end
   end
 end

@@ -5,11 +5,10 @@ class MockCogService
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
-  def self.perform
+  def self.perform(treatment_arms)
     begin
       Rails.logger.info('===== Mock COG service is Triggered to get the Latest TreatmentArm status =====')
       result = []
-      treatment_arms = TreatmentArm.scan({})
       response = HTTParty.get(Rails.configuration.environment.fetch('mock_cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'))
       cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
       treatment_arms.each do |treatment_arm|

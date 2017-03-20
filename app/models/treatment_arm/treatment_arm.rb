@@ -115,7 +115,7 @@ class TreatmentArm
       if Rails.env.uat?
         Rails.logger.info('===== Switching to use mock COG for UAT... =====')
         Rails.logger.info("===== Connecting to Mock cog at #{Rails.configuration.environment.fetch('mock_cog_url')} =====")
-        MockCogService.perform
+        MockCogService.perform(treatment_arms)
       end
     end
   end
