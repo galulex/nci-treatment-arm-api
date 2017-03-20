@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
-  rescue_from Seahorse::Client::NetworkingError, with: :no_db_connection_exception
   rescue_from CanCan::AccessDenied, with: ->(exception) { render_error_with_message(:unauthorized, exception) }
   rescue_from NameError, with: ->(exception) { render_error(:internal_server_error, exception) }
 
@@ -20,10 +19,6 @@ class ApplicationController < ActionController::Base
   def render_error_with_message(status, exception)
     logger.error status.to_s +  " " + exception.to_s
     render json: { message: exception.message }, status: status
-  end
-
-  def no_db_connection_exception
-    render json: { message: 'Database is not ACTIVE' }, status: 502
   end
 
   def standard_error_message(error)
