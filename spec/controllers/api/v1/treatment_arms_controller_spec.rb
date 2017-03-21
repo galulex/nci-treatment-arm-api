@@ -173,6 +173,12 @@ describe Api::V1::TreatmentArmsController do
       expect(response).to have_http_status(500)
     end
 
+    it 'should handle errors correctly' do
+      allow_any_instance_of(Api::V1::TreatmentArmsController).to receive(:check_params).and_raise(status: 500)
+      get :index, format: :json
+      expect(response).to have_http_status(500)
+    end
+
     it 'should handle errors correctly on show call' do
       allow(TreatmentArm).to receive(:scan).and_return(treatment_arm)
       get :show, treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: 'v1', name: 'sample'
