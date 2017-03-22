@@ -42,7 +42,7 @@ module Api::V1
         elsif @treatment_arm.version != params[:version]
           update
         else
-          render json: { message: "TreatmentArm with treatment_arm_id: '#{params[:treatment_arm_id]}', stratum_id: '#{params[:stratum_id]}' and version: '#{params[:version]}' already exists in the DataBase" }, status: 400
+          render json: { message: "TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') already exists in the DataBase" }, status: 400
         end
       rescue => error
         standard_error_message(error)

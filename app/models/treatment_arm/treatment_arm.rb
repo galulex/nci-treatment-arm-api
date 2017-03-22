@@ -145,14 +145,15 @@ class TreatmentArm
 
   # Removes Any Trailing White Spaces present in the JSON Request
   def self.remove_trailing_spaces(treatment_arm)
+    classes = [TrueClass, FalseClass, Float, NilClass, Fixnum, Hash]
     Rails.logger.info('===== Stripping off the Trailing White Spaces in the JSON Request if there are any =====')
     return nil if treatment_arm.blank?
     treatment_arm.each_value do |value|
-      next if check_condition(value)
+      next if classes.include?(value.class)
       if value.is_a?(Array)
         value.each do |val|
           val.each_value do |v|
-            next if check_condition(v)
+            next if classes.include?(v.class)
             if v.is_a?(Array)
               v.collect!(&:squish)
             else
@@ -167,11 +168,6 @@ class TreatmentArm
     treatment_arm
   end
 
-  def self.check_condition(v)
-    true if v.class == TrueClass || v.class == FalseClass || v.class == Float ||
-            v.class == NilClass || v.class == Fixnum || v.class == Hash
-  end
-
   # Validates the Domain Range field in the Non Hotspot Rules to be of the form ("x-y" [x < y & x, y > 0])
   def self.validate_domain_range(rules)
     return true if rules.blank?
@@ -180,7 +176,6 @@ class TreatmentArm
       arr = nhr['domain_range'].split('-') unless nhr['domain_range'].nil?
       if arr && arr.length == 2 && arr[0].to_i.is_a?(Integer) && arr[1].to_i.is_a?(Integer) &&
          arr[0].to_i < arr[1].to_i && arr[0].to_i > 0 && arr[1].to_i > 0
-        Rails.logger.info('===== The Domain range in the non_hotspot_rules is in the correct format =====')
         @result.push(true)
       elsif arr.nil?
         @result.push(true)
