@@ -5,18 +5,18 @@ module Api::V1
     def version
       begin
         File.open('build_number.html', 'r') do |document|
-          @hash = {}
+          hash = {}
           document.each_line do |line|
             arr = line.split('=', 2)
-            @hash.store(arr[0], arr[1].squish!)
+            hash.store(arr[0], arr[1].squish!)
           end
           document.close
+          hash[:version] = TreatmentArmApi::Application.version
+          hash[:rails_version] = Rails::VERSION::STRING
+          hash[:ruby_version] = RUBY_VERSION
+          hash[:environment] = Rails.env
+          render json: hash
         end
-        @hash[:version] = TreatmentArmApi::Application.version
-        @hash[:rails_version] = Rails::VERSION::STRING
-        @hash[:ruby_version] = RUBY_VERSION
-        @hash[:environment] = Rails.env
-        render json: @hash
       rescue => error
         standard_error_message(error)
       end
