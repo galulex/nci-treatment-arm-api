@@ -65,7 +65,7 @@ module Api::V1
     # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
     def refresh
       begin
-        response = TreatmentArm.get_updated_status_from_cog
+        response = TreatmentArm.updated_status_from_cog
         render json: response
       rescue => error
         standard_error_message(error)
@@ -151,11 +151,8 @@ module Api::V1
 
     def set_treatment_arms
       params[:active] == 'true' ? true : false if params[:active].present?
-      if attribute_params.present? || projection_params.present?
-        ta_json = filter_query_by_attributes(TreatmentArm.scan({}))
-      else
-        ta_json = filter_query(TreatmentArm.scan({}))
-      end
+      filter_query_by_attributes(TreatmentArm.scan({})) if attribute_params.present? || projection_params.present?
+      ta_json = filter_query(TreatmentArm.scan({}))
       @treatment_arms = ta_json.sort { |x, y| y.date_created <=> x.date_created }
     end
 
@@ -168,7 +165,8 @@ module Api::V1
     end
 
     def set_latest_treatment_arm
-      treatment_arm_id, stratum_id = params[:treatment_arm_id], params[:stratum_id]
+      treatment_arm_id = params[:treatment_arm_id]
+      stratum_id = params[:stratum_id]
       treatment_arms = TreatmentArm.find_treatment_arm(treatment_arm_id, stratum_id)
       @treatment_arm = treatment_arms.detect { |t| t.version == params[:version] }
       @treatment_arm = treatment_arms.sort { |x, y| y.date_created <=> x.date_created }.first unless @treatment_arm
@@ -178,7 +176,8 @@ module Api::V1
       body_params = JSON.parse(request.raw_post)
       body_params.deep_transform_keys!(&:underscore).symbolize_keys!
       [:treatment_arm_id, :stratum_id].each { |k| body_params.delete(k) }
-      body_params[:stratum_id], body_params[:version] = params[:stratum_id], params[:version]
+      body_params[:stratum_id] = params[:stratum_id]
+      body_params[:version] = params[:version]
       body_params
     end
 

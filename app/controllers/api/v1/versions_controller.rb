@@ -1,6 +1,6 @@
 # Versions Controller
-# gets triggered when GET '/api/v1/treatment_arms/version'
 module Api::V1
+  # gets triggered when GET '/api/v1/treatment_arms/version'
   class VersionsController < ApplicationController
     def version
       begin

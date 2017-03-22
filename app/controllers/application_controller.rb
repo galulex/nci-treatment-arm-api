@@ -10,14 +10,14 @@ class ApplicationController < ActionController::Base
   protected
 
   def render_error(status, exception)
-    logger.error status.to_s +  " " + exception.to_s
+    logger.error status.to_s +  ' ' + exception.to_s
     respond_to do |format|
-      format.all { head status, message: exception.message}
+      format.all { head status, message: exception.message }
     end
   end
 
   def render_error_with_message(status, exception)
-    logger.error status.to_s +  " " + exception.to_s
+    logger.error status.to_s +  ' ' + exception.to_s
     render json: { message: exception.message }, status: status
   end
 

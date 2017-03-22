@@ -84,7 +84,7 @@ class TreatmentArm
   end
 
   # Calls COG and returns the Latest TreatmentArm status
-  def self.get_updated_status_from_cog
+  def self.updated_status_from_cog
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})

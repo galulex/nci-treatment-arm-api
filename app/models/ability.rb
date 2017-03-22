@@ -6,7 +6,7 @@ class Ability
   def initialize(user = {})
     user.deep_symbolize_keys!
     user = user.dig(:roles) || []
-    user.each do | role |
+    user.each do |role|
       begin
         methods << "NciMatchRoles::#{role.downcase.classify}".constantize.get_methods
       rescue NameError
