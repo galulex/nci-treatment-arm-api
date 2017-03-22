@@ -27,6 +27,12 @@ describe Api::V1::TreatmentArmsController do
         expect(TreatmentArm.include?(Aws::Record)).to be_truthy
       end
 
+      it 'should handle errors correctly' do
+        allow_any_instance_of(Api::V1::TreatmentArmsController).to receive(:update).and_raise(status: 500)
+        post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
+        expect(response).to have_http_status(500)
+      end
+
       it 'should put a TreatmentArm onto the queue' do
         allow(Aws::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
@@ -176,6 +182,12 @@ describe Api::V1::TreatmentArmsController do
     it 'should handle errors correctly' do
       allow_any_instance_of(Api::V1::TreatmentArmsController).to receive(:check_params).and_raise(status: 500)
       get :index, format: :json
+      expect(response).to have_http_status(500)
+    end
+
+    it 'should handle errors correctly' do
+      allow_any_instance_of(Api::V1::TreatmentArmsController).to receive(:check_params).and_raise(status: 500)
+      get :show, treatment_arm_id: 'APEC1621-A', stratum_id: '100', version: '2015-08-06'
       expect(response).to have_http_status(500)
     end
 
