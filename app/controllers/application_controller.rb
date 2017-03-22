@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def standard_error_message(error)
-    logger.error "#{error.message} :: #{error.backtrace}"
+    logger.error "#{error.message}"
     render json: { message: error.message }, status: 500
   end
 end
