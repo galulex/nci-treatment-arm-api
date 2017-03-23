@@ -11,6 +11,8 @@ module Api::V1
             hash.store(arr[0], arr[1].squish!)
           end
           document.close
+          hash['BUILD URL'] = "https://github.com/CBIIT/nci-treatment-arm-api/commit/#{hash['Commit']}"
+          hash['Travis Build URL'] = "https://travis-ci.org/CBIIT/nci-treatment-arm-api/builds/#{hash['TravisBuildID']}"
           hash[:version] = TreatmentArmApi::Application.version
           hash[:rails_version] = Rails::VERSION::STRING
           hash[:ruby_version] = RUBY_VERSION
