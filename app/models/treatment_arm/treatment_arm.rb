@@ -95,15 +95,15 @@ class TreatmentArm
       response = HTTParty.get(Rails.configuration.environment.fetch('cog_url') + Rails.configuration.environment.fetch('cog_treatment_arms'), basic_auth: auth)
       Rails.logger.info("===== DEBUGGING_TA_STATUS response from cog nil?: #{response.nil?} =====")
       cog_arms = response.parsed_response.deep_transform_keys!(&:underscore).symbolize_keys
-      Rails.logger.info("===== DEBUGGING_TA_STATUS parsed response: #{cog_arms}")
       treatment_arms.each do |treatment_arm|
         next if treatment_arm.active == false
         cog_arms[:treatment_arms].each do |cog_arm|
           if cog_check_condition(cog_arm, treatment_arm)
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
             Rails.logger.info("===== Sending TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') onto the queue to save to the DataBase  =====")
-            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
             treatment_arm.treatment_arm_status = cog_arm['status']
+            status_date = { 'status_date' => cog_arm['status_date'] }
+            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date))
           end
         end
         result << treatment_arm
