@@ -36,6 +36,8 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
       "oncomine_variant_class": "deleterious",
       "public_med_ids": null,
       "func_gene": "PTEN",
+      "domain_name": "iSH2",
+      "domain_range": "200-400",
       "arm_specific": false,
       "level_of_evidence":3.0,
       "function": "null",
