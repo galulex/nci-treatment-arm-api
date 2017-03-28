@@ -22,7 +22,7 @@ gem 'aws-record'
 gem 'aws-sdk', '2.6.34'
 gem 'aws-sdk-rails', '1.0.1'
 gem 'json-schema', '2.7.0'
-gem 'nci_match_roles', git: 'git://github.com/CBIIT/nci_match_roles.git', branch: :master
+gem 'nci_match_roles', git: 'git://github.com/CBIIT/nci_match_roles.git', tag: 'v1.1.0'
 gem 'rack-cors'
 gem 'slack-logger'
 
