@@ -31,15 +31,34 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
       "drug_id": "113"
     }
   ],
-  "snv_indels": [],
+  "snv_indels": [
+    {
+      "position": "30035190",
+      "ocp_alternative": "-",
+      "gene": "NRAS",
+      "protein": "p.Q61H",
+      "level_of_evidence": 3.0,
+      "ocp_reference": "TTC",
+      "variant_type": "snp",
+      "chromosome": "chr22",
+      "arm_specific": false,
+      "identifier": "COSM22189",
+      "public_med_ids": [
+        "18827604",
+        "21917678",
+        "23181703"
+      ],
+      "inclusion": true
+    }
+  ],
   "non_hotspot_rules":[
     {
       "inclusion": true,
       "oncomine_variant_class": "deleterious",
       "public_med_ids": null,
       "func_gene": "PTEN",
-      "domain_name":"iSH2",
-      "domain_range":"200-400",
+      "domain_name": "iSH2",
+      "domain_range": "200-400",
       "arm_specific": false,
       "level_of_evidence":3.0,
       "function": "null",
@@ -48,7 +67,40 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
       "exon": "null"
     }
   ],
-  "copy_number_variants": [],
+  "copy_number_variants": [
+    {
+      "position": "40361592",
+      "ocp_alternative": "<CNV>",
+      "gene": "MET",
+      "protein": null,
+      "level_of_evidence": 2.0,
+      "ocp_reference": "C",
+      "variant_type": "cnv",
+      "chromosome": "chr1",
+      "identifier": "MET",
+      "public_med_ids": [
+        "18827604"
+      ],
+      "arm_specific": false,
+      "inclusion": false
+    },
+    {
+      "position": "40361592",
+      "ocp_alternative": "<CNV>",
+      "gene": "MET",
+      "protein": null,
+      "level_of_evidence": 2.0,
+      "ocp_reference": "C",
+      "variant_type": "cnv",
+      "chromosome": "chr1",
+      "identifier": "POLITAN",
+      "public_med_ids": [
+        "18827604"
+      ],
+      "arm_specific": false,
+      "inclusion": true
+    }
+  ],
   "gene_fusions":[
     {
       "variant_type": "fusion",
