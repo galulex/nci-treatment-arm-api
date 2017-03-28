@@ -9,6 +9,7 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
   "name": "APEC1621-A",
   "version": "2015-08-06",
   "stratum_id": "100",
+  "date_created": "2015-08-06",
   "description": "TEST Treatment Arm used by Cucumber Tests",
   "target_id": "113",
   "target_name": "Crizotinib",
