@@ -125,7 +125,7 @@ module TreatmentArmValidator
         'required' => ['name', 'version', 'treatment_arm_id', 'stratum_id', 'treatment_arm_drugs', 'study_id', 'date_created'],
         'properties' => {
           'name' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
-          'study_id' => { 'type' => 'string', 'not' => { 'type' => 'null' }, 'enum' => ['APEC1621'], 'required' => ['enum'] },
+          'study_id' => { 'type' => 'string', 'not' => { 'type' => 'null' }, 'enum' => ['APEC1621SC'], 'required' => ['enum'] },
           'active' => { 'type' => 'boolean', 'not' => { 'type' => 'null' } },
           'treatment_arm_id' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
           'date_created' => { 'type' => 'string', 'not' => { 'type' => 'null' } },
