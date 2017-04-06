@@ -13,7 +13,7 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
   "target_id": "113",
   "target_name": "Crizotinib",
   "gene": "ALK",
-  "study_id": "APEC1621",
+  "study_id": "APEC1621SC",
   "assay_rules":[
     {
       "type": "IHC",

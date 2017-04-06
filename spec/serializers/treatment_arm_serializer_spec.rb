@@ -14,7 +14,7 @@ describe TreatmentArmSerializer do
       target_name: 'OtherHen',
       gene: 'GENE',
       treatment_arm_status: 'OPEN',
-      study_id: 'APEC1621',
+      study_id: 'APEC1621SC',
       assay_rules: [],
       total_patients_on_arm: 2,
       date_opened: '2016-10-05',
@@ -59,7 +59,7 @@ describe TreatmentArmSerializer do
   it { should include(target_name: 'OtherHen') }
   it { should include(gene: 'GENE') }
   it { should include(treatment_arm_status: 'OPEN') }
-  it { should include(study_id: 'APEC1621') }
+  it { should include(study_id: 'APEC1621SC') }
   it { should include(assay_rules: []) }
   it { should include(date_created: '2020-10-05') }
   it { should include(date_opened: '2016-10-05') }

@@ -13,7 +13,7 @@ FactoryGirl.define do
     treatment_arm_status 'OPEN'
     num_patients_assigned 2
     date_opened '2015-10-07'
-    study_id 'APEC1621'
+    study_id 'APEC1621SC'
     target_name 'OtherHen'
     gene 'GENE'
     treatment_arm_drugs [{
@@ -68,7 +68,7 @@ FactoryGirl.define do
     description 'This is the sample Description'
     target_id 'HDFD'
     date_opened '2015-10-07'
-    study_id 'APEC1621'
+    study_id 'APEC1621SC'
     target_name 'OtherHen'
     gene 'GENE'
     treatment_arm_drugs [{
@@ -109,7 +109,7 @@ FactoryGirl.define do
     description ' This is the sample Description'
     target_id ' HDFD'
     date_opened '2015-10-07 '
-    study_id 'APEC1621'
+    study_id 'APEC1621SC'
     target_name 'OtherHen'
     gene 'GENE'
     treatment_arm_drugs [{

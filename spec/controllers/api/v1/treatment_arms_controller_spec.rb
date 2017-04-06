@@ -61,7 +61,7 @@ describe Api::V1::TreatmentArmsController do
         allow(TreatmentArm).to receive(:find_by).and_return(treatment_arm)
         expect(treatment_arm).to_not be_nil
         post :create, treatment_arm_id: 'APEC1621-A', stratum_id: '12', version: 'v1', name: 'EAY131-test',
-                      treatment_arm_drugs: treatment_arm.treatment_arm_drugs, study_id: 'APEC1621SC', date_created: treatment_arm.date_created
+                      treatment_arm_drugs: treatment_arm.treatment_arm_drugs, study_id: treatment_arm.study_id, date_created: treatment_arm.date_created
         expect(response.body).to include('message')
         expect(response).to have_http_status(400)
       end
