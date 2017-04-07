@@ -45,5 +45,7 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 
-  raise "Please set your environment queue name for the project before running" if Rails.configuration.environment.fetch('queue_name').blank?
+  config.log_tags = [ :uuid, lambda { |request| Rails.application.class.parent_name } ]
+
+  raise 'Please set your environment queue name for the project before running' if Rails.configuration.environment.fetch('queue_name').blank?
 end

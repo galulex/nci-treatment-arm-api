@@ -14,24 +14,23 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module TreatmentArmApi
+module NciTreatmentArmApi
   class Application < Rails::Application
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '*')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'treatment_arm', '{*/}')]
     config.autoload_paths += Dir[Rails.root.join('lib')]
-
-    config.logger = Logger.new(STDOUT)
-    config.logger.formatter = Proc.new { |severity, datetime, _progname, msg| "[#{datetime.strftime("%B %d %H:%M:%S")}] [#{$$}] [#{severity}] [#{Rails.application.class.parent_name}], #{msg}\n"}
-
-    config.after_initialize do
-      config.logger.extend ActiveSupport::Logger.broadcast(SlackLogger.logger)
-    end
 
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
         origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
+    end
+
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+
+    config.after_initialize do
+      config.logger.extend ActiveSupport::Logger.broadcast(SlackLogger.logger)
     end
 
     config.environment = Rails.application.config_for(:environment)
