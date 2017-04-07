@@ -103,7 +103,7 @@ class TreatmentArm
             Rails.logger.info("===== Sending TreatmentArm('#{treatment_arm.treatment_arm_id}'/'#{treatment_arm.stratum_id}'/'#{treatment_arm.version}') onto the queue to save to the DataBase  =====")
             treatment_arm.treatment_arm_status = cog_arm['status']
             status_date = { 'status_date' => cog_arm['status_date'] }
-            Aws::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date))
+            Aws::Sqs::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date))
           end
         end
         result << treatment_arm

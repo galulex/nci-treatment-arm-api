@@ -34,14 +34,14 @@ describe Api::V1::TreatmentArmsController do
       end
 
       it 'should put a TreatmentArm onto the queue' do
-        allow(Aws::Publisher).to receive(:publish).and_return('')
+        allow(Aws::Sqs::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
         expect(response).to have_http_status(202)
       end
 
       it 'should respond with a success json message' do
-        allow(Aws::Publisher).to receive(:publish).and_return('')
+        allow(Aws::Sqs::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(true)
         post :create, params: { treatment_arm_id: treatment_arm.treatment_arm_id, stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
         expect(response.body).to include('Message has been processed successfully')
@@ -69,7 +69,7 @@ describe Api::V1::TreatmentArmsController do
 
     context 'With Invalid Data' do
       it 'should respond with a failure json message' do
-        allow(Aws::Publisher).to receive(:publish).and_return('')
+        allow(Aws::Sqs::Publisher).to receive(:publish).and_return('')
         allow(JSON::Validator).to receive(:validate).and_return(false)
         post :create, params: { treatment_arm_id: 'null', stratum_id: treatment_arm.stratum_id, version: treatment_arm.version }
         expect(response.body).to include("The property '#/' did not contain a required property of 'name'")

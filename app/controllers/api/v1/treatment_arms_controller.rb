@@ -26,7 +26,7 @@ module Api::V1
             if JSON::Validator.validate(TreatmentArmValidator.schema, @treatment_arm)
               Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
               Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
-              Aws::Publisher.publish(treatment_arm: @treatment_arm)
+              Aws::Sqs::Publisher.publish(treatment_arm: @treatment_arm)
               render json: { message: 'Message has been processed successfully' }, status: 202
             else
               begin
@@ -101,7 +101,7 @@ module Api::V1
           if JSON::Validator.validate(TreatmentArmValidator.schema, new_treatment_arm)
             Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
             Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
-            Aws::Publisher.publish(clone_treatment_arm: new_treatment_arm)
+            Aws::Sqs::Publisher.publish(clone_treatment_arm: new_treatment_arm)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
             begin
@@ -129,7 +129,7 @@ module Api::V1
                                  version: params[:version])
         Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') received a Patient Assignment =====")
         Rails.logger.info('===== Sending the Patient Assignment onto the queue =====')
-        Aws::Publisher.publish(assignment_event: @assignment_event)
+        Aws::Sqs::Publisher.publish(assignment_event: @assignment_event)
         render json: { message: 'Message has been processed successfully' }, status: 202
       rescue => error
         standard_error_message(error)
