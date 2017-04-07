@@ -133,7 +133,9 @@ module Api::V1
                                  version: params[:version])
         Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') received a Patient Assignment =====")
         Rails.logger.info('===== Sending the Patient Assignment onto the queue =====')
-        Aws::Sqs::Publisher.publish(assignment_event: @assignment_event)
+        message = { assignment_event: @assignment_event }
+        Rails.logger.info("===== Message X-request-id: #{request.uuid} =====")
+        Aws::Sqs::Publisher.publish(message, request.uuid)
         render json: { message: 'Message has been processed successfully' }, status: 202
       rescue => error
         standard_error_message(error)
