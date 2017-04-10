@@ -1,3 +1,4 @@
+### API Call for Loading a TreatmentArm ###
 
 curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{
   "header": {
@@ -127,4 +128,20 @@ curl -k -X POST -H "Content-Type: application/json" -H "Accept: application/json
 
 
 
+### API Call to get a list of all the Treatment Arms ###
+
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET "http://127.0.0.1:10235/api/v1/treatment_arms"
+
+
+
+### API Call to get a list of all the versions of the Treatment Arm ###
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET "http://127.0.0.1:10235/api/v1/treatment_arms/#{treatment_arm_id}/#{stratum_id}"
+
+
+
+### API Call to retrieve a specific Treatment Arm ###
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET "http://127.0.0.1:10235/api/v1/treatment_arms/#{treatment_arm_id}/#{stratum_id}/#{version}"
+
+
