@@ -16,7 +16,8 @@ class MockCogService
         cog_arms[:treatment_arms].each do |cog_arm|
           if TreatmentArm.cog_check_condition(cog_arm, treatment_arm)
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
-            Aws::Sqs::Publisher.publish(cog_treatment_refresh: treatment_arm.attributes_data)
+            #Temp fix...uuid needs to be passed from the controller...currently just making a new one to get things to pass
+            Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data}, SecureRandom.uuid)
             treatment_arm.treatment_arm_status = cog_arm['status']
           end
         end
