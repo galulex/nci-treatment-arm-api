@@ -33,5 +33,7 @@ production:
   <<: *defaults
   aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
   queue_name: 'treatment_arm_queue'
-  cog_url: ''
+  cog_url: 'https://cogws.cogmembers.org/pmws'
+  cog_user_name: <%= ENV['COG_USERNAME'] %>
+  cog_pwd: <%= ENV['COG_PWD'] %>
   slack_channel: "#match-bot-prod"
