@@ -372,19 +372,21 @@ describe Api::V1::TreatmentArmsController do
 
   describe 'MockCogService' do
     it "Should call Mock COG when the actual COG is down or wan't able to connect" do
+      uuid = 'd033fab1-f4d2-4faa-8fd8-2a097379de80'
       allow(HTTParty::Request).to receive(:new).and_return(HTTParty::Request)
       allow(HTTParty::Response).to receive(:new).and_return(HTTParty::Response)
       allow(HTTParty::Request).to receive(:perform).and_return(HTTParty::Response)
       allow(HTTParty::Response).to receive(:code).and_return(200)
-      expect(MockCogService.perform(treatment_arm)).to be_truthy
+      expect(MockCogService.perform(treatment_arm, uuid)).to be_truthy
     end
 
     it 'should raise exception when unable to connect to Mock COG' do
+      uuid = 'd033fab1-f4d2-4faa-8fd8-2a097379de80'
       allow(HTTParty::Request).to receive(:new).and_return(HTTParty::Request)
       allow(HTTParty::Response).to receive(:new).and_return(HTTParty::Response)
       allow(HTTParty::Request).to receive(:perform).and_return(HTTParty::Response)
       allow(HTTParty::Response).to receive(:code).and_return(500)
-      allow(MockCogService.perform(treatment_arm)).to receive(:scan).and_raise('this error')
+      allow(MockCogService.perform(treatment_arm, uuid)).to receive(:scan).and_raise('this error')
     end
   end
 end
