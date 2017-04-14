@@ -18,7 +18,6 @@ class MockCogService
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
             treatment_arm.treatment_arm_status = cog_arm['status']
             status_date = { 'status_date' => cog_arm['status_date'] }
-            #Temp fix...uuid needs to be passed from the controller...currently just making a new one to get things to pass
             Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date)}, uuid)
           end
         end
