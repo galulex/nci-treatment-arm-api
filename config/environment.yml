@@ -34,3 +34,4 @@ production:
   aws_dynamo_endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
   queue_name: 'treatment_arm_queue'
   cog_url: ''
+  slack_channel: "#match-bot-prod"
