@@ -5,7 +5,7 @@ class MockCogService
   include Aws::Record::RecordClassMethods
   include Aws::Record::ItemOperations::ItemOperationsClassMethods
 
-  def self.perform(treatment_arms)
+  def self.perform(treatment_arms, uuid)
     begin
       Rails.logger.info('===== Mock COG service is Triggered to get the Latest TreatmentArm status =====')
       result = []
@@ -16,9 +16,10 @@ class MockCogService
         cog_arms[:treatment_arms].each do |cog_arm|
           if TreatmentArm.cog_check_condition(cog_arm, treatment_arm)
             Rails.logger.info('===== Change in the TreatmentArm Status detected while comparing with COG. Saving Changes to the DataBase =====')
-            #Temp fix...uuid needs to be passed from the controller...currently just making a new one to get things to pass
-            Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data}, SecureRandom.uuid)
             treatment_arm.treatment_arm_status = cog_arm['status']
+            status_date = { 'status_date' => cog_arm['status_date'] }
+            #Temp fix...uuid needs to be passed from the controller...currently just making a new one to get things to pass
+            Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date)}, uuid)
           end
         end
         result << treatment_arm

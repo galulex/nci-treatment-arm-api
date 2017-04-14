@@ -67,7 +67,7 @@ module Api::V1
     # This gets the latest TreatmentArm Status from COG when 'PUT /api/v1/treatment_arms/status' is hit
     def refresh
       begin
-        response = TreatmentArm.updated_status_from_cog
+        response = TreatmentArm.updated_status_from_cog(request.uuid)
         render json: response
       rescue => error
         standard_error_message(error)

@@ -84,7 +84,7 @@ class TreatmentArm
   end
 
   # Calls COG and returns the Latest TreatmentArm status
-  def self.updated_status_from_cog
+  def self.updated_status_from_cog(uuid)
     begin
       result = []
       treatment_arms = TreatmentArm.scan({})
@@ -104,7 +104,7 @@ class TreatmentArm
             treatment_arm.treatment_arm_status = cog_arm['status']
             status_date = { 'status_date' => cog_arm['status_date'] }
             #Temp fix...uuid needs to be passed from the controller...currently just making a new one to get things to pass
-            Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date)}, SecureRandom.uuid)
+            Aws::Sqs::Publisher.publish({cog_treatment_refresh: treatment_arm.attributes_data.merge!(status_date)}, uuid)
           end
         end
         result << treatment_arm
@@ -116,7 +116,7 @@ class TreatmentArm
       if Rails.env.uat?
         Rails.logger.info('===== Switching to use mock COG for UAT... =====')
         Rails.logger.info("===== Connecting to Mock cog at #{Rails.configuration.environment.fetch('mock_cog_url')} =====")
-        MockCogService.perform(treatment_arms)
+        MockCogService.perform(treatment_arms, uuid)
       end
     end
   end
