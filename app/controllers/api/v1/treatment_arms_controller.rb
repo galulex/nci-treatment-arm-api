@@ -160,6 +160,33 @@ module Api::V1
       filter_query_by_attributes(TreatmentArm.scan({})) if attribute_params.present? || projection_params.present?
       ta_json = filter_query(TreatmentArm.scan({}))
       @treatment_arms = ta_json.sort { |x, y| y.date_created <=> x.date_created }
+      unless @treatment_arms.nil?
+        @treatment_arms.each do |treatment_arm|
+          unless treatment_arm.snv_indels.nil?
+            treatment_arm.snv_indels.each do |snv|
+              unless snv['chromosome'].nil?
+                snv['chromosome'] = snv['chromosome'][3..snv['chromosome'].length - 1] if snv['chromosome'][0..2] == 'chr'
+              end
+            end
+          end
+
+          unless treatment_arm.copy_number_variants.nil?
+            treatment_arm.copy_number_variants.each do |cnv|
+              unless cnv['chromosome'].nil?
+                cnv['chromosome'] = cnv['chromosome'][3..cnv['chromosome'].length - 1] if cnv['chromosome'][0..2] == 'chr'
+              end
+            end
+          end
+
+          unless treatment_arm.gene_fusions.nil?
+            treatment_arm.gene_fusions.each do |gf|
+              unless gf['chromosome'].nil?
+                gf['chromosome'] = gf['chromosome'][3..gf['chromosome'].length - 1] if gf['chromosome'][0..2] == 'chr'
+              end
+            end
+          end
+        end
+      end
     end
 
     def set_treatment_arm
@@ -167,32 +194,6 @@ module Api::V1
       stratum_id = params[:stratum_id]
       version = params[:version]
       @treatment_arm = TreatmentArm.find_by(treatment_arm_id, stratum_id, version, false).first
-
-      unless @treatment_arm.nil?
-        unless @treatment_arm.snv_indels.nil?
-          @treatment_arm.snv_indels.each do |snv|
-            unless snv['chromosome'].nil?
-              snv['chromosome'] = snv['chromosome'][3..snv['chromosome'].length - 1] if snv['chromosome'][0..2] == 'chr'
-            end
-          end
-        end
-
-        unless @treatment_arm.copy_number_variants.nil?
-          @treatment_arm.copy_number_variants.each do |cnv|
-            unless cnv['chromosome'].nil?
-              cnv['chromosome'] = cnv['chromosome'][3..cnv['chromosome'].length - 1] if cnv['chromosome'][0..2] == 'chr'
-            end
-          end
-        end
-
-        unless @treatment_arm.gene_fusions.nil?
-          @treatment_arm.gene_fusions.each do |gf|
-            unless gf['chromosome'].nil?
-              gf['chromosome'] = gf['chromosome'][3..gf['chromosome'].length - 1] if gf['chromosome'][0..2] == 'chr'
-            end
-          end
-        end
-      end
       render_error_with_message(404, Error.new('Resource Not Found')) if @treatment_arm.nil?
     end
 
