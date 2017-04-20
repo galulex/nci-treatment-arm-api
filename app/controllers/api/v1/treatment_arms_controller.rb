@@ -166,6 +166,7 @@ module Api::V1
             treatment_arm.snv_indels.each do |snv|
               unless snv['chromosome'].nil?
                 snv['chromosome'] = snv['chromosome'][3..snv['chromosome'].length - 1] if snv['chromosome'][0..2] == 'chr'
+                snv['chromosome'] = snv['chromosome'] =~ /[0-9]/ ? snv['chromosome'].to_i : snv['chromosome']
               end
             end
           end
@@ -174,6 +175,7 @@ module Api::V1
             treatment_arm.copy_number_variants.each do |cnv|
               unless cnv['chromosome'].nil?
                 cnv['chromosome'] = cnv['chromosome'][3..cnv['chromosome'].length - 1] if cnv['chromosome'][0..2] == 'chr'
+                cnv['chromosome'] = cnv['chromosome'] =~ /[0-9]/ ? cnv['chromosome'].to_i : cnv['chromosome']
               end
             end
           end
@@ -182,6 +184,7 @@ module Api::V1
             treatment_arm.gene_fusions.each do |gf|
               unless gf['chromosome'].nil?
                 gf['chromosome'] = gf['chromosome'][3..gf['chromosome'].length - 1] if gf['chromosome'][0..2] == 'chr'
+                gf['chromosome'] = gf['chromosome'] =~ /[0-9]/ ? gf['chromosome'].to_i : gf['chromosome']
               end
             end
           end
