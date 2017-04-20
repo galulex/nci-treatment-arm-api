@@ -78,5 +78,5 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
   # config.log_tags = [ "Treatment-Arm-API", :subdomain, :uuid ]
-  config.log_tags = [ :uuid, ->(_request) { Rails.application.class.parent_name } ]
+  config.log_tags = [:uuid, ->(_request) { Rails.application.class.parent_name }]
 end

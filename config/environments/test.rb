@@ -39,7 +39,7 @@ Rails.application.configure do
 
   # Set log level
   config.log_level = :INFO
-  config.log_tags = [ :uuid, ->(_request) { Rails.application.class.parent_name } ]
+  config.log_tags = [:uuid, ->(_request) { Rails.application.class.parent_name }]
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 end

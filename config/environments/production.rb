@@ -1,7 +1,7 @@
 Rails.application.configure do
-# Settings specified here will take precedence over those in config/application.rb.
+  # Settings specified here will take precedence over those in config/application.rb.
 
-# Code is not reloaded between requests.
+  # Code is not reloaded between requests.
   config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
@@ -47,7 +47,7 @@ Rails.application.configure do
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
-  config.log_tags = [ :uuid, ->(_request) { Rails.application.class.parent_name } ]
+  config.log_tags = [:uuid, ->(_request) { Rails.application.class.parent_name }]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -76,7 +76,7 @@ Rails.application.configure do
   # config.log_formatter = ::Logger::Formatter.new
   # Set log level
   config.log_level = :WARN
-# Prepend all log lines with the following tags.
-# config.log_tags = [ :subdomain, :uuid ]
-# config.log_tags = [ "Treatment-Arm-API", :subdomain, :uuid ]
+  # Prepend all log lines with the following tags.
+  # config.log_tags = [ :subdomain, :uuid ]
+  # config.log_tags = [ "Treatment-Arm-API", :subdomain, :uuid ]
 end

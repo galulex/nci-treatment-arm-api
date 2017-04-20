@@ -7,8 +7,8 @@ module Aws
       def self.publish(message, uuid)
         begin
           @url = self.client.get_queue_url(queue_name: @queue_name).queue_url
-          @client.send_message({ queue_url: @url, message_body: message.to_json,
-                                message_attributes: { 'X-Request-Id' => { string_value: uuid, data_type: 'String' } } })
+          @client.send_message(queue_url: @url, message_body: message.to_json,
+                               message_attributes: { 'X-Request-Id' => { string_value: uuid, data_type: 'String' } })
         rescue Aws::SQS::Errors::ServiceError => error
           puts error
         end

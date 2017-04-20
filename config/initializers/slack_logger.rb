@@ -1,5 +1,4 @@
 SlackLogger.setup do |config|
-
   ## Logger
   #  ------
   #
