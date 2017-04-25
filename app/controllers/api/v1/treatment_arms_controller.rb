@@ -27,7 +27,6 @@ module Api::V1
               Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
               Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') onto the queue =====")
               message = { treatment_arm: @treatment_arm }
-              Rails.logger.info("===== Message X-request-id: #{request.uuid} =====")
               Aws::Sqs::Publisher.publish(message, request.uuid)
               render json: { message: 'Message has been processed successfully' }, status: 202
             else
@@ -104,7 +103,6 @@ module Api::V1
             Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') Validation passed =====")
             Rails.logger.info("===== Sending TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}' & with new version '#{params[:version]}') onto the queue =====")
             message = { clone_treatment_arm: new_treatment_arm }
-            Rails.logger.info("===== Message X-request-id: #{request.uuid} =====")
             Aws::Sqs::Publisher.publish(message, request.uuid)
             render json: { message: 'Message has been processed successfully' }, status: 202
           else
@@ -134,7 +132,6 @@ module Api::V1
         Rails.logger.info("===== TreatmentArm('#{params[:treatment_arm_id]}'/'#{params[:stratum_id]}'/'#{params[:version]}') received a Patient Assignment =====")
         Rails.logger.info('===== Sending the Patient Assignment onto the queue =====')
         message = { assignment_event: @assignment_event }
-        Rails.logger.info("===== Message X-request-id: #{request.uuid} =====")
         Aws::Sqs::Publisher.publish(message, request.uuid)
         render json: { message: 'Message has been processed successfully' }, status: 202
       rescue => error
