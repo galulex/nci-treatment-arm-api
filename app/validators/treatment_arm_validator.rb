@@ -8,9 +8,9 @@ module TreatmentArmValidator
         'definitions' => {
           'drug' => {
             'type' => 'object',
-            'required' => ['name', 'drug_id'],
+            'required' => ['name'],
             'properties' => {
-              'drug_id' => { 'type' => 'string', 'minLength' => 1 },
+              'drug_id' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
               'name' => { 'type' => 'string', 'minLength' => 1  }
             }
           },
@@ -112,10 +112,10 @@ module TreatmentArmValidator
           },
           'edrugs' => {
             'type' => 'object',
-            'required' => ['drug_id', 'name'],
+            'required' => ['name'],
             'properties' => {
               'name' => { 'type' => 'string', 'minLength' => 1 },
-              'drug_id' => { 'type' => 'string', 'minLength' => 1 },
+              'drug_id' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
               'drug_class' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] },
               'target' => { 'anyOf' => [{ 'type' => 'string' }, { 'type' => 'null' }] }
             }
