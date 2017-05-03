@@ -1,5 +1,6 @@
 # Routing for TA
 Rails.application.routes.draw do
+  apipie
   controller :treatmentarm do
     namespace 'api' do
       namespace 'v1' do

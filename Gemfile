@@ -26,6 +26,8 @@ gem 'nci_match_roles', git: 'git://github.com/CBIIT/nci_match_roles.git', tag: '
 gem 'rack-cors'
 gem 'slack-logger'
 
+gem 'apipie-rails', '~> 0.5.1'
+
 # Use jquery as the JavaScript library
 # gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
