@@ -230,4 +230,16 @@ describe TreatmentArm do
       end
     end
   end
+
+  describe '.updated_status_from_cog' do
+    before do
+      allow(TreatmentArm).to receive(:cog_check_condition).and_return(true)
+    end
+
+    it 'publishes the treatment_arm' do
+      Rails.configuration.environment['mock_cog_url'] = 'test'
+      expect(Aws::Sqs::Publisher).to receive(:publish).at_least(:once)
+      TreatmentArm.updated_status_from_cog(nil)
+    end
+  end
 end
