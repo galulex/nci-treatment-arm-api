@@ -335,6 +335,7 @@ describe Api::V1::TreatmentArmsController do
       put :refresh
       expect(response).to have_http_status(500)
       expect(response).to_not be_nil
+      Rails.env = 'test'
     end
   end
 
